@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Fellow Traveller</string>
+    <string name="hint_nickname">Nickname</string>
+    <string name="hint_password">Password</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="error_check_network_connection">Please, check network connection</string>
+    <string name="pleaseWait">Please, wait...</string>
 </resources>
