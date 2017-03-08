@@ -10,4 +10,5 @@ import us.fellowtraveller.domain.model.User;
 public interface Repository {
 
     Observable<User> signIn(User user);
+    Observable<User> signUp(User user);
 }

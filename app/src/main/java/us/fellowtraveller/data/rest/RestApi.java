@@ -28,13 +28,30 @@ public class RestApi {
             return Observable.from(userResult.headers().values("Authorization"))
                     .first();
         }, (userResult, token) -> {
-            User user1 = new User();
+            User body = userResult.body();
+            body.setToken(token);
+            return body;
+            /*User user1 = new User();
             user1.setToken(token);
-            return user1;
+            return user1;*/
         }/*(userResult, token) -> {
 //            User body = userResult.response().body();
 //            body.setToken(token);
             return new User();
         }*/);
+    }
+
+
+    public Observable<User> signUp(User user) {
+        return api.signUp(user).flatMap(userResult -> {
+            Log.e("response", String.valueOf(userResult.body()));
+            return Observable.from(userResult.headers().values("Authorization"))
+                    .first();
+        },
+        (userResult, token) -> {
+            User body = userResult.body();
+            body.setToken(token);
+            return body;
+        });
     }
 }

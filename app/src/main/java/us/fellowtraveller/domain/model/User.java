@@ -5,6 +5,8 @@ package us.fellowtraveller.domain.model;
  */
 
 public class User {
+    public static final String GENDER_MALE = "male";
+    public static final String GENDER_FEMALE = "female";
     private String id;
     private String ssoId;
     private String password;
@@ -13,6 +15,7 @@ public class User {
     private String email;
     private String gender;
     private String token;
+
 
     public User(String ssoId, String password, String firstName, String lastName, String email, String gender) {
         this.ssoId = ssoId;

@@ -31,10 +31,10 @@ public class SignInPresenterImpl extends ProgressPresenter<SignInView>
             @Override
             public void onNext(User response) {
                 super.onNext(response);
-//                SignInView view = getView();
-//                if (view != null) {
-//                    view.onSignIn(user);
-//                }
+                SignInView view = getView();
+                if (view != null) {
+                    view.onSignIn(user);
+                }
             }
         });
     }

@@ -1,12 +1,11 @@
 package us.fellowtraveller.presentation;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.RadioGroup;
 
 import javax.inject.Inject;
 
@@ -16,45 +15,55 @@ import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.domain.model.User;
-import us.fellowtraveller.presentation.dialogs.ProgressDialogFragment;
-import us.fellowtraveller.presentation.presenter.SignInPresenter;
-import us.fellowtraveller.presentation.view.SignInView;
+import us.fellowtraveller.presentation.presenter.SignUpPresenter;
+import us.fellowtraveller.presentation.view.SignUpView;
 
-public class SignInActivity extends ProgressActivity implements SignInView {
+public class SignUpActivity extends ProgressActivity implements SignUpView {
     @Bind(R.id.et_login)
     EditText etLogin;
     @Bind(R.id.et_password)
     EditText etPassword;
+    @Bind(R.id.et_email)
+    EditText etEmail;
+    @Bind(R.id.et_first_name)
+    EditText etFirstName;
+    @Bind(R.id.et_last_name)
+    EditText etLastName;
+    @Bind(R.id.rg_gender)
+    RadioGroup rgGender;
     @Inject
-    SignInPresenter presenter;
-
+    SignUpPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
         ButterKnife.bind(this);
         Application.getApp(this).getUserComponent().inject(this);
         presenter.onCreate(this);
+        rgGender.check(R.id.rb_male);
         etLogin.post(() -> {
             TelephonyManager tMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
             etLogin.setText(tMgr.getLine1Number());
         });
-
     }
 
-    @OnClick(R.id.btn_sign_in)
-    void onSignInClick() {
+
+    @OnClick(R.id.btn_sign_up)
+    void onSignUpClick() {
         String ssoId = etLogin.getText().toString();
         String password = etPassword.getText().toString();
-        presenter.onSignInButtonClick(new User(ssoId, password));
+        String email = etEmail.getText().toString();
+        String firstName = etFirstName.getText().toString();
+        String lastName = etLastName.getText().toString();
+        String gender = rgGender.getCheckedRadioButtonId() == R.id.rb_male
+                ? User.GENDER_MALE
+                : User.GENDER_FEMALE;
+
+        presenter.onSignUpButtonClick(new User(ssoId, password, firstName, lastName,email, gender));
     }
 
-    @OnClick(R.id.text_sign_up)
-    void onSignUpClick() {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);
-    }
+
 
     @Override
     protected void onDestroy() {
@@ -64,10 +73,9 @@ public class SignInActivity extends ProgressActivity implements SignInView {
     }
 
     @Override
-    public void onSignIn(User user) {
+    public void onSignUp(User user) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
 }

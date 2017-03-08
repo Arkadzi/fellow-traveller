@@ -14,7 +14,7 @@ import us.fellowtraveller.domain.model.User;
 public interface RetrofitApi {
 
     @POST("signin")
-    Observable<Response<Void>> signIn(@Body User user);
+    Observable<Response<User>> signIn(@Body User user);
     @POST("signup")
-    Observable<Result<User>> signUp(@Body User user);
+    Observable<Response<User>> signUp(@Body User user);
 }
