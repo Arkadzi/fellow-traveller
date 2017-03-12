@@ -1,7 +1,9 @@
 package us.fellowtraveller.presentation.utils;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
 
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 
 import javax.inject.Inject;
@@ -25,14 +27,27 @@ public class Messages {
     }
 
     public String getError(Throwable e) {
-        if (e instanceof SocketTimeoutException || e instanceof HttpException) {
+        if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
             return c.getString(R.string.error_check_network_connection);
         }
-        return e.getMessage();
-    }
+        HttpException httpException = null;
+        if (e instanceof HttpException) {
+            httpException = (HttpException) e;
+        } else if (e.getCause() != null && e.getCause() instanceof HttpException) {
+            httpException = (HttpException) e.getCause();
+        }
+        if (httpException != null)
+            switch (httpException.code()) {
+                case 401:
+                    return convertError(R.string.error_user_not_authorized);
+                case 409:
+                    return convertError(R.string.error_such_user_exists);
+            }
+    return e.getMessage();
+}
 
 
-    public String convertError(int messageId) {
+    public String convertError(@StringRes int messageId) {
         return c.getString(messageId);
     }
 }

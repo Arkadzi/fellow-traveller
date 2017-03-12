@@ -1,14 +1,8 @@
 package us.fellowtraveller.data.rest;
 
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.util.Log;
-
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.adapter.rxjava.Result;
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.Func2;
+import rx.exceptions.Exceptions;
 import us.fellowtraveller.domain.model.User;
 
 /**
@@ -23,35 +17,29 @@ public class RestApi {
     }
 
     public Observable<User> signIn(User user) {
-        return api.signIn(user).flatMap(userResult -> {
-            Log.e("response", String.valueOf(userResult));
-            return Observable.from(userResult.headers().values("Authorization"))
-                    .first();
-        }, (userResult, token) -> {
-            User body = userResult.body();
-            body.setToken(token);
-            return body;
-            /*User user1 = new User();
-            user1.setToken(token);
-            return user1;*/
-        }/*(userResult, token) -> {
-//            User body = userResult.response().body();
-//            body.setToken(token);
-            return new User();
-        }*/);
+        return api.signIn(user).map(userResponse -> {
+            if (!userResponse.isSuccessful())
+                throw Exceptions.propagate(new HttpException(userResponse));
+            return userResponse;
+        }).flatMap(userResult -> Observable.from(userResult.headers().values("Authorization")).first(),
+                (userResult, token) -> {
+                    User body = userResult.body();
+                    body.setToken(token);
+                    return body;
+                });
     }
 
 
     public Observable<User> signUp(User user) {
-        return api.signUp(user).flatMap(userResult -> {
-            Log.e("response", String.valueOf(userResult.body()));
-            return Observable.from(userResult.headers().values("Authorization"))
-                    .first();
-        },
-        (userResult, token) -> {
-            User body = userResult.body();
-            body.setToken(token);
-            return body;
-        });
+        return api.signUp(user).map(userResponse -> {
+            if (!userResponse.isSuccessful())
+                throw Exceptions.propagate(new HttpException(userResponse));
+            return userResponse;
+        }).flatMap(userResult -> Observable.from(userResult.headers().values("Authorization")).first(),
+                (userResult, token) -> {
+                    User body = userResult.body();
+                    body.setToken(token);
+                    return body;
+                });
     }
 }

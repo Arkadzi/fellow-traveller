@@ -29,15 +29,8 @@ public class BaseProgressSubscriber<T> extends BaseUseCaseSubscriber<T> {
     @Override
     public void onError(Throwable e) {
         Log.e("useCase", "onError " + e);
-        int code = 0;
-        if (e instanceof HttpException) {
-            code = ((HttpException) e).code();
-        }
-        if (!(e instanceof HttpException && (code == 401 || code == 403))) {
             if (listener != null)
                 listener.onError(e);
-        }
-
         listener = null;
     }
 

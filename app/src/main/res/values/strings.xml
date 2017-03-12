@@ -11,4 +11,7 @@
     <string name="rb_text_female">Female</string>
     <string name="action_sign_up">Sign up</string>
     <string name="hint_email">Email</string>
+    <string name="error_user_not_authorized">User not authorized</string>
+    <string name="error_empty_field">This field should be filled</string>
+    <string name="error_such_user_exists">User with such phone number already exists</string>
 </resources>
