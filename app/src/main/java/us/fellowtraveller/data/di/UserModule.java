@@ -11,6 +11,9 @@ import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
 import us.fellowtraveller.domain.usecase.SignUpUseCase;
+import us.fellowtraveller.domain.usecase.UserInfoUseCase;
+import us.fellowtraveller.presentation.presenter.ProfilePresenter;
+import us.fellowtraveller.presentation.presenter.ProfilePresenterImpl;
 import us.fellowtraveller.presentation.presenter.SignInPresenter;
 import us.fellowtraveller.presentation.presenter.SignInPresenterImpl;
 import us.fellowtraveller.presentation.presenter.SignUpPresenter;
@@ -45,5 +48,11 @@ public class UserModule {
     @UserScope
     SignUpPresenter provideSignUpPresenter(Messages messages, SignUpUseCase signUpUseCase) {
         return new SignUpPresenterImpl(messages, signUpUseCase);
+    }
+
+    @Provides
+    @UserScope
+    ProfilePresenter provideProfilePresenter(Messages messages, UserInfoUseCase userInfoUseCase) {
+        return new ProfilePresenterImpl(messages, userInfoUseCase);
     }
 }

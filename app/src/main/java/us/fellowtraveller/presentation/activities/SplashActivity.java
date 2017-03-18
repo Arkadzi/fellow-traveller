@@ -1,4 +1,4 @@
-package us.fellowtraveller.presentation;
+package us.fellowtraveller.presentation.activities;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.domain.model.Account;
+import us.fellowtraveller.presentation.utils.ScreenNavigator;
 
 public class SplashActivity extends AppCompatActivity {
     @Override
@@ -30,10 +31,10 @@ public class SplashActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         Account account = Application.getApp(this).getUserComponent().account();
         if (!account.isAuthorized()) {
-            startActivity(new Intent(this, SignInActivity.class));
+            ScreenNavigator.startSignInScreen(this);
             finish();
         } else {
-            startActivity(new Intent(this, MainActivity.class));
+            ScreenNavigator.startMainScreen(this, false);
             finish();
         }
     }

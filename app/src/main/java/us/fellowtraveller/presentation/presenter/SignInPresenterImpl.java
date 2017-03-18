@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import us.fellowtraveller.data.di.scope.UserScope;
 import us.fellowtraveller.domain.Repository;
+import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
@@ -25,11 +26,11 @@ public class SignInPresenterImpl extends ProgressPresenter<SignInView>
     }
 
     @Override
-    public void onSignInButtonClick(User user) {
+    public void onSignInButtonClick(AccountUser user) {
         signInUseCase.setUser(user);
-        signInUseCase.execute(new BaseProgressSubscriber<User>(this) {
+        signInUseCase.execute(new BaseProgressSubscriber<AccountUser>(this) {
             @Override
-            public void onNext(User response) {
+            public void onNext(AccountUser response) {
                 super.onNext(response);
                 SignInView view = getView();
                 if (view != null) {

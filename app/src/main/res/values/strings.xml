@@ -7,11 +7,22 @@
     <string name="pleaseWait">Please, wait...</string>
     <string name="hint_first_name">First name</string>
     <string name="hint_last_name">Last name</string>
-    <string name="rb_text_male">Male</string>
-    <string name="rb_text_female">Female</string>
+    <string name="hint_male">Male</string>
+    <string name="hint_female">Female</string>
     <string name="action_sign_up">Sign up</string>
     <string name="hint_email">Email</string>
     <string name="error_user_not_authorized">User not authorized</string>
     <string name="error_empty_field">This field should be filled</string>
     <string name="error_such_user_exists">User with such phone number already exists</string>
+    <string name="profile">Profile</string>
+    <string name="hint_rating">Rating</string>
+    <string name="hint_feedback">Feedback</string>
+    <string name="hint_comments">Comments</string>
+    <string name="hint_birthday">Birthday</string>
+    <string name="hint_gender">Gender</string>
+    <string name="hint_not_specified">Not specified</string>
+    <string name="hint_about">About</string>
+    <string name="hint_cars">Cars</string>
+    <string name="action_add_car">Add car</string>
+    <string name="action_retry">Retry</string>
 </resources>

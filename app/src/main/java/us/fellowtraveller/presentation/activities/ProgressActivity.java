@@ -1,7 +1,6 @@
-package us.fellowtraveller.presentation;
+package us.fellowtraveller.presentation.activities;
 
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import us.fellowtraveller.presentation.dialogs.ProgressDialogFragment;
@@ -11,7 +10,7 @@ import us.fellowtraveller.presentation.presenter.ProgressView;
  * Created by arkadii on 3/7/17.
  */
 
-public class ProgressActivity extends AppCompatActivity implements ProgressView {
+public class ProgressActivity extends BaseActivity implements ProgressView {
 
     @Override
     public void showProgress() {

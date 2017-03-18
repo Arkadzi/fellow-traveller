@@ -1,7 +1,6 @@
-package us.fellowtraveller.presentation;
+package us.fellowtraveller.presentation.activities;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
@@ -17,9 +16,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
+import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.presenter.SignUpPresenter;
 import us.fellowtraveller.presentation.utils.FieldUtils;
+import us.fellowtraveller.presentation.utils.ScreenNavigator;
 import us.fellowtraveller.presentation.utils.exceptions.BadFieldDataException;
 import us.fellowtraveller.presentation.view.SignUpView;
 
@@ -74,11 +75,14 @@ public class SignUpActivity extends ProgressActivity implements SignUpView {
                     ? User.GENDER_MALE
                     : User.GENDER_FEMALE;
 
-            presenter.onSignUpButtonClick(new User(ssoId, password, firstName, lastName, email, gender));
+            presenter.onSignUpButtonClick(new AccountUser(ssoId, password, firstName, lastName, email, gender));
         } catch (BadFieldDataException e) {}
     }
 
-
+    @Override
+    protected boolean hasBackButton() {
+        return true;
+    }
 
     @Override
     protected void onDestroy() {
@@ -89,8 +93,6 @@ public class SignUpActivity extends ProgressActivity implements SignUpView {
 
     @Override
     public void onSignUp(User user) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        ScreenNavigator.startMainScreen(this, true);
     }
 }

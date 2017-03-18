@@ -1,6 +1,7 @@
 package us.fellowtraveller.domain;
 
 import rx.Observable;
+import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 
 /**
@@ -9,6 +10,9 @@ import us.fellowtraveller.domain.model.User;
 
 public interface Repository {
 
-    Observable<User> signIn(User user);
-    Observable<User> signUp(User user);
+    Observable<AccountUser> signIn(AccountUser user);
+
+    Observable<AccountUser> signUp(AccountUser user);
+
+    Observable<User> getUserInfo(String userId);
 }

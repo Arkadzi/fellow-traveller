@@ -4,6 +4,7 @@ import rx.Observable;
 import us.fellowtraveller.data.rest.RestApi;
 import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Account;
+import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 
 /**
@@ -21,12 +22,17 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<User> signIn(User user) {
+    public Observable<AccountUser> signIn(AccountUser user) {
         return restApi.signIn(user).doOnNext(user1 -> account.save(user1));
     }
 
     @Override
-    public Observable<User> signUp(User user) {
+    public Observable<AccountUser> signUp(AccountUser user) {
         return restApi.signUp(user).doOnNext(user1 -> account.save(user1));
+    }
+
+    @Override
+    public Observable<User> getUserInfo(String userId) {
+        return restApi.getUserInfo(userId);
     }
 }

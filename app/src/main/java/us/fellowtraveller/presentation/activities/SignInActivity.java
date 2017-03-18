@@ -1,8 +1,7 @@
-package us.fellowtraveller.presentation;
+package us.fellowtraveller.presentation.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,9 +17,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
+import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.presenter.SignInPresenter;
 import us.fellowtraveller.presentation.utils.FieldUtils;
+import us.fellowtraveller.presentation.utils.ScreenNavigator;
 import us.fellowtraveller.presentation.utils.exceptions.BadFieldDataException;
 import us.fellowtraveller.presentation.view.SignInView;
 
@@ -72,14 +73,13 @@ public class SignInActivity extends ProgressActivity implements SignInView {
         try {
             String ssoId = FieldUtils.getNonEmptyText(etLogin);
             String password = FieldUtils.getNonEmptyText(etPassword);
-            presenter.onSignInButtonClick(new User(ssoId, password));
+            presenter.onSignInButtonClick(new AccountUser(ssoId, password));
         } catch (BadFieldDataException e) { }
     }
 
     @OnClick(R.id.text_sign_up)
     void onSignUpClick() {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        startActivity(intent);
+        ScreenNavigator.startSignUpScreen(this);
     }
 
     @Override
@@ -91,9 +91,7 @@ public class SignInActivity extends ProgressActivity implements SignInView {
 
     @Override
     public void onSignIn(User user) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        ScreenNavigator.startMainScreen(this, true);
     }
 
 }

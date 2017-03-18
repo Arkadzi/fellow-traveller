@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:paddingTop="32dp"
     android:layout_height="match_parent"
-    tools:context="us.fellowtraveller.presentation.SignUpActivity">
+    tools:context="us.fellowtraveller.presentation.activities.SignUpActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -92,14 +92,14 @@
                 android:id="@+id/rb_male"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/rb_text_male" />
+                android:text="@string/hint_male" />
 
             <RadioButton
                 android:id="@+id/rb_female"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="@string/rb_text_female" />
+                android:text="@string/hint_female" />
         </RadioGroup>
 
 

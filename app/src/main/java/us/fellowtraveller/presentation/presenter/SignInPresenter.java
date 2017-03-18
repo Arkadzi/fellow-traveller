@@ -1,6 +1,6 @@
 package us.fellowtraveller.presentation.presenter;
 
-import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.presentation.view.SignInView;
 
 /**
@@ -8,5 +8,5 @@ import us.fellowtraveller.presentation.view.SignInView;
  */
 
 public interface SignInPresenter extends Presenter<SignInView> {
-    void onSignInButtonClick(User user);
+    void onSignInButtonClick(AccountUser user);
 }

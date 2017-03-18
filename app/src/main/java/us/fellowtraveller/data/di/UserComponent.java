@@ -3,10 +3,11 @@ package us.fellowtraveller.data.di;
 import dagger.Subcomponent;
 import us.fellowtraveller.data.di.scope.UserScope;
 import us.fellowtraveller.domain.model.Account;
-import us.fellowtraveller.presentation.MainActivity;
-import us.fellowtraveller.presentation.SignInActivity;
-import us.fellowtraveller.presentation.SignUpActivity;
-import us.fellowtraveller.presentation.SplashActivity;
+import us.fellowtraveller.presentation.activities.MainActivity;
+import us.fellowtraveller.presentation.activities.ProfileActivity;
+import us.fellowtraveller.presentation.activities.SignInActivity;
+import us.fellowtraveller.presentation.activities.SignUpActivity;
+import us.fellowtraveller.presentation.activities.SplashActivity;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -25,6 +26,8 @@ public interface UserComponent {
         void inject(SignUpActivity signUpActivity);
 
         void inject(SplashActivity splashActivity);
+
+        void inject(ProfileActivity profileActivity);
 
         Account account();
 }

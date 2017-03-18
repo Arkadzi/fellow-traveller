@@ -1,37 +1,45 @@
 package us.fellowtraveller.domain.model;
 
+import android.support.annotation.Nullable;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by arkadii on 3/6/17.
  */
 
-public class User {
+public class User implements Serializable {
     public static final String GENDER_MALE = "male";
     public static final String GENDER_FEMALE = "female";
     private String id;
     private String ssoId;
-    private String password;
     private String firstName;
     private String lastName;
     private String email;
     private String gender;
-    private String token;
-
-
-    public User(String ssoId, String password, String firstName, String lastName, String email, String gender) {
-        this.ssoId = ssoId;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.gender = gender;
-    }
+    private String imageUrl;
+    private List<Car> cars;
+    @Nullable
+    private Float rating;
+    @Nullable
+    private Integer commentsCount;
+    @Nullable
+    private Integer tripCount;
 
     public User() {
     }
 
-    public User(String ssoId, String password) {
-        this.ssoId = ssoId;
-        this.password = password;
+    public List<Car> getCars() {
+        if (cars == null) {
+            return new ArrayList<>();
+        }
+        return cars;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getId() {
@@ -48,14 +56,6 @@ public class User {
 
     public void setSsoId(String ssoId) {
         this.ssoId = ssoId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -86,29 +86,68 @@ public class User {
         return gender;
     }
 
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+
+    public void setRating(@Nullable Float rating) {
+        this.rating = rating;
+    }
+
+    public void setCommentsCount(@Nullable Integer commentsCount) {
+        this.commentsCount = commentsCount;
+    }
+
+    public void setTripCount(@Nullable Integer tripCount) {
+        this.tripCount = tripCount;
+    }
+
+    public float getRating() {
+        if (rating == null) {
+            return 0;
+        }
+        return rating;
+    }
+
+    public int getTripCount() {
+        if (tripCount == null) {
+            return 0;
+        }
+        return tripCount;
+    }
+
+    public int getCommentsCount() {
+        if (commentsCount == null) {
+            return 0;
+        }
+        return commentsCount;
+    }
+
     public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public String getFullName() {
+        return firstName + " " + lastName;
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", ssoId='" + ssoId + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", gender='" + gender + '\'' +
-                ", token='" + token + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        return id != null && id.equals(user.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

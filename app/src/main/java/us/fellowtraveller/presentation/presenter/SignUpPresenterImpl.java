@@ -1,5 +1,6 @@
 package us.fellowtraveller.presentation.presenter;
 
+import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
 import us.fellowtraveller.domain.usecase.SignUpUseCase;
@@ -21,15 +22,15 @@ public class SignUpPresenterImpl extends ProgressPresenter<SignUpView>
     }
 
     @Override
-    public void onSignUpButtonClick(User user) {
+    public void onSignUpButtonClick(AccountUser user) {
         signUpUseCase.setUser(user);
-        signUpUseCase.execute(new BaseProgressSubscriber<User>(this) {
+        signUpUseCase.execute(new BaseProgressSubscriber<AccountUser>(this) {
             @Override
-            public void onNext(User response) {
+            public void onNext(AccountUser response) {
                 super.onNext(response);
                 SignUpView view = getView();
                 if (view != null) {
-                    view.onSignUp(user);
+                    view.onSignUp(response);
                 }
             }
         });
