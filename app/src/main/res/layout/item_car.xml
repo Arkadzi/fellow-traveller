@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/double_padding"
+    android:paddingRight="@dimen/double_padding">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/iv_car_photo"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="@dimen/double_padding"
+        android:layout_marginRight="@dimen/double_padding"
+        android:layout_marginTop="@dimen/double_padding" />
+
+    <TextView
+        android:id="@+id/tv_car_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:layout_alignTop="@id/iv_car_photo"
+        android:layout_toRightOf="@id/iv_car_photo"
+        android:lines="1"
+        tools:text="Nissan Skyline"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_car_title"
+        android:layout_below="@id/tv_car_title"
+        android:lines="1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp"
+        tools:text="@string/hint_year_of_manufacture" />
+
+    <TextView
+        android:id="@+id/tv_state_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_car_title"
+        android:layout_below="@id/tv_year"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp"
+        android:text="@string/hint_condition" />
+    <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/car_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:stepSize="1"
+        style="@style/Base.Widget.AppCompat.RatingBar.Small"
+        android:layout_toRightOf="@id/tv_state_hint"
+        android:layout_below="@id/tv_year" />
+
+
+</RelativeLayout>

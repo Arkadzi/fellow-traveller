@@ -25,7 +25,6 @@ public class UserProfileViewHolder extends RecyclerView.ViewHolder {
     TextView tvEmail;
     TextView tvGender;
     TextView tvPhone;
-    Button btnAddCar;
 
 
     public UserProfileViewHolder(LayoutInflater inflater, ViewGroup viewGroup) {
@@ -37,10 +36,9 @@ public class UserProfileViewHolder extends RecyclerView.ViewHolder {
         tvEmail = (TextView) itemView.findViewById(R.id.tv_email);
         tvGender = (TextView) itemView.findViewById(R.id.tv_gender);
         tvPhone = (TextView) itemView.findViewById(R.id.tv_phone);
-        btnAddCar = (Button) itemView.findViewById(R.id.btn_add_car);
     }
 
-    public void bind(User user, View.OnClickListener onClickListener) {
+    public void bind(User user) {
         tvPhone.setText(user.getSsoId());
         tvEmail.setText(user.getEmail());
         tvCommentCount.setText(String.format("%s", user.getCommentsCount()));
@@ -52,11 +50,5 @@ public class UserProfileViewHolder extends RecyclerView.ViewHolder {
         }
         tvGender.setText(User.GENDER_FEMALE.equals(user.getGender())
                 ? R.string.hint_female : R.string.hint_male);
-        btnAddCar.setOnClickListener(onClickListener);
-        btnAddCar.setVisibility(user.getCars().isEmpty() ? View.VISIBLE : View.GONE);
-    }
-
-    public void unbind() {
-        btnAddCar.setOnClickListener(null);
     }
 }

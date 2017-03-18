@@ -25,4 +25,7 @@
     <string name="hint_cars">Cars</string>
     <string name="action_add_car">Add car</string>
     <string name="action_retry">Retry</string>
+    <string name="hint_year_of_manufacture">Year of manufacture: %s</string>
+    <string name="hint_condition">Condition:</string>
+    <string name="hint_no_cars">No cars</string>
 </resources>

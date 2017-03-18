@@ -5,4 +5,5 @@
     <dimen name="padding_dialog">20dp</dimen>
     <dimen name="simple_padding">8dp</dimen>
     <dimen name="double_padding">16dp</dimen>
+    <dimen name="profile_app_bar_height">200dp</dimen>
 </resources>

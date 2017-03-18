@@ -10,7 +10,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -63,12 +62,14 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
     private User user;
     private boolean isAccountUser;
     private int appBarElevation;
+    private int appBarHeight;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        appBarHeight = (int) getResources().getDimension(R.dimen.profile_app_bar_height);
         ButterKnife.bind(this);
         user = fetchUser(savedInstanceState);
         UserComponent userComponent = Application.getApp(this).getUserComponent();
@@ -140,7 +141,7 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
         fabEditProfile.setOnClickListener(view -> ScreenNavigator.startEditProfileScreen(ProfileActivity.this));
         layoutManager = new LinearLayoutManager(this);
         rvProfile.setLayoutManager(layoutManager);
-        adapter = new ProfileAdapter(this, view -> ScreenNavigator.startAddCarScreen(ProfileActivity.this));
+        adapter = new ProfileAdapter(this, isAccountUser, view -> ScreenNavigator.startAddCarScreen(ProfileActivity.this));
         rvProfile.setAdapter(adapter);
         btnRetry.setOnClickListener(view -> presenter.onUserRequested(this.user.getId()));
         fabEditProfile.setVisibility(isAccountUser ? View.VISIBLE : View.GONE);
@@ -152,9 +153,11 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
 
     public void updateScrollFlags() {
         rvProfile.post(() -> {
-            int lastCompletelyVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition();
-            int itemCount = layoutManager.getItemCount();
-            boolean isListFullyVisible = lastCompletelyVisibleItemPosition == itemCount - 1;
+            int height = appBarHeight;
+            for (int i = 0; i < layoutManager.getChildCount(); i++) {
+                height += layoutManager.getChildAt(i).getHeight();
+            }
+            boolean isListFullyVisible = getResources().getDisplayMetrics().heightPixels >= height;
             AppBarLayout.LayoutParams layoutParams = (AppBarLayout.LayoutParams) collapsingToolbarLayout.getLayoutParams();
             layoutParams.setScrollFlags(isListFullyVisible ? 0 : AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);
             rvProfile.setOverScrollMode(isListFullyVisible ? RecyclerView.OVER_SCROLL_NEVER : RecyclerView.OVER_SCROLL_IF_CONTENT_SCROLLS);
