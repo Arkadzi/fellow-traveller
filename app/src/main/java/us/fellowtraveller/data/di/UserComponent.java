@@ -3,6 +3,7 @@ package us.fellowtraveller.data.di;
 import dagger.Subcomponent;
 import us.fellowtraveller.data.di.scope.UserScope;
 import us.fellowtraveller.domain.model.Account;
+import us.fellowtraveller.presentation.activities.EditProfileActivity;
 import us.fellowtraveller.presentation.activities.MainActivity;
 import us.fellowtraveller.presentation.activities.ProfileActivity;
 import us.fellowtraveller.presentation.activities.SignInActivity;
@@ -28,6 +29,8 @@ public interface UserComponent {
         void inject(SplashActivity splashActivity);
 
         void inject(ProfileActivity profileActivity);
+
+        void inject(EditProfileActivity editProfileActivity);
 
         Account account();
 }

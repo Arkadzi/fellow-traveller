@@ -35,4 +35,14 @@ public class RepositoryImpl implements Repository {
     public Observable<User> getUserInfo(String userId) {
         return restApi.getUserInfo(userId);
     }
+
+    @Override
+    public Observable<User> editProfile(User user) {
+        return null;
+    }
+
+    @Override
+    public Observable<String> editPhoto(String filePath) {
+        return null;
+    }
 }

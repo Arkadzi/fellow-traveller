@@ -38,6 +38,7 @@ import us.fellowtraveller.presentation.view.ProfileView;
 
 public class ProfileActivity extends ProgressActivity implements ProfileView {
     public static final String ARG_USER = "user";
+    public static final int REQUEST_CODE_EDIT_PROFILE = 111;
     @Bind(R.id.iv_profile_photo)
     ImageView ivProfilePhoto;
     @Bind(R.id.rv_profile)
@@ -138,7 +139,7 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
     }
 
     private void initViews() {
-        fabEditProfile.setOnClickListener(view -> ScreenNavigator.startEditProfileScreen(ProfileActivity.this));
+        fabEditProfile.setOnClickListener(view -> ScreenNavigator.startEditProfileScreen(this, REQUEST_CODE_EDIT_PROFILE));
         layoutManager = new LinearLayoutManager(this);
         rvProfile.setLayoutManager(layoutManager);
         adapter = new ProfileAdapter(this, isAccountUser, view -> ScreenNavigator.startAddCarScreen(ProfileActivity.this));

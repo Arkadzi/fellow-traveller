@@ -41,7 +41,7 @@ public class DateTextView extends TextView {
 
     public void setDate(long date) {
         this.date = date;
-        if (date >= 0) {
+        if (date != DATE_UNSPECIFIED) {
             setText(dateFormat.format(new Date(date)));
         } else {
             setText("");

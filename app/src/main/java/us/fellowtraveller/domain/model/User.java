@@ -21,8 +21,9 @@ public class User implements Serializable {
     private String gender;
     private String imageUrl;
     private String about;
-    private long birthday;
     private List<Car> cars;
+    @Nullable
+    private Long birthday;
     @Nullable
     private Float rating;
     @Nullable
@@ -112,7 +113,8 @@ public class User implements Serializable {
         this.about = about;
     }
 
-    public long getBirthday() {
+    @Nullable
+    public Long getBirthday() {
         return birthday;
     }
 

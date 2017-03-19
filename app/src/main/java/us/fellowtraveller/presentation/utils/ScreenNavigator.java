@@ -1,5 +1,6 @@
 package us.fellowtraveller.presentation.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -54,7 +55,7 @@ public class ScreenNavigator {
         context.startActivity(new Intent(context, AddCarActivity.class));
     }
 
-    public static void startEditProfileScreen(Context context) {
-        context.startActivity(new Intent(context, EditProfileActivity.class));
+    public static void startEditProfileScreen(Activity activity, int requestCode) {
+        activity.startActivityForResult(new Intent(activity, EditProfileActivity.class), requestCode);
     }
 }

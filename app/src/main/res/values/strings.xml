@@ -32,4 +32,9 @@
     <string name="hint_choose_date">Choose date</string>
     <string name="action_ok">ok</string>
     <string name="action_cancel">Cancel</string>
+    <string name="hint_select_photo">Select photo</string>
+    <string name="warn_user_denied_storage_permission">You denied access to external storage</string>
+    <string name="error_gallery_not_available">Gallery is not available</string>
+    <string name="error_unknown">Sorry, unknown error occured</string>
+    <string name="hint_edit_profile">Edit profile</string>
 </resources>

@@ -48,7 +48,7 @@ public class SignInActivity extends ProgressActivity implements SignInView {
                 Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
             setPhoneNumber();
         } else {
-                requestPermissions(new String[] {Manifest.permission.READ_SMS}, REQUEST_CODE_READ_SMS);
+            requestPermissions(new String[]{Manifest.permission.READ_SMS}, REQUEST_CODE_READ_SMS);
         }
 
     }
@@ -74,7 +74,8 @@ public class SignInActivity extends ProgressActivity implements SignInView {
             String ssoId = FieldUtils.getNonEmptyText(etLogin);
             String password = FieldUtils.getNonEmptyText(etPassword);
             presenter.onSignInButtonClick(new AccountUser(ssoId, password));
-        } catch (BadFieldDataException e) { }
+        } catch (BadFieldDataException e) {
+        }
     }
 
     @OnClick(R.id.text_sign_up)

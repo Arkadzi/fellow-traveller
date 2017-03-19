@@ -69,14 +69,13 @@
                 android:textColor="?attr/colorAccent"
                 android:textSize="12sp" />
 
-            <TextView
+            <us.fellowtraveller.presentation.app.view.DateTextView
                 android:id="@+id/tv_birthday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_not_specified"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"
-                tools:text="5.12.1995" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout

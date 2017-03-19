@@ -15,4 +15,8 @@ public interface Repository {
     Observable<AccountUser> signUp(AccountUser user);
 
     Observable<User> getUserInfo(String userId);
+
+    Observable<User> editProfile(User user);
+
+    Observable<String> editPhoto(String filePath);
 }

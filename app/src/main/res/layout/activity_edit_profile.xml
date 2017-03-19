@@ -22,6 +22,8 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/circle"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:scaleType="center"
                     android:src="@drawable/ic_add_a_photo_white_36dp"
                     android:tint="?attr/colorPrimaryDark" />
