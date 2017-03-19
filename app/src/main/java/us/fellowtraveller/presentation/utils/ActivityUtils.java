@@ -15,4 +15,14 @@ public class ActivityUtils {
         }
         return null;
     }
+
+    public static <T> T restore(@Nullable Bundle bundle, String key, T defaultValue) {
+        if (bundle != null) {
+            T serializable = (T) bundle.getSerializable(key);
+            if (serializable != null) {
+                return serializable;
+            }
+        }
+        return defaultValue;
+    }
 }

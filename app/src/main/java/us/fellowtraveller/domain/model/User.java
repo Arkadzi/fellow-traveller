@@ -20,6 +20,8 @@ public class User implements Serializable {
     private String email;
     private String gender;
     private String imageUrl;
+    private String about;
+    private long birthday;
     private List<Car> cars;
     @Nullable
     private Float rating;
@@ -100,6 +102,22 @@ public class User implements Serializable {
 
     public void setCommentsCount(@Nullable Integer commentsCount) {
         this.commentsCount = commentsCount;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public long getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(long birthday) {
+        this.birthday = birthday;
     }
 
     public void setTripCount(@Nullable Integer tripCount) {

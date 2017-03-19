@@ -28,4 +28,8 @@
     <string name="hint_year_of_manufacture">Year of manufacture: %s</string>
     <string name="hint_condition">Condition:</string>
     <string name="hint_no_cars">No cars</string>
+    <string name="hint_about_me">About me</string>
+    <string name="hint_choose_date">Choose date</string>
+    <string name="action_ok">ok</string>
+    <string name="action_cancel">Cancel</string>
 </resources>
