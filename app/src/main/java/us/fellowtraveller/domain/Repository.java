@@ -2,6 +2,7 @@ package us.fellowtraveller.domain;
 
 import rx.Observable;
 import us.fellowtraveller.domain.model.AccountUser;
+import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 
 /**
@@ -16,7 +17,7 @@ public interface Repository {
 
     Observable<User> getUserInfo(String userId);
 
-    Observable<User> editProfile(User user);
+    Observable<AccountUser> editProfile(User user);
 
-    Observable<String> editPhoto(String filePath);
+    Observable<Photo> editPhoto(String filePath);
 }

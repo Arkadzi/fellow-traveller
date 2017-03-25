@@ -5,6 +5,7 @@ import us.fellowtraveller.data.rest.RestApi;
 import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
+import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 
 /**
@@ -37,12 +38,18 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<User> editProfile(User user) {
-        return null;
+    public Observable<AccountUser> editProfile(User user) {
+        return restApi.editProfile(user).map(accountUser -> {
+            account.editProfile(accountUser);
+            return accountUser;
+        });
     }
 
     @Override
-    public Observable<String> editPhoto(String filePath) {
-        return null;
+    public Observable<Photo> editPhoto(String filePath) {
+        return restApi.editPhoto(filePath).map(photo -> {
+            account.savePhoto(photo.getUrl());
+            return photo;
+        });
     }
 }

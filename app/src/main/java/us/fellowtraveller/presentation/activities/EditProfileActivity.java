@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.data.di.UserComponent;
+import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.app.view.DateTextView;
@@ -24,13 +25,13 @@ import us.fellowtraveller.presentation.dialogs.DatePickDialogFragment;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenter;
 import us.fellowtraveller.presentation.utils.ActivityUtils;
 import us.fellowtraveller.presentation.utils.CircleTransform;
+import us.fellowtraveller.presentation.utils.FieldUtils;
 import us.fellowtraveller.presentation.utils.ImageUtils;
+import us.fellowtraveller.presentation.utils.exceptions.BadFieldDataException;
 import us.fellowtraveller.presentation.view.EditProfileView;
 
 public class EditProfileActivity extends ProgressActivity implements EditProfileView, DatePickDialogFragment.DatePickerListener {
-    public static final String ARG_USER = "user";
-    public static final String ARG_PICTURE_URL = "picture_url";
-    public static final int IMAGE_URL_REQUEST_CODE = 1010;
+    public static final String ARG_PHOTO = "photo";
     @Bind(R.id.iv_profile_photo)
     ImageView ivProfilePhoto;
     @Bind(R.id.et_first_name)
@@ -45,8 +46,8 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
     RadioGroup rgGender;
     @Bind(R.id.tv_birthday)
     DateTextView tvBirthday;
-    private AccountUser user;
-    private String pictureUrl;
+    @Inject
+    Account user;
     @Inject
     EditProfilePresenter presenter;
 
@@ -56,7 +57,7 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
         setContentView(R.layout.activity_edit_profile);
         getSupportActionBar().setTitle(R.string.hint_edit_profile);
         UserComponent userComponent = Application.getApp(this).getUserComponent();
-        user = userComponent.account().user();
+        user = userComponent.account();
         userComponent.inject(this);
         initViews(savedInstanceState);
         presenter.onCreate(this);
@@ -77,11 +78,11 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
     private void initViews(Bundle savedInstanceState) {
         ButterKnife.bind(this);
         etAbout.setMinLines(3);
+        AccountUser user = this.user.user();
         ivProfilePhoto.setOnClickListener(view -> ImageUtils.requestImage(this));
         tvBirthday.setOnClickListener(view -> DatePickDialogFragment.newInstance(tvBirthday.getDate())
                 .show(getSupportFragmentManager(), DatePickDialogFragment.TAG));
-        pictureUrl = ActivityUtils.restore(savedInstanceState, ARG_PICTURE_URL, user.getImageUrl());
-        displayPicture(pictureUrl);
+        displayPicture();
 
         if (savedInstanceState == null) {
             etAbout.setText(user.getAbout());
@@ -114,12 +115,6 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(ARG_PICTURE_URL, pictureUrl);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public void onDatePicked(long date) {
         tvBirthday.setDate(date);
     }
@@ -130,15 +125,51 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
         finish();
     }
 
-    @OnClick(R.id.fab_action_save)
-    void onSaveButtonClick() {
-        User user = new User();
-        presenter.onProfileEdited(user);
+    @Override
+    public void onPhotoEdited() {
+        setResult(RESULT_OK);
+        showMessage(getString(R.string.hint_photo_edited));
+        displayPicture();
     }
 
-    private void displayPicture(String pictureUrl) {
+    @OnClick(R.id.fab_action_save)
+    void onSaveButtonClick() {
+        try {
+            User user = new User();
+            AccountUser accountUser = this.user.user();
+
+            String lastName = FieldUtils.getNonEmptyText(etLastName);
+            String firstName = FieldUtils.getNonEmptyText(etFirstName);
+            String email = FieldUtils.getNonEmptyText(etEmail);
+            String gender = rgGender.getCheckedRadioButtonId() == R.id.rb_male ? User.GENDER_MALE : User.GENDER_FEMALE;
+
+            user.setSsoId(accountUser.getSsoId());
+
+            if (!firstName.equals(accountUser.getFirstName())) {
+                user.setFirstName(firstName);
+            }
+            if (!lastName.equals(accountUser.getLastName())) {
+                user.setLastName(lastName);
+            }
+            if (!email.equals(accountUser.getEmail())) {
+                user.setEmail(email);
+            }
+            if (!gender.equals(accountUser.getGender())){
+                user.setGender(gender);
+            }
+            presenter.onProfileEdited(user);
+        } catch (BadFieldDataException e) {}
+
+//        if (birthday != DateTextView.DATE_UNSPECIFIED && (accountUser.)) {
+//            user.setBirthday(birthday);
+//        }
+//        if (user.getBirthday())
+    }
+
+    private void displayPicture() {
+        String imageUrl = user.user().getImageUrl();
         Picasso.with(this)
-                .load(pictureUrl)
+                .load(imageUrl)
                 .transform(new CircleTransform())
                 .into(ivProfilePhoto);
     }

@@ -1,5 +1,7 @@
 package us.fellowtraveller.presentation.presenter;
 
+import us.fellowtraveller.domain.model.AccountUser;
+import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
 import us.fellowtraveller.domain.usecase.EditPhotoUseCase;
@@ -23,21 +25,31 @@ public class EditProfilePresenterImpl extends ProgressPresenter<EditProfileView>
     @Override
     public void onProfileEdited(User user) {
         editProfileUseCase.setUser(user);
-//        editProfileUseCase.execute(new BaseProgressSubscriber<User>(this) {
-//            @Override
-//            public void onNext(User response) {
-//                super.onNext(response);
-//                EditProfileView view = getView();
-//                if (view != null) {
-//                    view.onProfileEdited();
-//                }
-//            }
-//        });
+        editProfileUseCase.execute(new BaseProgressSubscriber<AccountUser>(this) {
+            @Override
+            public void onNext(AccountUser response) {
+                super.onNext(response);
+                EditProfileView view = getView();
+                if (view != null) {
+                    view.onProfileEdited();
+                }
+            }
+        });
     }
 
     @Override
-    public void onImageEdited(String pictureUrl) {
-
+    public void onImageEdited(String filePath) {
+        editPhotoUseCase.setFilePath(filePath);
+        editPhotoUseCase.execute(new BaseProgressSubscriber<Photo>(this) {
+            @Override
+            public void onNext(Photo response) {
+                super.onNext(response);
+                EditProfileView view = getView();
+                if (view != null) {
+                    view.onPhotoEdited();
+                }
+            }
+        });
     }
 
 }

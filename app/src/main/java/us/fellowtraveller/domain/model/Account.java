@@ -18,6 +18,7 @@ public class Account {
     public static final String PREF_GENDER = "pref_gender";
     public static final String PREF_EMAIL = "pref_email";
     public static final String PREF_TOKEN = "pref_token";
+    public static final String PREF_URL = "pref_url";
     Context context;
     private AccountUser user;
 
@@ -33,8 +34,19 @@ public class Account {
 
     }
 
+    public void editProfile(AccountUser user) {
+        this.user = null;
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                .putString(PREF_FIRST_NAME, user.getFirstName())
+                .putString(PREF_LAST_NAME, user.getLastName())
+                .putString(PREF_EMAIL, user.getEmail())
+                .putString(PREF_GENDER, user.getGender())
+                .putString(PREF_URL, user.getImageUrl())
+                .commit();
+    }
+
     public void save(AccountUser user) {
-        this.user = user;
+        this.user = null;
         PreferenceManager.getDefaultSharedPreferences(context).edit()
                 .putString(PREF_ID, user.getId())
                 .putString(PREF_SSOID, user.getSsoId())
@@ -44,6 +56,7 @@ public class Account {
                 .putString(PREF_EMAIL, user.getEmail())
                 .putString(PREF_GENDER, user.getGender())
                 .putString(PREF_TOKEN, user.getToken())
+                .putString(PREF_URL, user.getImageUrl())
                 .commit();
     }
 
@@ -59,7 +72,15 @@ public class Account {
             user.setEmail(prefs.getString(PREF_EMAIL, null));
             user.setPassword(prefs.getString(PREF_PASSWORD, null));
             user.setGender(prefs.getString(PREF_GENDER, null));
+            user.setImageUrl(prefs.getString(PREF_URL, null));
         }
         return user;
+    }
+
+    public void savePhoto(String url) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                .putString(PREF_URL, url)
+                .commit();
+        user = null;
     }
 }

@@ -1,5 +1,6 @@
 package us.fellowtraveller.presentation.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -24,6 +25,7 @@ import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.data.di.UserComponent;
 import us.fellowtraveller.domain.model.Account;
+import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.adapters.ProfileAdapter;
 import us.fellowtraveller.presentation.presenter.ProfilePresenter;
@@ -89,6 +91,25 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
         presenter.onRelease();
         ButterKnife.unbind(this);
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == RESULT_OK) {
+            updateUser();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void updateUser() {
+        AccountUser accountUser = account.user();
+        user.setEmail(accountUser.getEmail());
+        user.setImageUrl(accountUser.getImageUrl());
+        user.setGender(accountUser.getGender());
+        user.setFirstName(accountUser.getFirstName());
+        user.setLastName(accountUser.getLastName());
+        user.setBirthday(accountUser.getBirthday());
+        user.setAbout(accountUser.getAbout());
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
@@ -12,6 +13,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -38,6 +40,14 @@ public class DataModule {
 
         return new OkHttpClient.Builder()
                 .readTimeout(10, TimeUnit.SECONDS)
+                .addInterceptor(chain -> {
+                    Request.Builder builder = chain.request().newBuilder();
+                    String token = account.user().getToken();
+                    if (token != null) {
+                        builder.addHeader("Authorization", token);
+                    }
+                    return chain.proceed(builder.build());
+                })
                 .addInterceptor(interceptor)
                 .build();
     }

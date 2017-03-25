@@ -118,7 +118,7 @@ public class User implements Serializable {
         return birthday;
     }
 
-    public void setBirthday(long birthday) {
+    public void setBirthday(Long birthday) {
         this.birthday = birthday;
     }
 

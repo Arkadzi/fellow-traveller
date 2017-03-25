@@ -8,4 +8,6 @@ import us.fellowtraveller.presentation.presenter.ProgressView;
 
 public interface EditProfileView extends ProgressView {
     void onProfileEdited();
+
+    void onPhotoEdited();
 }

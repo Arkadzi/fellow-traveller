@@ -37,4 +37,5 @@
     <string name="error_gallery_not_available">Gallery is not available</string>
     <string name="error_unknown">Sorry, unknown error occured</string>
     <string name="hint_edit_profile">Edit profile</string>
+    <string name="hint_photo_edited">Photo edited</string>
 </resources>

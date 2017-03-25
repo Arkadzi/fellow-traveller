@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import us.fellowtraveller.R;
@@ -78,5 +81,48 @@ public class ImageUtils {
             return FilesUtils.getRealPathFromURI(context, intent.getData());
         }
         return null;
+    }
+
+
+    public static Bitmap decodeSampledBitmapFromResource(String file, int maxSize) {
+
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(file, options);
+        int outWidth = options.outWidth;
+        int outHeight = options.outHeight;
+
+        options.inSampleSize = calculateInSampleSize(options, maxSize, maxSize);
+
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeFile(file, options);
+        Log.e("photo", String.format("was:%d*%d now:%d*%d", outWidth, outHeight, bitmap.getWidth(), bitmap.getHeight()));
+
+        return bitmap;
+    }
+
+
+    private static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
     }
 }

@@ -32,6 +32,7 @@
                     android:id="@+id/iv_profile_photo"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:scaleType="centerCrop"
                     android:layout_marginRight="@dimen/double_padding" />
 
                 <android.support.design.widget.TextInputLayout

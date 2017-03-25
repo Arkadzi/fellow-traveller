@@ -10,5 +10,5 @@ import us.fellowtraveller.presentation.view.EditProfileView;
 public interface EditProfilePresenter extends Presenter<EditProfileView> {
     void onProfileEdited(User user);
 
-    void onImageEdited(String pictureUrl);
+    void onImageEdited(String filePath);
 }

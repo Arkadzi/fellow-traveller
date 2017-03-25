@@ -1,5 +1,7 @@
 package us.fellowtraveller.data.di;
 
+import android.content.Context;
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
@@ -32,8 +34,8 @@ import us.fellowtraveller.presentation.utils.Messages;
 public class UserModule {
     @Provides
     @UserScope
-    public RestApi provideRestApi(Retrofit retrofit) {
-        return new RestApi(retrofit.create(RetrofitApi.class));
+    public RestApi provideRestApi(Retrofit retrofit, Context context) {
+        return new RestApi(retrofit.create(RetrofitApi.class), context);
     }
 
     @Provides

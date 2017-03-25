@@ -18,7 +18,9 @@ public class ProgressActivity extends BaseActivity implements ProgressView {
                 .findFragmentByTag(ProgressDialogFragment.TAG);
         if (dialog == null) {
             dialog = ProgressDialogFragment.newInstance();
-            dialog.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
+            getSupportFragmentManager().beginTransaction()
+                    .add(dialog, ProgressDialogFragment.TAG)
+                    .commitAllowingStateLoss();
         }
     }
 
@@ -27,7 +29,9 @@ public class ProgressActivity extends BaseActivity implements ProgressView {
         DialogFragment dialog = (DialogFragment) getSupportFragmentManager()
                 .findFragmentByTag(ProgressDialogFragment.TAG);
         if (dialog != null) {
-            dialog.dismiss();
+            getSupportFragmentManager().beginTransaction()
+                    .remove(dialog)
+                    .commitAllowingStateLoss();
         }
     }
 
