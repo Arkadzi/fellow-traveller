@@ -29,6 +29,7 @@ import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.adapters.ProfileAdapter;
+import us.fellowtraveller.presentation.dialogs.MenuDialogFragment;
 import us.fellowtraveller.presentation.presenter.ProfilePresenter;
 import us.fellowtraveller.presentation.utils.ActivityUtils;
 import us.fellowtraveller.presentation.utils.ResourceUtils;
@@ -39,7 +40,7 @@ import us.fellowtraveller.presentation.view.ProfileView;
  * Created by arkadii on 3/18/17.
  */
 
-public class ProfileActivity extends ProgressActivity implements ProfileView {
+public class ProfileActivity extends ProgressActivity implements ProfileView, MenuDialogFragment.OnMenuClickListener<Car> {
     public static final String ARG_USER = "user";
     public static final int REQUEST_CODE_EDIT_PROFILE = 111;
     private static final int REQUEST_CODE_ADD_CAR = 112;
@@ -151,6 +152,12 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
         btnRetry.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onCarDeleted(Car response) {
+        user.getCars().remove(response);
+        adapter.notifyDataSetChanged();
+    }
+
     private User fetchUser(@Nullable Bundle savedInstanceState) {
         User user = ActivityUtils.restore(savedInstanceState, ARG_USER);
         if (user == null) {
@@ -170,6 +177,9 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
         layoutManager = new LinearLayoutManager(this);
         rvProfile.setLayoutManager(layoutManager);
         adapter = new ProfileAdapter(this, isAccountUser, view -> ScreenNavigator.startAddCarScreen(ProfileActivity.this, REQUEST_CODE_ADD_CAR));
+        adapter.setOnCarClickListener(car ->
+                MenuDialogFragment.newInstance(new String[]{getString(R.string.action_delete)}, car)
+                        .show(getSupportFragmentManager(), MenuDialogFragment.TAG));
         rvProfile.setAdapter(adapter);
         btnRetry.setOnClickListener(view -> presenter.onUserRequested(this.user.getId()));
         fabEditProfile.setVisibility(isAccountUser ? View.VISIBLE : View.GONE);
@@ -178,6 +188,8 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
             ViewCompat.setElevation(appBarLayout1, totalScrollRange > 0 && verticalOffset == -totalScrollRange ? appBarElevation : 0);
         });
     }
+
+
 
     public void updateScrollFlags() {
         rvProfile.post(() -> {
@@ -191,5 +203,10 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
             rvProfile.setOverScrollMode(isListFullyVisible ? RecyclerView.OVER_SCROLL_NEVER : RecyclerView.OVER_SCROLL_IF_CONTENT_SCROLLS);
 
         });
+    }
+
+    @Override
+    public void onMenuClick(int position, Car car) {
+        presenter.onCarDelete(car);
     }
 }

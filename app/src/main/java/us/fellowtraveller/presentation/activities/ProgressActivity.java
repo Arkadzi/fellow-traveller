@@ -4,7 +4,7 @@ import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
 
 import us.fellowtraveller.presentation.dialogs.ProgressDialogFragment;
-import us.fellowtraveller.presentation.presenter.ProgressView;
+import us.fellowtraveller.presentation.view.ProgressView;
 
 /**
  * Created by arkadii on 3/7/17.

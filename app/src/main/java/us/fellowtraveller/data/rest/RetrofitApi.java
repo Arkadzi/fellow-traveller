@@ -3,6 +3,7 @@ package us.fellowtraveller.data.rest;
 import okhttp3.MultipartBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
@@ -40,4 +41,7 @@ public interface RetrofitApi {
     @Multipart
     @POST("profile/cars/{id}/photo")
     Observable<Photo> addCarPhoto(@Path("id") String id, @Part MultipartBody.Part part);
+
+    @DELETE("profile/cars/{id}")
+    Observable<Response<Void>> deleteCar(@Path("id") String id);
 }

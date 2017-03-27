@@ -58,4 +58,9 @@ public class RepositoryImpl implements Repository {
     public Observable<Car> addCar(Car car, String pictureFilePath) {
         return restApi.addCar(car, pictureFilePath);
     }
+
+    @Override
+    public Observable<Car> deleteCar(Car car) {
+        return restApi.deleteCar(car);
+    }
 }

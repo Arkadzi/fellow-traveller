@@ -1,5 +1,6 @@
 package us.fellowtraveller.presentation.presenter;
 
+import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.presentation.view.ProfileView;
 
 /**
@@ -8,4 +9,5 @@ import us.fellowtraveller.presentation.view.ProfileView;
 public interface ProfilePresenter extends Presenter<ProfileView> {
     void onUserRequested(String userId);
 
+    void onCarDelete(Car car);
 }

@@ -1,9 +1,8 @@
 package us.fellowtraveller.presentation.presenter;
 
-import android.util.Log;
-
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
 import us.fellowtraveller.presentation.utils.Messages;
+import us.fellowtraveller.presentation.view.ProgressView;
 
 
 /**

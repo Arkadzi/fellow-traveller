@@ -12,6 +12,7 @@ import us.fellowtraveller.data.rest.RetrofitApi;
 import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.usecase.AddCarUseCase;
+import us.fellowtraveller.domain.usecase.DeleteCarUseCase;
 import us.fellowtraveller.domain.usecase.EditPhotoUseCase;
 import us.fellowtraveller.domain.usecase.EditProfileUseCase;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
@@ -61,8 +62,8 @@ public class UserModule {
 
     @Provides
     @UserScope
-    ProfilePresenter provideProfilePresenter(Messages messages, UserInfoUseCase userInfoUseCase) {
-        return new ProfilePresenterImpl(messages, userInfoUseCase);
+    ProfilePresenter provideProfilePresenter(Messages messages, UserInfoUseCase userInfoUseCase, DeleteCarUseCase deleteCarUseCase) {
+        return new ProfilePresenterImpl(messages, userInfoUseCase, deleteCarUseCase);
     }
 
     @Provides

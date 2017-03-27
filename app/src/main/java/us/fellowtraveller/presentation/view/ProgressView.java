@@ -1,4 +1,4 @@
-package us.fellowtraveller.presentation.presenter;
+package us.fellowtraveller.presentation.view;
 
 import us.fellowtraveller.presentation.view.View;
 

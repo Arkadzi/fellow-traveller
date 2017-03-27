@@ -23,4 +23,6 @@ public interface Repository {
     Observable<Photo> editPhoto(String filePath);
 
     Observable<Car> addCar(Car car, String pictureFilePath);
+
+    Observable<Car> deleteCar(Car car);
 }

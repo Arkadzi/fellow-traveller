@@ -2,8 +2,10 @@ package us.fellowtraveller.presentation.presenter;
 
 import android.support.annotation.NonNull;
 
+import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
+import us.fellowtraveller.domain.usecase.DeleteCarUseCase;
 import us.fellowtraveller.domain.usecase.UserInfoUseCase;
 import us.fellowtraveller.presentation.utils.Messages;
 import us.fellowtraveller.presentation.view.ProfileView;
@@ -13,10 +15,12 @@ import us.fellowtraveller.presentation.view.ProfileView;
  */
 public class ProfilePresenterImpl extends ProgressPresenter<ProfileView> implements ProfilePresenter {
     private final UserInfoUseCase useCase;
+    private final DeleteCarUseCase deleteCarUseCase;
 
-    public ProfilePresenterImpl(Messages messages, UserInfoUseCase useCase) {
+    public ProfilePresenterImpl(Messages messages, UserInfoUseCase useCase, DeleteCarUseCase deleteCarUseCase) {
         super(messages);
         this.useCase = useCase;
+        this.deleteCarUseCase = deleteCarUseCase;
     }
 
     @Override
@@ -25,6 +29,21 @@ public class ProfilePresenterImpl extends ProgressPresenter<ProfileView> impleme
             useCase.setUserId(userId);
             useCase.execute(getSubscriber());
         }
+    }
+
+    @Override
+    public void onCarDelete(Car car) {
+        deleteCarUseCase.setCar(car);
+        deleteCarUseCase.execute(new BaseProgressSubscriber<Car>(this) {
+            @Override
+            public void onNext(Car response) {
+                super.onNext(response);
+                ProfileView view = getView();
+                if (view != null) {
+                    view.onCarDeleted(response);
+                }
+            }
+        });
     }
 
     @NonNull

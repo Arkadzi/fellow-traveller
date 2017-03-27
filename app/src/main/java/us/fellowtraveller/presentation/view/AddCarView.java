@@ -1,7 +1,6 @@
 package us.fellowtraveller.presentation.view;
 
 import us.fellowtraveller.domain.model.Car;
-import us.fellowtraveller.presentation.presenter.ProgressView;
 
 /**
  * Created by arkadii on 3/26/17.

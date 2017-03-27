@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.adapters.viewholders.AddCarHolder;
 import us.fellowtraveller.presentation.adapters.viewholders.CarViewHolder;
@@ -21,21 +22,23 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int USER_CAR = 2;
     private static final int ADD_CAR = 3;
     private final LayoutInflater layoutInflater;
-    private final boolean canAddCar;
+    private final boolean canModifyCars;
     private final View.OnClickListener addCarButtonClickListener;
+    @Nullable
+    private OnCarClickListener onCarClickListener;
     @Nullable
     private User user;
 
-    public ProfileAdapter(Context context, boolean canAddCar, View.OnClickListener addCarButtonClickListener) {
+    public ProfileAdapter(Context context, boolean canModifyCars, View.OnClickListener addCarButtonClickListener) {
         layoutInflater = LayoutInflater.from(context);
-        this.canAddCar = canAddCar;
+        this.canModifyCars = canModifyCars;
         this.addCarButtonClickListener = addCarButtonClickListener;
     }
 
     @Override
     public int getItemViewType(int position) {
         return position == 0 ? USER_PROFILE
-                : (canAddCar || !hasCars()) && position == getItemCount() - 1 ? ADD_CAR
+                : (canModifyCars || !hasCars()) && position == getItemCount() - 1 ? ADD_CAR
                 : USER_CAR;
     }
 
@@ -43,7 +46,20 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case USER_CAR:
-                return new CarViewHolder(layoutInflater, parent);
+                CarViewHolder carViewHolder = new CarViewHolder(layoutInflater, parent);
+                if (canModifyCars) {
+                    carViewHolder.itemView.setOnLongClickListener(view -> {
+                        int adapterPosition = carViewHolder.getAdapterPosition();
+                        if (user != null) {
+                            Car car = user.getCars().get(adapterPosition - 1);
+                            if (onCarClickListener != null) {
+                                onCarClickListener.onCarClick(car);
+                            }
+                        }
+                        return false;
+                    });
+                }
+                return carViewHolder;
             case USER_PROFILE:
                 return new UserProfileViewHolder(layoutInflater, parent);
             case ADD_CAR:
@@ -52,14 +68,21 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return null;
     }
 
+    public void setOnCarClickListener(@Nullable OnCarClickListener onCarClickListener) {
+        this.onCarClickListener = onCarClickListener;
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof UserProfileViewHolder) {
             ((UserProfileViewHolder) holder).bind(user);
         } else if (holder instanceof CarViewHolder) {
-            ((CarViewHolder) holder).bind(user.getCars().get(position - 1));
+            if (user != null) {
+                ((CarViewHolder) holder).bind(user.getCars().get(position - 1));
+            }
+
         } else if (holder instanceof AddCarHolder) {
-            ((AddCarHolder) holder).bind(addCarButtonClickListener, hasCars(), canAddCar);
+            ((AddCarHolder) holder).bind(addCarButtonClickListener, hasCars(), canModifyCars);
         }
     }
 
@@ -73,7 +96,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return (user != null ? user.getCars().size() + 1 + (canAddCar || !hasCars() ? 1 : 0) : 0);
+        return (user != null ? user.getCars().size() + 1 + (canModifyCars || !hasCars() ? 1 : 0) : 0);
     }
 
     private boolean hasCars() {
@@ -83,5 +106,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void setUser(@Nullable User user) {
         this.user = user;
         notifyDataSetChanged();
+    }
+
+    public interface OnCarClickListener {
+        void onCarClick(Car car);
     }
 }

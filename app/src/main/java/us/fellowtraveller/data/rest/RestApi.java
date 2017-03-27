@@ -133,4 +133,8 @@ public class RestApi {
             }
         };
     }
+
+    public Observable<Car> deleteCar(Car car) {
+        return api.deleteCar(car.getId()).map(response -> car);
+    }
 }
