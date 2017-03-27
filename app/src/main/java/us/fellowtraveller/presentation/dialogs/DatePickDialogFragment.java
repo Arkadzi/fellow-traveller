@@ -35,7 +35,7 @@ public class DatePickDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.date_picker, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_date_picker, null);
         datePicker = (DatePicker) view.findViewById(R.id.date_picker);
         Calendar instance = Calendar.getInstance();
         long timeMillis = getArguments().getLong(ARG_DATE);
@@ -48,9 +48,7 @@ public class DatePickDialogFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setTitle(R.string.hint_choose_date)
-                .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> {
-                    onDatePicked();
-                })
+                .setPositiveButton(R.string.action_ok, (dialogInterface, i) -> onDatePicked())
                 .setNegativeButton(R.string.action_cancel, null)
                 .create();
     }

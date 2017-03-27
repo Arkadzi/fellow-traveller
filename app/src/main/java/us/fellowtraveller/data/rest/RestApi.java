@@ -1,6 +1,7 @@
 package us.fellowtraveller.data.rest;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +13,9 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
-import rx.Subscriber;
 import rx.exceptions.Exceptions;
+import rx.functions.Func1;
+import rx.functions.Func2;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
@@ -86,30 +88,49 @@ public class RestApi {
     }
 
     public Observable<Photo> editPhoto(String filePath) {
-        return Observable.create(new Observable.OnSubscribe<MultipartBody.Part>() {
-            @Override
-            public void call(Subscriber<? super MultipartBody.Part> subscriber) {
-                File tmpFile;
-                try {
-                    double max = Math.min(500, 0.8 * Math.sqrt(Runtime.getRuntime().freeMemory() / 4));
-                    tmpFile = FilesUtils.saveTempFile(context, filePath, (int) max);
-                    RequestBody requestFile =
-                            RequestBody.create(MediaType.parse("multipart/form-data"), tmpFile);
-                    MultipartBody.Part part = MultipartBody.Part.createFormData("file", tmpFile.getName(), requestFile);
-                    subscriber.onNext(part);
-                    FilesUtils.deleteFile(tmpFile);
-                    subscriber.onCompleted();
-                } catch (IOException e) {
-                    subscriber.onError(new Throwable("file loading error"));
-                }
-            }
-        }).flatMap(part -> api.editPhoto(part));
-//        return Observable.just(new Photo("https://st.kp.yandex.net/images/actor_iphone/iphone360_1514.jpg")).delay(2, TimeUnit.SECONDS);
+        return Observable.create(createMultipart(filePath)).flatMap(part -> api.editPhoto(part));
     }
 
     public Observable<AccountUser> editProfile(User user) {
-
-//        Observable.just(new AccountUser("id", "asdasd", user.getFirstName(), user.getLastName(), user.getEmail(), user.getGender()));
         return api.editProfile(user);
+    }
+
+    public Observable<Car> addCar(Car car, String filePath) {
+        if (filePath != null) {
+            return api.addCar(car).flatMap(new Func1<Car, Observable<Photo>>() {
+                @Override
+                public Observable<Photo> call(Car car) {
+                    return addCarPhoto(car, filePath);
+                }
+            }, (newCar, photo) -> {
+                newCar.setImageUrl(photo.getUrl());
+                return newCar;
+            });
+        } else {
+            return api.addCar(car);
+        }
+    }
+
+    public Observable<Photo> addCarPhoto(Car car, String filePath) {
+        return Observable.create(createMultipart(filePath)).flatMap(part -> api.addCarPhoto(car.getId(), part));
+    }
+
+    @NonNull
+    private Observable.OnSubscribe<MultipartBody.Part> createMultipart(final String filePath) {
+        return subscriber -> {
+            File tmpFile;
+            try {
+                double max = Math.min(500, 0.8 * Math.sqrt(Runtime.getRuntime().freeMemory() / 4));
+                tmpFile = FilesUtils.saveTempFile(context, filePath, (int) max);
+                RequestBody requestFile =
+                        RequestBody.create(MediaType.parse("multipart/form-data"), tmpFile);
+                MultipartBody.Part part = MultipartBody.Part.createFormData("file", tmpFile.getName(), requestFile);
+                subscriber.onNext(part);
+                FilesUtils.deleteFile(tmpFile);
+                subscriber.onCompleted();
+            } catch (IOException e) {
+                subscriber.onError(new Throwable("file loading error"));
+            }
+        };
     }
 }

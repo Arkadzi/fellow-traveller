@@ -11,11 +11,14 @@ import us.fellowtraveller.data.rest.RestApi;
 import us.fellowtraveller.data.rest.RetrofitApi;
 import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Account;
+import us.fellowtraveller.domain.usecase.AddCarUseCase;
 import us.fellowtraveller.domain.usecase.EditPhotoUseCase;
 import us.fellowtraveller.domain.usecase.EditProfileUseCase;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
 import us.fellowtraveller.domain.usecase.SignUpUseCase;
 import us.fellowtraveller.domain.usecase.UserInfoUseCase;
+import us.fellowtraveller.presentation.presenter.AddCarPresenter;
+import us.fellowtraveller.presentation.presenter.AddCarPresenterImpl;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenter;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenterImpl;
 import us.fellowtraveller.presentation.presenter.ProfilePresenter;
@@ -66,5 +69,11 @@ public class UserModule {
     @UserScope
     EditProfilePresenter provideEditProfilePresenter(Messages messages, EditProfileUseCase editProfileUseCase, EditPhotoUseCase editPhotoUseCase) {
         return new EditProfilePresenterImpl(messages, editProfileUseCase, editPhotoUseCase);
+    }
+
+    @Provides
+    @UserScope
+    AddCarPresenter provideAddCarPresenter(Messages messages, AddCarUseCase addCarUseCase) {
+        return new AddCarPresenterImpl(messages, addCarUseCase);
     }
 }

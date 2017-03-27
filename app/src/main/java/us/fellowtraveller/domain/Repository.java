@@ -2,6 +2,7 @@ package us.fellowtraveller.domain;
 
 import rx.Observable;
 import us.fellowtraveller.domain.model.AccountUser;
+import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 
@@ -20,4 +21,6 @@ public interface Repository {
     Observable<AccountUser> editProfile(User user);
 
     Observable<Photo> editPhoto(String filePath);
+
+    Observable<Car> addCar(Car car, String pictureFilePath);
 }

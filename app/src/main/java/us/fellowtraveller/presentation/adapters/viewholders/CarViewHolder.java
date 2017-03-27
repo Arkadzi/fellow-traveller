@@ -41,7 +41,7 @@ public class CarViewHolder extends RecyclerView.ViewHolder {
                 .transform(new CircleTransform())
                 .into(ivImageView);
         tvCarTitle.setText(car.getTitle());
-        tvYear.setText(String.format(yearManufactireHint, car.getYear()));
+        tvYear.setText(String.format("%s: %s",yearManufactireHint, car.getYear()));
         carRating.setRating(car.getCondition());
     }
 }

@@ -25,7 +25,7 @@
     <string name="hint_cars">Cars</string>
     <string name="action_add_car">Add car</string>
     <string name="action_retry">Retry</string>
-    <string name="hint_year_of_manufacture">Year of manufacture: %s</string>
+    <string name="hint_year_of_manufacture">Year of manufacture</string>
     <string name="hint_condition">Condition:</string>
     <string name="hint_no_cars">No cars</string>
     <string name="hint_about_me">About me</string>
@@ -37,5 +37,10 @@
     <string name="error_gallery_not_available">Gallery is not available</string>
     <string name="error_unknown">Sorry, unknown error occured</string>
     <string name="hint_edit_profile">Edit profile</string>
-    <string name="hint_photo_edited">Photo edited</string>
+    <string name="toast_photo_edited">Photo edited</string>
+    <string name="hint_new_car">Add new car</string>
+    <string name="hint_model">Model</string>
+    <string name="hint_capacity">Capacity</string>
+    <string name="error_not_a_number">Not a number</string>
+    <string name="toast_car_added">Car added</string>
 </resources>

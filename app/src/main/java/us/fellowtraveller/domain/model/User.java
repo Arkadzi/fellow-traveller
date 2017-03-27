@@ -170,4 +170,11 @@ public class User implements Serializable {
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
+    public void addCar(Car car) {
+        if (cars == null) {
+            cars = new ArrayList<>();
+        }
+        cars.add(car);
+    }
 }

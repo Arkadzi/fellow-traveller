@@ -8,8 +8,10 @@ import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import rx.Observable;
 import us.fellowtraveller.domain.model.AccountUser;
+import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 
@@ -29,7 +31,13 @@ public interface RetrofitApi {
     @POST("profile/photo")
     Observable<Photo> editPhoto(@Part MultipartBody.Part part);
 
-
     @PATCH("profile")
     Observable<AccountUser> editProfile(@Body User user);
+
+    @POST("profile/cars")
+    Observable<Car> addCar(@Body Car car);
+
+    @Multipart
+    @POST("profile/cars/{id}/photo")
+    Observable<Photo> addCarPhoto(@Path("id") String id, @Part MultipartBody.Part part);
 }

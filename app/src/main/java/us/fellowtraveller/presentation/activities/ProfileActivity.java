@@ -26,6 +26,7 @@ import us.fellowtraveller.app.Application;
 import us.fellowtraveller.data.di.UserComponent;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
+import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.adapters.ProfileAdapter;
 import us.fellowtraveller.presentation.presenter.ProfilePresenter;
@@ -41,6 +42,7 @@ import us.fellowtraveller.presentation.view.ProfileView;
 public class ProfileActivity extends ProgressActivity implements ProfileView {
     public static final String ARG_USER = "user";
     public static final int REQUEST_CODE_EDIT_PROFILE = 111;
+    private static final int REQUEST_CODE_ADD_CAR = 112;
     @Bind(R.id.iv_profile_photo)
     ImageView ivProfilePhoto;
     @Bind(R.id.rv_profile)
@@ -97,6 +99,10 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == RESULT_OK) {
             updateUser();
+        } else if (requestCode == REQUEST_CODE_ADD_CAR && resultCode == RESULT_OK) {
+            Car car = ActivityUtils.restore(data.getExtras(), AddCarActivity.EXTRA_CAR);
+            user.addCar(car);
+            adapter.setUser(user);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -163,7 +169,7 @@ public class ProfileActivity extends ProgressActivity implements ProfileView {
         fabEditProfile.setOnClickListener(view -> ScreenNavigator.startEditProfileScreen(this, REQUEST_CODE_EDIT_PROFILE));
         layoutManager = new LinearLayoutManager(this);
         rvProfile.setLayoutManager(layoutManager);
-        adapter = new ProfileAdapter(this, isAccountUser, view -> ScreenNavigator.startAddCarScreen(ProfileActivity.this));
+        adapter = new ProfileAdapter(this, isAccountUser, view -> ScreenNavigator.startAddCarScreen(ProfileActivity.this, REQUEST_CODE_ADD_CAR));
         rvProfile.setAdapter(adapter);
         btnRetry.setOnClickListener(view -> presenter.onUserRequested(this.user.getId()));
         fabEditProfile.setVisibility(isAccountUser ? View.VISIBLE : View.GONE);

@@ -5,6 +5,7 @@ import us.fellowtraveller.data.rest.RestApi;
 import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
+import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 
@@ -51,5 +52,10 @@ public class RepositoryImpl implements Repository {
             account.savePhoto(photo.getUrl());
             return photo;
         });
+    }
+
+    @Override
+    public Observable<Car> addCar(Car car, String pictureFilePath) {
+        return restApi.addCar(car, pictureFilePath);
     }
 }

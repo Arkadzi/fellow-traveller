@@ -21,6 +21,24 @@ public class FieldUtils {
         } else {
             return fieldText;
         }
+    }
 
+    public static int getInt(EditText editText) {
+        String fieldText = editText.getText().toString();
+        if (fieldText.isEmpty()) {
+            Context context = editText.getContext();
+            String string = context.getString(R.string.error_empty_field);
+            editText.setError(string);
+            throw new BadFieldDataException(editText);
+        } else {
+            try {
+                return Integer.parseInt(fieldText);
+            }catch (RuntimeException e) {
+                Context context = editText.getContext();
+                String string = context.getString(R.string.error_not_a_number);
+                editText.setError(string);
+                throw new BadFieldDataException(editText);
+            }
+        }
     }
 }

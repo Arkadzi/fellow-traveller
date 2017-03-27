@@ -23,7 +23,6 @@ import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.app.view.DateTextView;
 import us.fellowtraveller.presentation.dialogs.DatePickDialogFragment;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenter;
-import us.fellowtraveller.presentation.utils.ActivityUtils;
 import us.fellowtraveller.presentation.utils.CircleTransform;
 import us.fellowtraveller.presentation.utils.FieldUtils;
 import us.fellowtraveller.presentation.utils.ImageUtils;
@@ -128,7 +127,7 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
     @Override
     public void onPhotoEdited() {
         setResult(RESULT_OK);
-        showMessage(getString(R.string.hint_photo_edited));
+        showMessage(getString(R.string.toast_photo_edited));
         displayPicture();
     }
 

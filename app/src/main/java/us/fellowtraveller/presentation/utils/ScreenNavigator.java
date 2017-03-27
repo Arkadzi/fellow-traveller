@@ -51,8 +51,8 @@ public class ScreenNavigator {
         context.startActivity(intent);
     }
 
-    public static void startAddCarScreen(Context context) {
-        context.startActivity(new Intent(context, AddCarActivity.class));
+    public static void startAddCarScreen(Activity activity, int requestCode) {
+        activity.startActivityForResult(new Intent(activity, AddCarActivity.class), requestCode);
     }
 
     public static void startEditProfileScreen(Activity activity, int requestCode) {

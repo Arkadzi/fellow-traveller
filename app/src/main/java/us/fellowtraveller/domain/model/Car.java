@@ -23,6 +23,10 @@ public class Car implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public Car(String title, int capacity, int year, int condition) {
+        this(null, title, capacity, year, condition, null);
+    }
+
     public String getId() {
         return id;
     }
@@ -45,5 +49,9 @@ public class Car implements Serializable {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
