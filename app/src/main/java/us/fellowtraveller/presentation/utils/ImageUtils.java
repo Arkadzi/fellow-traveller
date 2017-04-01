@@ -24,13 +24,41 @@ public class ImageUtils {
     private static final String READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
     private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private static final int REQUEST_CODE_PERMISSIONS = 1010;
-    private static final int REQUEST_CODE_IMAGE = 1011;
+    private static final int REQUEST_CODE_CAMERA_PERMISSIONS = 1011;
+    private static final int REQUEST_CODE_IMAGE = 1020;
+    private static final int REQUEST_CODE_CAMERA_IMAGE = 1021;
+    public static final String CAMERA = Manifest.permission.CAMERA;
+    public static final int PERMISSION_GRANTED = PackageManager.PERMISSION_GRANTED;
+    public static final String EXTRA_CAMERA_PATH = "extra_camera_path";
+    @Nullable
+    private static String photoPath;
 
     public static void requestImage(Activity activity) {
         if (hasReadWriteStoragePermission(activity)) {
             startIntent(activity);
         } else {
             ActivityCompat.requestPermissions(activity, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSIONS);
+        }
+    }
+
+    public static void requestPhoto(Activity activity) {
+        photoPath = null;
+        if (hasCameraPermission(activity) && hasReadWriteStoragePermission(activity)) {
+            startCameraIntent(activity);
+        } else {
+            ActivityCompat.requestPermissions(activity, new String[]{CAMERA, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_CAMERA_PERMISSIONS);
+        }
+    }
+
+    private static void startCameraIntent(Activity activity) {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            Uri uri = FilesUtils.getOutputMediaFileUri();
+            photoPath = uri.getPath();
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+            activity.startActivityForResult(intent, REQUEST_CODE_CAMERA_IMAGE);
+        } else {
+            Toast.makeText(activity, R.string.error_camera_not_available, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -46,9 +74,13 @@ public class ImageUtils {
         }
     }
 
+    private static boolean hasCameraPermission(Activity activity) {
+        return ActivityCompat.checkSelfPermission(activity, CAMERA) == PERMISSION_GRANTED;
+    }
+
     private static boolean hasReadWriteStoragePermission(Activity activity) {
-        return ActivityCompat.checkSelfPermission(activity, READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(activity, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(activity, READ_EXTERNAL_STORAGE) == PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(activity, WRITE_EXTERNAL_STORAGE) == PERMISSION_GRANTED;
     }
 
     public static boolean onPermissionRequested(Activity activity, int requestCode) {
@@ -59,26 +91,43 @@ public class ImageUtils {
                 Toast.makeText(activity, R.string.warn_user_denied_storage_permission, Toast.LENGTH_SHORT).show();
             }
             return true;
+        } else if (requestCode == REQUEST_CODE_CAMERA_PERMISSIONS) {
+            if (!hasCameraPermission(activity)) {
+                Toast.makeText(activity, R.string.warn_user_denied_camera_permission, Toast.LENGTH_SHORT).show();
+            } else if (!hasReadWriteStoragePermission(activity)) {
+                Toast.makeText(activity, R.string.warn_user_denied_storage_permission, Toast.LENGTH_SHORT).show();
+            } else {
+                startCameraIntent(activity);
+            }
+            return true;
         }
         return false;
     }
 
     public static boolean onActivityResult(int requestCode) {
-        return requestCode == REQUEST_CODE_IMAGE;
+        return requestCode == REQUEST_CODE_IMAGE || requestCode == REQUEST_CODE_CAMERA_IMAGE;
     }
 
-    @Nullable
-    public static Uri fetchImageUri(Intent intent, int resultCode) {
-        if (resultCode == Activity.RESULT_OK && intent != null && intent.getData() != null) {
-            return intent.getData();
-        }
-        return null;
-    }
+//    @Nullable
+//    public static Uri fetchImageUri(Intent intent, int resultCode) {
+//        if (resultCode == Activity.RESULT_OK && intent != null && intent.getData() != null) {
+//            return intent.getData();
+//        } else if (resultCode == Activity.RESULT_OK) {
+//            if (intent != null) {
+//                Log.e("intent", String.valueOf(intent.getData()));
+//            }
+//        }
+//        return null;
+//    }
 
     @Nullable
-    public static String fetchImagePath(Context context, Intent intent, int resultCode) {
-        if (resultCode == Activity.RESULT_OK && intent != null && intent.getData() != null) {
+    public static String fetchImagePath(Context context, Intent intent, int resultCode, int requestCode) {
+        if (requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK && intent != null && intent.getData() != null) {
             return FilesUtils.getRealPathFromURI(context, intent.getData());
+        } else if (requestCode == REQUEST_CODE_CAMERA_IMAGE && resultCode == Activity.RESULT_OK && photoPath != null) {
+            String photoPath = ImageUtils.photoPath;
+            ImageUtils.photoPath = null;
+            return photoPath;
         }
         return null;
     }
@@ -105,7 +154,6 @@ public class ImageUtils {
 
     private static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
@@ -115,8 +163,6 @@ public class ImageUtils {
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
 
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
             while ((halfHeight / inSampleSize) >= reqHeight
                     && (halfWidth / inSampleSize) >= reqWidth) {
                 inSampleSize *= 2;

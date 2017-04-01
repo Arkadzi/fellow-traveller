@@ -21,6 +21,7 @@ import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.app.view.DateTextView;
+import us.fellowtraveller.presentation.dialogs.ChooseImageDialogFragment;
 import us.fellowtraveller.presentation.dialogs.DatePickDialogFragment;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenter;
 import us.fellowtraveller.presentation.utils.CircleTransform;
@@ -78,7 +79,9 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
         ButterKnife.bind(this);
         etAbout.setMinLines(3);
         AccountUser user = this.user.user();
-        ivProfilePhoto.setOnClickListener(view -> ImageUtils.requestImage(this));
+        ivProfilePhoto.setOnClickListener(view -> {
+            ChooseImageDialogFragment.newInstance().show(getSupportFragmentManager(), ChooseImageDialogFragment.TAG);
+        });
         tvBirthday.setOnClickListener(view -> DatePickDialogFragment.newInstance(tvBirthday.getDate())
                 .show(getSupportFragmentManager(), DatePickDialogFragment.TAG));
         displayPicture();
@@ -103,7 +106,7 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (ImageUtils.onActivityResult(requestCode)) {
-            String pictureUrl = ImageUtils.fetchImagePath(this, data, resultCode);
+            String pictureUrl = ImageUtils.fetchImagePath(this, data, resultCode, requestCode);
             if (pictureUrl != null) {
                 presenter.onImageEdited(pictureUrl);
             } else if (resultCode == RESULT_OK) {

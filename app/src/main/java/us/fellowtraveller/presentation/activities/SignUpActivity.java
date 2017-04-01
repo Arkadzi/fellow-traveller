@@ -56,10 +56,10 @@ public class SignUpActivity extends ProgressActivity implements SignUpView {
     }
 
     private void setPhoneNumber() {
-        etLogin.post(() -> {
+//        etLogin.post(() -> {
             TelephonyManager tMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
             etLogin.setText(tMgr.getLine1Number());
-        });
+//        });
     }
 
 

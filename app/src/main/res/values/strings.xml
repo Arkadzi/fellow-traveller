@@ -17,8 +17,8 @@
     <string name="profile">Profile</string>
     <string name="hint_rating">Rating</string>
     <string name="hint_feedback">Feedback</string>
-    <string name="hint_comments">Comments</string>
-    <string name="hint_birthday">Birthday</string>
+    <string name="hint_trips">Trips</string>
+    <string name="hint_birthday">Date of birth</string>
     <string name="hint_gender">Gender</string>
     <string name="hint_not_specified">Not specified</string>
     <string name="hint_about">About</string>
@@ -26,7 +26,7 @@
     <string name="action_add_car">Add car</string>
     <string name="action_retry">Retry</string>
     <string name="hint_year_of_manufacture">Year of manufacture</string>
-    <string name="hint_condition">Condition:</string>
+    <string name="hint_condition">Condition</string>
     <string name="hint_no_cars">No cars</string>
     <string name="hint_about_me">About me</string>
     <string name="hint_choose_date">Choose date</string>
@@ -44,4 +44,8 @@
     <string name="error_not_a_number">Not a number</string>
     <string name="toast_car_added">Car added</string>
     <string name="action_delete">Delete</string>
+    <string name="error_camera_not_available">Camera is not available</string>
+    <string name="warn_user_denied_camera_permission">You denied access to camera</string>
+    <string name="hint_gallery">Gallery</string>
+    <string name="hint_camera">Camera</string>
 </resources>

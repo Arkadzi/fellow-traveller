@@ -11,11 +11,13 @@ import java.util.Calendar;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Response;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
@@ -30,10 +32,12 @@ public class RestApi {
     public static final String BEARER = "Bearer ";
     private RetrofitApi api;
     private Context context;
+    private Account account;
 
-    public RestApi(RetrofitApi api, Context context) {
+    public RestApi(RetrofitApi api, Context context, Account account) {
         this.api = api;
         this.context = context;
+        this.account = account;
     }
 
     public Observable<AccountUser> signIn(AccountUser user) {
@@ -67,24 +71,25 @@ public class RestApi {
 
     public Observable<User> getUserInfo(String userId) {
 
-        User user = new User();
-        user.setLastName("Statham");
-        user.setEmail("jason.statham@gmail.com");
-        user.setFirstName("Jason");
-        user.setSsoId("228");
-        user.setId(userId);
-        user.setRating(4.5f);
-        user.setCommentsCount(250);
-        user.setTripCount(111);
-        Calendar instance = Calendar.getInstance();
-        instance.set(1967, 6, 26, 0, 0, 0);
-        user.setBirthday(instance.getTime().getTime());
-        user.setImageUrl("http://i.telegraph.co.uk/multimedia/archive/01691/jason-statham-460_1691091a.jpg");
-        ArrayList<Car> cars = new ArrayList<>();
-        cars.add(new Car("1", "Nissan Skyline", 3, 2000, 4, "https://s-media-cache-ak0.pinimg.com/originals/a5/40/c3/a540c37dab57c8a77b2caaf323493684.jpg"));
-        cars.add(new Car("2", "Четкая жига", 3, 1976, 2, "http://censoru.net/uploads/posts/2015-03/1426786529_000_14.jpg"));
-        user.setCars(cars);
-        return Observable.just(user)/*.delay(2, TimeUnit.SECONDS)*/;
+//        User user = new User();
+//        user.setLastName("Statham");
+//        user.setEmail("jason.statham@gmail.com");
+//        user.setFirstName("Jason");
+//        user.setSsoId("228");
+//        user.setId(userId);
+//        user.setRating(4.5f);
+//        user.setCommentsCount(250);
+//        user.setTripCount(111);
+//        Calendar instance = Calendar.getInstance();
+//        instance.set(1967, 6, 26, 0, 0, 0);
+//        user.setBirthday(instance.getTime().getTime());
+//        user.setImageUrl("http://i.telegraph.co.uk/multimedia/archive/01691/jason-statham-460_1691091a.jpg");
+//        ArrayList<Car> cars = new ArrayList<>();
+//        cars.add(new Car("1", "Nissan Skyline", 3, 2000, 4, "https://s-media-cache-ak0.pinimg.com/originals/a5/40/c3/a540c37dab57c8a77b2caaf323493684.jpg"));
+//        cars.add(new Car("2", "Четкая жига", 3, 1976, 2, "http://censoru.net/uploads/posts/2015-03/1426786529_000_14.jpg"));
+//        user.setCars(cars);
+//        return Observable.just(user)/*.delay(2, TimeUnit.SECONDS)*/;
+        return api.signIn(account.user()).map(Response::body);
     }
 
     public Observable<Photo> editPhoto(String filePath) {

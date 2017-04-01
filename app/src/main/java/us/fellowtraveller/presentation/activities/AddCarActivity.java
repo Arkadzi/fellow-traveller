@@ -23,6 +23,7 @@ import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.presentation.app.view.NumberTextView;
+import us.fellowtraveller.presentation.dialogs.ChooseImageDialogFragment;
 import us.fellowtraveller.presentation.dialogs.NumberPickerDialogFragment;
 import us.fellowtraveller.presentation.presenter.AddCarPresenter;
 import us.fellowtraveller.presentation.utils.ActivityUtils;
@@ -65,7 +66,9 @@ public class AddCarActivity extends ProgressActivity implements NumberPickerDial
         ButterKnife.bind(this);
         rbCondition.setMax(Car.MAX_RATING);
         rbCondition.setNumStars(Car.MAX_RATING);
-        ivCarPhoto.setOnClickListener(view -> ImageUtils.requestImage(this));
+        ivCarPhoto.setOnClickListener(view -> {
+            ChooseImageDialogFragment.newInstance().show(getSupportFragmentManager(), ChooseImageDialogFragment.TAG);
+        });
         tvYearManufacture.setOnClickListener(view -> NumberPickerDialogFragment.newInstance(1960, Calendar.getInstance().get(Calendar.YEAR))
                 .show(getSupportFragmentManager(), NumberPickerDialogFragment.TAG));
         if (savedInstanceState == null) {
@@ -83,7 +86,7 @@ public class AddCarActivity extends ProgressActivity implements NumberPickerDial
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (ImageUtils.onActivityResult(requestCode)) {
-            String pictureUrl = ImageUtils.fetchImagePath(this, data, resultCode);
+            String pictureUrl = ImageUtils.fetchImagePath(this, data, resultCode, requestCode);
             if (pictureUrl != null) {
                 this.pictureFilePath = pictureUrl;
             } else if (resultCode == RESULT_OK) {

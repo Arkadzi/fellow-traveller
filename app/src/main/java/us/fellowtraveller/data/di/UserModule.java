@@ -38,8 +38,8 @@ import us.fellowtraveller.presentation.utils.Messages;
 public class UserModule {
     @Provides
     @UserScope
-    public RestApi provideRestApi(Retrofit retrofit, Context context) {
-        return new RestApi(retrofit.create(RetrofitApi.class), context);
+    public RestApi provideRestApi(Retrofit retrofit, Context context, Account account) {
+        return new RestApi(retrofit.create(RetrofitApi.class), context, account);
     }
 
     @Provides

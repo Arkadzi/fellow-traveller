@@ -3,11 +3,14 @@ package us.fellowtraveller.presentation.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.EditText;
 
 import javax.inject.Inject;
@@ -33,9 +36,11 @@ public class SignInActivity extends ProgressActivity implements SignInView {
     EditText etPassword;
     @Inject
     SignInPresenter presenter;
+    public static final String main_data[] = {
+            "data1", "is_primary", "data3", "data2", "data1", "is_primary", "photo_uri", "mimetype"
+    };
 
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +67,10 @@ public class SignInActivity extends ProgressActivity implements SignInView {
     }
 
     private void setPhoneNumber() {
-        etLogin.post(() -> {
+//        etLogin.post(() -> {
             TelephonyManager tMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
             etLogin.setText(tMgr.getLine1Number());
-        });
+//        });
     }
 
     @OnClick(R.id.btn_sign_in)

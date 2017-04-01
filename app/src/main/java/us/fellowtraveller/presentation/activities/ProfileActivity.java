@@ -143,12 +143,12 @@ public class ProfileActivity extends ProgressActivity implements ProfileView, Me
         collapsingToolbarLayout.setTitle(user.getFullName());
         Picasso.with(this).load(user.getImageUrl()).into(ivProfilePhoto);
         adapter.setUser(user);
-        updateScrollFlags();
+//        updateScrollFlags();
     }
 
     @Override
     public void renderError() {
-        coordinatorLayout.setVisibility(View.GONE);
+        coordinatorLayout.setVisibility(View.INVISIBLE);
         btnRetry.setVisibility(View.VISIBLE);
     }
 
@@ -183,10 +183,10 @@ public class ProfileActivity extends ProgressActivity implements ProfileView, Me
         rvProfile.setAdapter(adapter);
         btnRetry.setOnClickListener(view -> presenter.onUserRequested(this.user.getId()));
         fabEditProfile.setVisibility(isAccountUser ? View.VISIBLE : View.GONE);
-        appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
-            int totalScrollRange = appBarLayout1.getTotalScrollRange();
-            ViewCompat.setElevation(appBarLayout1, totalScrollRange > 0 && verticalOffset == -totalScrollRange ? appBarElevation : 0);
-        });
+//        appBarLayout.addOnOffsetChangedListener((appBarLayout1, verticalOffset) -> {
+//            int totalScrollRange = appBarLayout1.getTotalScrollRange();
+//            ViewCompat.setElevation(appBarLayout1, totalScrollRange > 0 && verticalOffset == -totalScrollRange ? appBarElevation : 0);
+//        });
     }
 
 

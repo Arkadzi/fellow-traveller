@@ -21,6 +21,7 @@ public class CarViewHolder extends RecyclerView.ViewHolder {
     private final ImageView ivImageView;
     private final TextView tvCarTitle;
     private final TextView tvYear;
+    private final TextView tvStateHint;
     private final RatingBar carRating;
     private final String yearManufactireHint;
 
@@ -30,8 +31,10 @@ public class CarViewHolder extends RecyclerView.ViewHolder {
         tvYear = (TextView) itemView.findViewById(R.id.tv_year);
         yearManufactireHint = tvYear.getContext().getString(R.string.hint_year_of_manufacture);
         tvCarTitle = (TextView) itemView.findViewById(R.id.tv_car_title);
+        tvStateHint = (TextView) itemView.findViewById(R.id.tv_state_hint);
         carRating = (RatingBar) itemView.findViewById(R.id.car_rating);
         carRating.setMax(Car.MAX_RATING);
+        tvStateHint.setText(tvYear.getContext().getString(R.string.hint_condition) + ":");
         carRating.setNumStars(Car.MAX_RATING);
     }
 
