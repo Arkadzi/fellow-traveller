@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="us.fellowtraveller.presentation.activities.CreateRouteActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_from"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_from"
+        android:padding="@dimen/double_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="216dp" />
+
+
+    <TextView
+        android:id="@+id/item_to"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:gravity="center_vertical"
+        android:hint="@string/hint_to"
+        android:padding="@dimen/double_padding"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <Button
+        android:id="@+id/btn_add_point"
+        android:layout_width="match_parent"
+        android:text="@string/action_add_point"
+        android:layout_margin="@dimen/double_padding"
+        android:layout_height="wrap_content" />
+</LinearLayout>

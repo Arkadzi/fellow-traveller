@@ -45,4 +45,10 @@
     <string name="warn_user_denied_camera_permission">Вы не предоставили доступ к камере</string>
     <string name="hint_gallery">Галерея</string>
     <string name="hint_camera">Камера</string>
+    <string name="title_driver">Водитель</string>
+    <string name="title_traveller">Попутчик</string>
+    <string name="hint_from">From</string>
+    <string name="hint_to">To</string>
+    <string name="action_add_point">Add point</string>
+    <string name="warn_user_denied_location_permission" >Вы не предоставили доступ к Вашему местонахождению</string>
 </resources>

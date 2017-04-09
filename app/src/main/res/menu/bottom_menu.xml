@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_traveller"
+        android:icon="@drawable/ic_business_center_black_24dp"
+        android:title="@string/title_traveller" />
+
+    <item
+        android:id="@+id/navigation_driver"
+        android:icon="@drawable/ic_drive_eta_black_24dp"
+        android:title="@string/title_driver" />
+
+</menu>

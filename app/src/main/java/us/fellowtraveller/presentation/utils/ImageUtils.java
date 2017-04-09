@@ -1,10 +1,8 @@
 package us.fellowtraveller.presentation.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -16,19 +14,20 @@ import android.widget.Toast;
 
 import us.fellowtraveller.R;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 /**
  * Created by arkadii on 3/19/17.
  */
 public class ImageUtils {
 
-    private static final String READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
-    private static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-    private static final int REQUEST_CODE_PERMISSIONS = 1010;
+    private static final int REQUEST_CODE_STORAGE_PERMISSIONS = 1010;
     private static final int REQUEST_CODE_CAMERA_PERMISSIONS = 1011;
     private static final int REQUEST_CODE_IMAGE = 1020;
     private static final int REQUEST_CODE_CAMERA_IMAGE = 1021;
-    public static final String CAMERA = Manifest.permission.CAMERA;
-    public static final int PERMISSION_GRANTED = PackageManager.PERMISSION_GRANTED;
     public static final String EXTRA_CAMERA_PATH = "extra_camera_path";
     @Nullable
     private static String photoPath;
@@ -37,7 +36,7 @@ public class ImageUtils {
         if (hasReadWriteStoragePermission(activity)) {
             startIntent(activity);
         } else {
-            ActivityCompat.requestPermissions(activity, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSIONS);
+            ActivityCompat.requestPermissions(activity, new String[]{READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSIONS);
         }
     }
 
@@ -84,7 +83,7 @@ public class ImageUtils {
     }
 
     public static boolean onPermissionRequested(Activity activity, int requestCode) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSIONS) {
             if (hasReadWriteStoragePermission(activity)) {
                 startIntent(activity);
             } else {
