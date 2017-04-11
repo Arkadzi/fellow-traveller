@@ -15,8 +15,10 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import us.fellowtraveller.R;
@@ -61,7 +63,7 @@ public class LocationUtils {
         try {
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             activity.startActivityForResult(builder.build(activity), REQUEST_CODE_LOCATION);
-        } catch (GooglePlayServicesNotAvailableException |GooglePlayServicesRepairableException  e) {
+        } catch (GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
             Toast.makeText(activity, R.string.error_play_services, Toast.LENGTH_SHORT).show();
         }
     }
@@ -89,6 +91,40 @@ public class LocationUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static List<LatLng> decodePolyline(String encodedPath) {
+        int len = encodedPath.length();
+
+        List<LatLng> path = new ArrayList<LatLng>();
+        int index = 0;
+        int lat = 0;
+        int lng = 0;
+
+        while (index < len) {
+            int result = 1;
+            int shift = 0;
+            int b;
+            do {
+                b = encodedPath.charAt(index++) - 63 - 1;
+                result += b << shift;
+                shift += 5;
+            } while (b >= 0x1f);
+            lat += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+
+            result = 1;
+            shift = 0;
+            do {
+                b = encodedPath.charAt(index++) - 63 - 1;
+                result += b << shift;
+                shift += 5;
+            } while (b >= 0x1f);
+            lng += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+
+            path.add(new LatLng(lat * 1e-5, lng * 1e-5));
+        }
+
+        return path;
     }
 }
 

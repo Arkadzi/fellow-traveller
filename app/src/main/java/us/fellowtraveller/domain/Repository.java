@@ -1,10 +1,16 @@
 package us.fellowtraveller.domain;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
+
 import rx.Observable;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.trip.RouteResult;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -25,4 +31,6 @@ public interface Repository {
     Observable<Car> addCar(Car car, String pictureFilePath);
 
     Observable<Car> deleteCar(Car car);
+
+    Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<Place> items);
 }

@@ -4,17 +4,20 @@ import okhttp3.MultipartBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.Header;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.Streaming;
 import rx.Observable;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.trip.RouteResult;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -44,4 +47,12 @@ public interface RetrofitApi {
 
     @DELETE("profile/cars/{id}")
     Observable<Response<Void>> deleteCar(@Path("id") String id);
+
+    @GET("https://maps.googleapis.com/maps/api/directions/json")
+    Observable<RouteResult> getRoute(
+            @Query("origin") String origin,
+            @Query("destination") String destination,
+            @Query("waypoints") String waypoints,
+            @Query("key") String key
+    );
 }

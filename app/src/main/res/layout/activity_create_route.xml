@@ -18,8 +18,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxHeight="216dp" />
+        android:layout_height="wrap_content" />
 
 
     <TextView
@@ -37,4 +36,8 @@
         android:text="@string/action_add_point"
         android:layout_margin="@dimen/double_padding"
         android:layout_height="wrap_content" />
+    <FrameLayout
+        android:id="@+id/map_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

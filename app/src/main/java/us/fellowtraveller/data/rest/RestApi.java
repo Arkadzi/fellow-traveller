@@ -2,11 +2,16 @@ package us.fellowtraveller.data.rest;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -17,11 +22,13 @@ import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import us.fellowtraveller.R;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.trip.RouteResult;
 import us.fellowtraveller.presentation.utils.FilesUtils;
 
 /**
@@ -141,5 +148,19 @@ public class RestApi {
 
     public Observable<Car> deleteCar(Car car) {
         return api.deleteCar(car.getId()).map(response -> car);
+    }
+
+    public Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<Place> items) {
+        List<String> waypoints = new ArrayList<>();
+        for (Place item : items) {
+            LatLng latLng = item.getLatLng();
+            waypoints.add(String.format("via:%s,%s", latLng.latitude, latLng.longitude));
+        }
+        return api.getRoute(
+                String.format("%s,%s", origin.latitude, origin.longitude),
+                String.format("%s,%s", destination.latitude, destination.longitude),
+                waypoints.isEmpty() ? null : TextUtils.join("|", waypoints),
+                context.getString(R.string.google_maps_key)
+        );
     }
 }

@@ -3,14 +3,15 @@ package us.fellowtraveller.presentation.adapters;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import us.fellowtraveller.domain.model.trip.TripPoint;
+import com.google.android.gms.location.places.Place;
+
 import us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder;
 
 /**
  * Created by arkadius on 4/9/17.
  */
 
-public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolder> {
+public class TripPointAdapter extends ItemTouchAdapter<Place, TripPointHolder> {
     private LayoutInflater inflater;
 
     public TripPointAdapter(LayoutInflater inflater) {
@@ -25,5 +26,10 @@ public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolde
     @Override
     public void onBindViewHolder(TripPointHolder holder, int position) {
         holder.bind(getItem(position));
+    }
+
+    public void addPlace(Place place) {
+        getItems().add(place);
+        notifyItemInserted(getItemCount() - 1);
     }
 }

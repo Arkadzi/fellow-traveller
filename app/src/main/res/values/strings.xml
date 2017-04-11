@@ -56,5 +56,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="warn_user_denied_location_permission">You denied access to your location</string>
     <string name="error_play_services">Please, install or update Google Play Services</string>
+    <string name="error_unable_to_build_route">Unable to build route</string>
 
 </resources>

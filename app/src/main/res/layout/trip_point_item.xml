@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/trip_point_item_height"
+    android:layout_marginLeft="@dimen/double_padding"
+    android:layout_marginRight="@dimen/double_padding"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_point_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

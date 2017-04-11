@@ -4,6 +4,7 @@ import dagger.Subcomponent;
 import us.fellowtraveller.data.di.scope.UserScope;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.presentation.activities.AddCarActivity;
+import us.fellowtraveller.presentation.activities.CreateRouteActivity;
 import us.fellowtraveller.presentation.activities.EditProfileActivity;
 import us.fellowtraveller.presentation.activities.MainActivity;
 import us.fellowtraveller.presentation.activities.ProfileActivity;
@@ -34,6 +35,8 @@ public interface UserComponent {
         void inject(EditProfileActivity editProfileActivity);
 
         void inject(AddCarActivity addCarActivity);
+
+        void inject(CreateRouteActivity createRouteActivity);
 
         Account account();
 }
