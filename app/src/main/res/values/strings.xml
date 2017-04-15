@@ -52,10 +52,14 @@
     <string name="title_traveller">Traveller</string>
     <string name="hint_from">From</string>
     <string name="hint_to">To</string>
-    <string name="action_add_point">Add point</string>
+    <string name="action_add_point">Add way point</string>
     <string name="title_activity_maps">Map</string>
     <string name="warn_user_denied_location_permission">You denied access to your location</string>
     <string name="error_play_services">Please, install or update Google Play Services</string>
     <string name="error_unable_to_build_route">Unable to build route</string>
+    <string name="question_build_route">Do you want to build route?</string>
+    <string name="action_build_route">Build</string>
+    <string name="action_next">Next</string>
+    <string name="action_proceed_edit">Proceed editing</string>
 
 </resources>

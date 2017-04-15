@@ -10,9 +10,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import us.fellowtraveller.presentation.utils.LocationUtils;
@@ -22,15 +22,18 @@ import us.fellowtraveller.presentation.utils.LocationUtils;
  */
 
 public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCallback {
+    public static final String ARG_POLYLINES = "polylines";
     @Nullable
     private GoogleMap googleMap;
 
 
-    public static RouteMapFragment newInstance() {
+    public static RouteMapFragment newInstance(ArrayList<String> polylines) {
 
         Bundle args = new Bundle();
+        args.putStringArrayList(ARG_POLYLINES, polylines);
 
         RouteMapFragment fragment = new RouteMapFragment();
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,6 +47,7 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         this.googleMap.getUiSettings().setAllGesturesEnabled(false);
+        drawPolylines(getArguments().getStringArrayList(ARG_POLYLINES));
     }
 
     public void drawPolylines(List<String> polylines) {
@@ -63,12 +67,4 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
         }
     }
-
-    public void clearMap() {
-        if (googleMap != null) {
-            googleMap.clear();
-        }
-    }
-
-//    public void draw(RouteEntity)
 }

@@ -3,16 +3,17 @@ package us.fellowtraveller.presentation.activities;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -30,7 +31,7 @@ import us.fellowtraveller.domain.usecase.GetRouteUseCase;
 import us.fellowtraveller.presentation.adapters.ItemTouchAdapter;
 import us.fellowtraveller.presentation.adapters.TripPointAdapter;
 import us.fellowtraveller.presentation.adapters.view_handlers.SimpleItemTouchHelperCallback;
-import us.fellowtraveller.presentation.fragments.RouteMapFragment;
+import us.fellowtraveller.presentation.dialogs.MapDialog;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 import us.fellowtraveller.presentation.utils.Messages;
 
@@ -38,7 +39,7 @@ import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHold
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.TO;
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.WAY;
 
-public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener, TripPointAdapter.OnPointClickListener {
+public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener, TripPointAdapter.OnPointClickListener, MapDialog.MapDialogListener {
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
     private TripPointAdapter adapter;
@@ -83,11 +84,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         adapter.setPointClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        if (getSupportFragmentManager().findFragmentById(R.id.map_container) == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.map_container, RouteMapFragment.newInstance())
-                    .commit();
-        }
+
 
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
@@ -126,6 +123,15 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
                 adapter.addPlace(place);
                 break;
         }
+        showSnackbar();
+    }
+
+    private void showSnackbar() {
+        if (adapter.getFrom() != null && adapter.getTo() != null) {
+            Snackbar.make(findViewById(R.id.coordinator_layout), R.string.question_build_route, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.action_build_route, v -> makeQuery())
+                    .show();
+        }
     }
 
 
@@ -138,14 +144,13 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
                 @Override
                 public void onNext(RouteResult response) {
                     super.onNext(response);
-                    RouteMapFragment mapFragment = (RouteMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_container);
+//                    RouteMapFragment mapFragment = (RouteMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_container);
                     List<RouteEntity> routes = response.routes;
                     if (!routes.isEmpty()) {
                         RouteEntity routeEntity = routes.get(0);
-                        List<String> polylines = routeEntity.getPolylines();
-                        mapFragment.drawPolylines(polylines);
+                        ArrayList<String> polylines = new ArrayList<>(routeEntity.getPolylines());
+                        MapDialog.show(getSupportFragmentManager(), CreateRouteActivity.this, polylines);
                     } else {
-                        mapFragment.clearMap();
                         showMessage(getString(R.string.error_unable_to_build_route));
                     }
                 }
@@ -173,7 +178,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         for (Place place : adapter.getItems()) {
             Log.e("place", place.getName() + " " + place.getAddress());
         }
-        makeQuery();
+        showSnackbar();
     }
 
     @Override
@@ -182,5 +187,15 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
             pointType = viewType;
             LocationUtils.requestLocation(this);
         }
+    }
+
+    @Override
+    public void onNext() {
+
+    }
+
+    @Override
+    public void onDismiss() {
+        showSnackbar();
     }
 }

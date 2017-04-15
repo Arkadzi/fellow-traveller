@@ -1,44 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/coordinator_layout"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="us.fellowtraveller.presentation.activities.CreateRouteActivity"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/item_from"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:gravity="center_vertical"
-        android:hint="@string/hint_from"
-        android:padding="@dimen/double_padding"
-        android:visibility="gone"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    tools:context="us.fellowtraveller.presentation.activities.CreateRouteActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:paddingTop="4dp"
+        android:paddingBottom="72dp"
+        android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/item_to"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:gravity="center_vertical"
-        android:hint="@string/hint_to"
-        android:padding="@dimen/double_padding"
-        android:visibility="gone"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-    <Button
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_add_point"
-        android:layout_width="match_parent"
-        android:text="@string/action_add_point"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/double_padding"
-        android:layout_height="wrap_content" />
-    <FrameLayout
-        android:id="@+id/map_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-</LinearLayout>
+        android:src="@drawable/ic_add_location_white_24dp"
+        android:text="@string/action_add_point" />
+</android.support.design.widget.CoordinatorLayout>

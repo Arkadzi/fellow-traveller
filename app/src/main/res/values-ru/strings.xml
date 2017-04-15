@@ -49,6 +49,10 @@
     <string name="title_traveller">Попутчик</string>
     <string name="hint_from">From</string>
     <string name="hint_to">To</string>
-    <string name="action_add_point">Add point</string>
+    <string name="action_add_point">Добавить промежуточную точку</string>
     <string name="warn_user_denied_location_permission" >Вы не предоставили доступ к Вашему местонахождению</string>
+    <string name="question_build_route">Вы хотите построить маршрут?</string>
+    <string name="action_build_route">Построить</string>
+    <string name="action_next">Далее</string>
+    <string name="action_proceed_edit">Продолжить редактирование</string>
 </resources>
