@@ -13,13 +13,13 @@
         android:gravity="center_vertical"
         android:hint="@string/hint_from"
         android:padding="@dimen/double_padding"
+        android:visibility="gone"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
     <TextView
         android:id="@+id/item_to"
@@ -28,6 +28,7 @@
         android:gravity="center_vertical"
         android:hint="@string/hint_to"
         android:padding="@dimen/double_padding"
+        android:visibility="gone"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Button

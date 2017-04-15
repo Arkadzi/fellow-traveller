@@ -3,6 +3,8 @@ package us.fellowtraveller.presentation.adapters;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
+import com.google.android.gms.location.places.Place;
+
 import java.util.ArrayList;
 import java.util.List;
 

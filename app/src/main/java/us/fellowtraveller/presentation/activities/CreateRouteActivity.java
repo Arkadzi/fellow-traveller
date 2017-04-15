@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
@@ -34,21 +34,25 @@ import us.fellowtraveller.presentation.fragments.RouteMapFragment;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 import us.fellowtraveller.presentation.utils.Messages;
 
-public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener {
+import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.FROM;
+import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.TO;
+import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.WAY;
+
+public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener, TripPointAdapter.OnPointClickListener {
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
-    @Bind(R.id.item_from)
-    TextView itemFrom;
-    @Bind(R.id.item_to)
-    TextView itemTo;
+//    @Bind(R.id.item_from)
+//    TextView itemFrom;
+//    @Bind(R.id.item_to)
+//    TextView itemTo;
     private TripPointAdapter adapter;
-    private int pressedPointViewId;
+    private int pointType;
     @Inject
     GetRouteUseCase getRouteUseCase;
     @Inject
     Messages messages;
-    private Place placeFrom;
-    private Place placeTo;
+//    private Place placeFrom;
+//    private Place placeTo;
     private SimpleSubscriberListener routeListener = new SimpleSubscriberListener() {
         @Override
         public void onStartLoading() {
@@ -84,6 +88,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         pointItemHeight = getResources().getDimension(R.dimen.trip_point_item_height);
         adapter = new TripPointAdapter(getLayoutInflater());
         adapter.setOnItemInteractListener(this);
+        adapter.setPointClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         if (getSupportFragmentManager().findFragmentById(R.id.map_container) == null) {
@@ -118,16 +123,14 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     }
 
     private void updatePlace(Place place) {
-        switch (pressedPointViewId) {
-            case R.id.item_from:
-                placeFrom = place;
-                itemFrom.setText(place.getAddress());
+        switch (pointType) {
+            case FROM:
+                adapter.setFrom(place);
                 break;
-            case R.id.item_to:
-                placeTo = place;
-                itemTo.setText(place.getAddress());
+            case TO:
+                adapter.setTo(place);
                 break;
-            case R.id.btn_add_point:
+            case WAY:
                 adapter.addPlace(place);
                 break;
         }
@@ -136,17 +139,19 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     }
 
     private void updateListHeight() {
-        int count = adapter.getItemCount();
-        if (count > 3) count = 3;
-
-        ViewGroup.LayoutParams params=recyclerView.getLayoutParams();
-        params.height=(int) (pointItemHeight * count);
-        recyclerView.setLayoutParams(params);
+//        int count = adapter.getItemCount();
+//        if (count > 3) count = 3;
+//
+//        ViewGroup.LayoutParams params=recyclerView.getLayoutParams();
+//        params.height=(int) (pointItemHeight * count);
+//        recyclerView.setLayoutParams(params);
     }
 
     private void makeQuery() {
-        if (placeFrom != null && placeTo != null) {
-            getRouteUseCase.setCoords(placeFrom.getLatLng(), placeTo.getLatLng(), adapter.getItems());
+        Place from = adapter.getFrom();
+        Place to = adapter.getTo();
+        if (from != null && to != null) {
+            getRouteUseCase.setCoords(from.getLatLng(), to.getLatLng(), adapter.getWayPoints());
             getRouteUseCase.execute(new BaseProgressSubscriber<RouteResult>(routeListener) {
                 @Override
                 public void onNext(RouteResult response) {
@@ -166,9 +171,9 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         }
     }
 
-    @OnClick({R.id.item_from, R.id.item_to, R.id.btn_add_point})
+    @OnClick(R.id.btn_add_point)
     void onClick(View view) {
-        pressedPointViewId = view.getId();
+        pointType = WAY;
         LocationUtils.requestLocation(this);
     }
 
@@ -184,6 +189,17 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     @Override
     public void onItemInteract() {
         updateListHeight();
+        for (Place place : adapter.getItems()) {
+            Log.e("place", place.getName() + " " + place.getAddress());
+        }
         makeQuery();
+    }
+
+    @Override
+    public void onClick(int viewType) {
+        if (viewType != WAY) {
+            pointType = viewType;
+            LocationUtils.requestLocation(this);
+        }
     }
 }

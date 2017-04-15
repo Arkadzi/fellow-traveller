@@ -1,14 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/trip_point_item_height"
-    android:layout_marginLeft="@dimen/double_padding"
-    android:layout_marginRight="@dimen/double_padding"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/double_padding"
+    android:paddingRight="@dimen/double_padding">
+
+    <View
+        android:id="@+id/from_point"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/point_marker_from" />
+
+    <View
+        android:id="@+id/to_point"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/point_marker_from" />
+
+    <View
+        android:id="@+id/way_point"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/point_marker_way" />
 
     <TextView
         android:id="@+id/tv_point_address"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/from_point"
+        android:maxLines="2"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textColor="?android:attr/textColorPrimary" />
+</RelativeLayout>
