@@ -41,18 +41,12 @@ import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHold
 public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener, TripPointAdapter.OnPointClickListener {
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
-//    @Bind(R.id.item_from)
-//    TextView itemFrom;
-//    @Bind(R.id.item_to)
-//    TextView itemTo;
     private TripPointAdapter adapter;
     private int pointType;
     @Inject
     GetRouteUseCase getRouteUseCase;
     @Inject
     Messages messages;
-//    private Place placeFrom;
-//    private Place placeTo;
     private SimpleSubscriberListener routeListener = new SimpleSubscriberListener() {
         @Override
         public void onStartLoading() {
@@ -73,7 +67,6 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
             showMessage(messages.getError(t));
         }
     };
-    private float pointItemHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +78,6 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
 
     private void initViews() {
         ButterKnife.bind(this);
-        pointItemHeight = getResources().getDimension(R.dimen.trip_point_item_height);
         adapter = new TripPointAdapter(getLayoutInflater());
         adapter.setOnItemInteractListener(this);
         adapter.setPointClickListener(this);
@@ -134,18 +126,8 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
                 adapter.addPlace(place);
                 break;
         }
-        updateListHeight();
-        makeQuery();
     }
 
-    private void updateListHeight() {
-//        int count = adapter.getItemCount();
-//        if (count > 3) count = 3;
-//
-//        ViewGroup.LayoutParams params=recyclerView.getLayoutParams();
-//        params.height=(int) (pointItemHeight * count);
-//        recyclerView.setLayoutParams(params);
-    }
 
     private void makeQuery() {
         Place from = adapter.getFrom();
@@ -188,7 +170,6 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
 
     @Override
     public void onItemInteract() {
-        updateListHeight();
         for (Place place : adapter.getItems()) {
             Log.e("place", place.getName() + " " + place.getAddress());
         }

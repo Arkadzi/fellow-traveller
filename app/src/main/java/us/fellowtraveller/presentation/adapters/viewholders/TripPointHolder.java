@@ -28,8 +28,14 @@ public class TripPointHolder extends MovableViewHolder {
         itemView.findViewById(R.id.from_point).setVisibility(viewType == FROM ? View.VISIBLE : View.INVISIBLE);
         itemView.findViewById(R.id.to_point).setVisibility(viewType == TO ? View.VISIBLE : View.INVISIBLE);
         itemView.findViewById(R.id.way_point).setVisibility(viewType == WAY ? View.VISIBLE : View.INVISIBLE);
-        switch (type) {
 
+        switch (type) {
+            case FROM:
+                tvAddress.setHint(R.string.hint_from);
+                break;
+            case TO:
+                tvAddress.setHint(R.string.hint_to);
+                break;
         }
     }
 
