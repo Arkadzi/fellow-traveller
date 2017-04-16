@@ -71,7 +71,7 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<Place> items) {
+    public Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<LatLng> items) {
         return restApi.getRoute(origin, destination, items);
     }
 }

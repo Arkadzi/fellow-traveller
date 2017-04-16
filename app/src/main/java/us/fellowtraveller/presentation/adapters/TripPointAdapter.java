@@ -9,6 +9,7 @@ import com.google.android.gms.location.places.Place;
 import java.util.Collections;
 import java.util.List;
 
+import us.fellowtraveller.domain.model.trip.TripPoint;
 import us.fellowtraveller.presentation.adapters.items.EmptyPlace;
 import us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder;
 
@@ -20,10 +21,10 @@ import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHold
  * Created by arkadius on 4/9/17.
  */
 
-public class TripPointAdapter extends ItemTouchAdapter<Place, TripPointHolder> {
+public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolder> {
     private LayoutInflater inflater;
-    private Place from;
-    private Place to;
+    private TripPoint from;
+    private TripPoint to;
     private OnPointClickListener pointClickListener;
 
     public TripPointAdapter(LayoutInflater inflater) {
@@ -61,28 +62,28 @@ public class TripPointAdapter extends ItemTouchAdapter<Place, TripPointHolder> {
         }
     }
 
-    public void addPlace(Place place) {
+    public void addPlace(TripPoint place) {
         getItems().add(getItemCount() - 1,  place);
         notifyItemInserted(getItemCount() - 2);
     }
 
-    public void setFrom(@Nullable Place from) {
+    public void setFrom(@Nullable TripPoint from) {
         this.from = from;
         notifyItemChanged(0);
     }
 
-    public void setTo(@Nullable Place to) {
+    public void setTo(@Nullable TripPoint to) {
         this.to = to;
         notifyItemChanged(getItemCount() - 1);
     }
 
     @Nullable
-    public Place getFrom() {
+    public TripPoint getFrom() {
         return from;
     }
 
     @Nullable
-    public Place getTo() {
+    public TripPoint getTo() {
         return to;
     }
 
@@ -90,7 +91,7 @@ public class TripPointAdapter extends ItemTouchAdapter<Place, TripPointHolder> {
         this.pointClickListener = pointClickListener;
     }
 
-    public List<Place> getWayPoints() {
+    public List<TripPoint> getWayPoints() {
         return getItems().subList(1, getItemCount() - 1);
     }
 

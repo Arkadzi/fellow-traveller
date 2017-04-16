@@ -79,10 +79,9 @@ public class EditProfileActivity extends ProgressActivity implements EditProfile
         ButterKnife.bind(this);
         etAbout.setMinLines(3);
         AccountUser user = this.user.user();
-        ivProfilePhoto.setOnClickListener(view -> {
-            ChooseImageDialogFragment.newInstance().show(getSupportFragmentManager(), ChooseImageDialogFragment.TAG);
-        });
-        tvBirthday.setOnClickListener(view -> DatePickDialogFragment.newInstance(tvBirthday.getDate())
+        ivProfilePhoto.setOnClickListener(view -> ChooseImageDialogFragment.newInstance()
+                .show(getSupportFragmentManager(), ChooseImageDialogFragment.TAG));
+        tvBirthday.setOnClickListener(view -> DatePickDialogFragment.newDateInstance()
                 .show(getSupportFragmentManager(), DatePickDialogFragment.TAG));
         displayPicture();
 

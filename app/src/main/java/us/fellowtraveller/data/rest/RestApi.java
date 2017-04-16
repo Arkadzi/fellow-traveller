@@ -150,10 +150,9 @@ public class RestApi {
         return api.deleteCar(car.getId()).map(response -> car);
     }
 
-    public Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<Place> items) {
+    public Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<LatLng> items) {
         List<String> waypoints = new ArrayList<>();
-        for (Place item : items) {
-            LatLng latLng = item.getLatLng();
+        for (LatLng latLng : items) {
             waypoints.add(String.format("via:%s,%s", latLng.latitude, latLng.longitude));
         }
         return api.getRoute(

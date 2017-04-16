@@ -32,5 +32,5 @@ public interface Repository {
 
     Observable<Car> deleteCar(Car car);
 
-    Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<Place> items);
+    Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<LatLng> items);
 }

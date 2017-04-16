@@ -1,8 +1,10 @@
 package us.fellowtraveller.presentation.activities;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +28,14 @@ import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.domain.model.trip.RouteEntity;
 import us.fellowtraveller.domain.model.trip.RouteResult;
+import us.fellowtraveller.domain.model.trip.TripPoint;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
 import us.fellowtraveller.domain.subscribers.SimpleSubscriberListener;
 import us.fellowtraveller.domain.usecase.GetRouteUseCase;
 import us.fellowtraveller.presentation.adapters.ItemTouchAdapter;
 import us.fellowtraveller.presentation.adapters.TripPointAdapter;
 import us.fellowtraveller.presentation.adapters.view_handlers.SimpleItemTouchHelperCallback;
+import us.fellowtraveller.presentation.dialogs.DatePickDialogFragment;
 import us.fellowtraveller.presentation.dialogs.MapDialog;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 import us.fellowtraveller.presentation.utils.Messages;
@@ -39,11 +44,15 @@ import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHold
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.TO;
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.WAY;
 
-public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener, TripPointAdapter.OnPointClickListener, MapDialog.MapDialogListener {
+public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener,
+        TripPointAdapter.OnPointClickListener, MapDialog.MapDialogListener, DatePickDialogFragment.DatePickerListener {
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
+    @Bind(R.id.btn_add_point)
+    FloatingActionButton fabAddPoint;
     private TripPointAdapter adapter;
     private int pointType;
+    private Place place;
     @Inject
     GetRouteUseCase getRouteUseCase;
     @Inject
@@ -66,6 +75,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
             super.onError(t);
             hideProgress();
             showMessage(messages.getError(t));
+            showSnackbar();
         }
     };
 
@@ -85,7 +95,6 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
@@ -97,8 +106,11 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         if (LocationUtils.onActivityResult(requestCode)) {
             Place place = LocationUtils.fetchPlace(this, resultCode, data);
             if (place != null) {
-                updatePlace(place);
+                this.place = place;
+                DatePickDialogFragment.showDateTime(getSupportFragmentManager());
+//                updatePlace(place);
             } else if (resultCode == RESULT_OK) {
+                place = null;
                 Toast.makeText(this, R.string.error_unknown, Toast.LENGTH_SHORT).show();
             }
         }
@@ -111,16 +123,17 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private void updatePlace(Place place) {
+    private void updatePlace(Place place, long date) {
+        TripPoint tripPoint = new TripPoint(place.getAddress().toString(), place.getName().toString(), place.getLatLng(), date);
         switch (pointType) {
             case FROM:
-                adapter.setFrom(place);
+                adapter.setFrom(tripPoint);
                 break;
             case TO:
-                adapter.setTo(place);
+                adapter.setTo(tripPoint);
                 break;
             case WAY:
-                adapter.addPlace(place);
+                adapter.addPlace(tripPoint);
                 break;
         }
         showSnackbar();
@@ -136,15 +149,19 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
 
 
     private void makeQuery() {
-        Place from = adapter.getFrom();
-        Place to = adapter.getTo();
+        TripPoint from = adapter.getFrom();
+        TripPoint to = adapter.getTo();
         if (from != null && to != null) {
-            getRouteUseCase.setCoords(from.getLatLng(), to.getLatLng(), adapter.getWayPoints());
+            List<TripPoint> wayPoints = adapter.getWayPoints();
+            List<LatLng> latLngs = new ArrayList<>();
+            for (TripPoint wayPoint : wayPoints) {
+                latLngs.add(wayPoint.getLatLng());
+            }
+            getRouteUseCase.setCoords(from.getLatLng(), to.getLatLng(), latLngs);
             getRouteUseCase.execute(new BaseProgressSubscriber<RouteResult>(routeListener) {
                 @Override
                 public void onNext(RouteResult response) {
                     super.onNext(response);
-//                    RouteMapFragment mapFragment = (RouteMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_container);
                     List<RouteEntity> routes = response.routes;
                     if (!routes.isEmpty()) {
                         RouteEntity routeEntity = routes.get(0);
@@ -175,10 +192,10 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
 
     @Override
     public void onItemInteract() {
-        for (Place place : adapter.getItems()) {
+        for (TripPoint place : adapter.getItems()) {
             Log.e("place", place.getName() + " " + place.getAddress());
         }
-        showSnackbar();
+//        showSnackbar();
     }
 
     @Override
@@ -197,5 +214,10 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     @Override
     public void onDismiss() {
         showSnackbar();
+    }
+
+    @Override
+    public void onDatePicked(long date) {
+        updatePlace(place, date);
     }
 }

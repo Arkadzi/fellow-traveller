@@ -23,7 +23,7 @@ public class GetRouteUseCase extends UseCase<RouteResult> {
     private final Repository repository;
     private LatLng origin;
     private LatLng destination;
-    private List<Place> items;
+    private List<LatLng> items;
 
     @Inject
     public GetRouteUseCase(SubscribeOn subscribeOn, ObserveOn observeOn, Repository repository) {
@@ -31,7 +31,7 @@ public class GetRouteUseCase extends UseCase<RouteResult> {
         this.repository = repository;
     }
 
-    public void setCoords(LatLng origin, LatLng destination, List<Place> items) {
+    public void setCoords(LatLng origin, LatLng destination, List<LatLng> items) {
         this.items = items;
         stopExecution();
         this.origin = origin;
