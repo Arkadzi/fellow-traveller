@@ -1,15 +1,14 @@
 package us.fellowtraveller.presentation.adapters.viewholders;
 
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.location.places.Place;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import us.fellowtraveller.R;
 import us.fellowtraveller.domain.model.trip.TripPoint;
@@ -25,17 +24,20 @@ public class TripPointHolder extends MovableViewHolder {
     private final int type;
     private final TextView tvAddress;
     private final TextView tvTime;
-    private SimpleDateFormat format = new SimpleDateFormat("d MMM yyyy, H:mm");
+    private final String hintTrip;
+    private SimpleDateFormat formatFirst = new SimpleDateFormat("d MMM yyyy, H:mm");
+    private SimpleDateFormat formatTime = new SimpleDateFormat("H:mm");
 
-    public TripPointHolder(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
-        super(inflater.inflate(R.layout.trip_point_item, viewGroup, false));
+    public TripPointHolder(Context context, ViewGroup viewGroup, int viewType) {
+        super(LayoutInflater.from(context).inflate(R.layout.trip_point_item, viewGroup, false));
         type = viewType;
+        formatTime.setTimeZone(TimeZone.getTimeZone("UTC"));
         tvAddress = ((TextView) itemView.findViewById(R.id.tv_point_address));
         tvTime = ((TextView) itemView.findViewById(R.id.tv_point_time));
         itemView.findViewById(R.id.from_point).setVisibility(viewType == FROM ? View.VISIBLE : View.INVISIBLE);
         itemView.findViewById(R.id.to_point).setVisibility(viewType == TO ? View.VISIBLE : View.INVISIBLE);
         itemView.findViewById(R.id.way_point).setVisibility(viewType == WAY ? View.VISIBLE : View.INVISIBLE);
-
+        hintTrip = context.getString(R.string.hint_reach_for);
         switch (type) {
             case FROM:
                 tvAddress.setHint(R.string.hint_from);
@@ -49,7 +51,8 @@ public class TripPointHolder extends MovableViewHolder {
     public void bind(TripPoint item) {
         if (item != null) {
             tvAddress.setText(item.toString());
-            tvTime.setText(format.format(new Date(item.getDatetime())));
+            Date date = new Date(item.getDatetime());
+            tvTime.setText(type == FROM ? formatFirst.format(date) : String.format("%s %s", hintTrip, formatTime.format(date)));
             tvTime.setVisibility(View.VISIBLE);
         } else {
             tvAddress.setText("");

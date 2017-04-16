@@ -1,5 +1,6 @@
 package us.fellowtraveller.presentation.adapters;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -26,9 +27,11 @@ public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolde
     private TripPoint from;
     private TripPoint to;
     private OnPointClickListener pointClickListener;
+    private Context context;
 
-    public TripPointAdapter(LayoutInflater inflater) {
-        this.inflater = inflater;
+    public TripPointAdapter(Context context) {
+        this.context = context;
+        this.inflater = LayoutInflater.from(context);
         getItems().add(new EmptyPlace());
         getItems().add(new EmptyPlace());
     }
@@ -46,7 +49,7 @@ public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolde
 
     @Override
     public TripPointHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        TripPointHolder tripPointHolder = new TripPointHolder(inflater, parent, viewType);
+        TripPointHolder tripPointHolder = new TripPointHolder(context, parent, viewType);
         tripPointHolder.itemView.setOnClickListener(v -> pointClickListener.onClick(viewType));
         return tripPointHolder;
     }

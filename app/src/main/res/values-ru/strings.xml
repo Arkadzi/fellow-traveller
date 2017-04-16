@@ -55,4 +55,6 @@
     <string name="action_build_route">Построить</string>
     <string name="action_next">Далее</string>
     <string name="action_proceed_edit">Продолжить редактирование</string>
+    <string name="hint_choose_time_to_get">Выберите время, за которое доберетесь</string>
+    <string name="hint_reach_for">Доберусь за:</string>
 </resources>

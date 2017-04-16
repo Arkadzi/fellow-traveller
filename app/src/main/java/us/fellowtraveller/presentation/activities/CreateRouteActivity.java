@@ -1,6 +1,5 @@
 package us.fellowtraveller.presentation.activities;
 
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -37,6 +36,7 @@ import us.fellowtraveller.presentation.adapters.TripPointAdapter;
 import us.fellowtraveller.presentation.adapters.view_handlers.SimpleItemTouchHelperCallback;
 import us.fellowtraveller.presentation.dialogs.DatePickDialogFragment;
 import us.fellowtraveller.presentation.dialogs.MapDialog;
+import us.fellowtraveller.presentation.dialogs.TimePickerDialog;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 import us.fellowtraveller.presentation.utils.Messages;
 
@@ -45,7 +45,10 @@ import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHold
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.WAY;
 
 public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener,
-        TripPointAdapter.OnPointClickListener, MapDialog.MapDialogListener, DatePickDialogFragment.DatePickerListener {
+        TripPointAdapter.OnPointClickListener, MapDialog.MapDialogListener,
+        DatePickDialogFragment.DatePickerListener, TimePickerDialog.TimePickerListener {
+    public static final int MINUTE_MILLIS = 1000 * 60;
+    public static final int HOUR_MILLIS = MINUTE_MILLIS * 60;
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
     @Bind(R.id.btn_add_point)
@@ -89,7 +92,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
 
     private void initViews() {
         ButterKnife.bind(this);
-        adapter = new TripPointAdapter(getLayoutInflater());
+        adapter = new TripPointAdapter(this);
         adapter.setOnItemInteractListener(this);
         adapter.setPointClickListener(this);
         recyclerView.setAdapter(adapter);
@@ -107,10 +110,13 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
             Place place = LocationUtils.fetchPlace(this, resultCode, data);
             if (place != null) {
                 this.place = place;
-                DatePickDialogFragment.showDateTime(getSupportFragmentManager());
-//                updatePlace(place);
+                if (pointType == FROM) {
+                    DatePickDialogFragment.showDateTime(getSupportFragmentManager());
+                } else {
+                    TimePickerDialog.show(getSupportFragmentManager());
+                }
             } else if (resultCode == RESULT_OK) {
-                place = null;
+                this.place = null;
                 Toast.makeText(this, R.string.error_unknown, Toast.LENGTH_SHORT).show();
             }
         }
@@ -123,8 +129,10 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private void updatePlace(Place place, long date) {
-        TripPoint tripPoint = new TripPoint(place.getAddress().toString(), place.getName().toString(), place.getLatLng(), date);
+
+
+    private void updatePlace(Place place, long time) {
+        TripPoint tripPoint = new TripPoint(place.getAddress().toString(), place.getName().toString(), place.getLatLng(), time);
         switch (pointType) {
             case FROM:
                 adapter.setFrom(tripPoint);
@@ -219,5 +227,10 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     @Override
     public void onDatePicked(long date) {
         updatePlace(place, date);
+    }
+
+    @Override
+    public void onTimePicked(int hour, int minute) {
+        updatePlace(place, minute * MINUTE_MILLIS + hour * HOUR_MILLIS);
     }
 }
