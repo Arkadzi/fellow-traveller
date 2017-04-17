@@ -46,7 +46,7 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        this.googleMap.getUiSettings().setAllGesturesEnabled(false);
+//        this.googleMap.getUiSettings().setAllGesturesEnabled(false);
         drawPolylines(getArguments().getStringArrayList(ARG_POLYLINES));
     }
 

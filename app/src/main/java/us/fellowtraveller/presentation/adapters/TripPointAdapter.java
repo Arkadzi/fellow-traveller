@@ -22,7 +22,7 @@ import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHold
  * Created by arkadius on 4/9/17.
  */
 
-public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolder> {
+public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolder> implements TripPointHolder.OnClearClickListener {
     private LayoutInflater inflater;
     private TripPoint from;
     private TripPoint to;
@@ -50,7 +50,13 @@ public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolde
     @Override
     public TripPointHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TripPointHolder tripPointHolder = new TripPointHolder(context, parent, viewType);
-        tripPointHolder.itemView.setOnClickListener(v -> pointClickListener.onClick(viewType));
+        tripPointHolder.itemView.setOnClickListener(v -> pointClickListener.onClick(viewType, tripPointHolder.getAdapterPosition()));
+        tripPointHolder.setOnClearClickListener(this);
+        switch (viewType) {
+            case FROM:
+
+
+        }
         return tripPointHolder;
     }
 
@@ -66,7 +72,7 @@ public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolde
     }
 
     public void addPlace(TripPoint place) {
-        getItems().add(getItemCount() - 1,  place);
+        getItems().add(getItemCount() - 1, place);
         notifyItemInserted(getItemCount() - 2);
     }
 
@@ -98,7 +104,35 @@ public class TripPointAdapter extends ItemTouchAdapter<TripPoint, TripPointHolde
         return getItems().subList(1, getItemCount() - 1);
     }
 
+    public void setPlace(TripPoint tripPoint, int tag) {
+        getItems().set(tag, tripPoint);
+        notifyItemChanged(tag);
+    }
+
+    @Override
+    public void onClick(TripPointHolder holder, int viewType) {
+        switch (viewType) {
+            case FROM:
+                from = null;
+                notifyItemChanged(0);
+                break;
+            case TO:
+                to = null;
+                notifyItemChanged(getItemCount() - 1);
+                break;
+            case WAY:
+                int index = holder.getAdapterPosition();
+                getItems().remove(index);
+                notifyItemRemoved(index);
+                break;
+        }
+        if (onItemInteractListener != null) {
+            onItemInteractListener.onItemInteract();
+        }
+
+    }
+
     public interface OnPointClickListener {
-        void onClick(int viewType);
+        void onClick(int viewType, int position);
     }
 }

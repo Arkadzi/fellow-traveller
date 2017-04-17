@@ -16,7 +16,7 @@ public abstract class ItemTouchAdapter<D, V extends RecyclerView.ViewHolder> ext
 
     private final List<D> items = new ArrayList<>();
     @Nullable
-    private OnItemInteractListener onItemInteractListener;
+    protected OnItemInteractListener onItemInteractListener;
 
     public void onItemDismiss(int position) {
         items.remove(position);

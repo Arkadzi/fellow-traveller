@@ -55,7 +55,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     FloatingActionButton fabAddPoint;
     private TripPointAdapter adapter;
     private int pointType;
-    private Place place;
+    private TripPoint place;
     @Inject
     GetRouteUseCase getRouteUseCase;
     @Inject
@@ -78,9 +78,10 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
             super.onError(t);
             hideProgress();
             showMessage(messages.getError(t));
-            showSnackbar();
+            updateSnackbar();
         }
     };
+    private Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +98,8 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         adapter.setPointClickListener(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), R.string.question_build_route, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.action_build_route, v -> makeQuery());
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
@@ -109,11 +111,11 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         if (LocationUtils.onActivityResult(requestCode)) {
             Place place = LocationUtils.fetchPlace(this, resultCode, data);
             if (place != null) {
-                this.place = place;
+                this.place = new TripPoint(place.getAddress().toString(), place.getName().toString(), place.getLatLng(), 0);
                 if (pointType == FROM) {
                     DatePickDialogFragment.showDateTime(getSupportFragmentManager());
                 } else {
-                    TimePickerDialog.show(getSupportFragmentManager());
+                    TimePickerDialog.show(getSupportFragmentManager(), 0);
                 }
             } else if (resultCode == RESULT_OK) {
                 this.place = null;
@@ -130,9 +132,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     }
 
 
-
-    private void updatePlace(Place place, long time) {
-        TripPoint tripPoint = new TripPoint(place.getAddress().toString(), place.getName().toString(), place.getLatLng(), time);
+    private void updatePlace(TripPoint tripPoint, int tag) {
         switch (pointType) {
             case FROM:
                 adapter.setFrom(tripPoint);
@@ -141,17 +141,23 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
                 adapter.setTo(tripPoint);
                 break;
             case WAY:
-                adapter.addPlace(tripPoint);
+                if (tag == 0) {
+                    adapter.addPlace(tripPoint);
+                } else {
+                    adapter.setPlace(tripPoint, tag);
+                }
                 break;
         }
-        showSnackbar();
+        updateSnackbar();
     }
 
-    private void showSnackbar() {
+    private void updateSnackbar() {
         if (adapter.getFrom() != null && adapter.getTo() != null) {
-            Snackbar.make(findViewById(R.id.coordinator_layout), R.string.question_build_route, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.action_build_route, v -> makeQuery())
-                    .show();
+            if (!snackbar.isShown()) {
+                snackbar.show();
+            }
+        } else if (snackbar.isShown()) {
+            snackbar.dismiss();
         }
     }
 
@@ -203,14 +209,24 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         for (TripPoint place : adapter.getItems()) {
             Log.e("place", place.getName() + " " + place.getAddress());
         }
-//        showSnackbar();
+        updateSnackbar();
     }
 
     @Override
-    public void onClick(int viewType) {
-        if (viewType != WAY) {
-            pointType = viewType;
+    public void onClick(int viewType, int position) {
+        pointType = viewType;
+        if ((viewType == FROM && adapter.getFrom() == null)
+                || (viewType == TO && adapter.getTo() == null)) {
             LocationUtils.requestLocation(this);
+        } else if (viewType == FROM) {
+            place = adapter.getFrom();
+            DatePickDialogFragment.showDateTime(getSupportFragmentManager());
+        } else if (viewType == TO) {
+            place = adapter.getTo();
+            TimePickerDialog.show(getSupportFragmentManager(), 0);
+        } else {
+            place = adapter.getItem(position);
+            TimePickerDialog.show(getSupportFragmentManager(), position);
         }
     }
 
@@ -221,16 +237,18 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
 
     @Override
     public void onDismiss() {
-        showSnackbar();
+        updateSnackbar();
     }
 
     @Override
     public void onDatePicked(long date) {
-        updatePlace(place, date);
+        place.setDatetime(date);
+        updatePlace(place, 0);
     }
 
     @Override
-    public void onTimePicked(int hour, int minute) {
-        updatePlace(place, minute * MINUTE_MILLIS + hour * HOUR_MILLIS);
+    public void onTimePicked(int hour, int minute, int tag) {
+        place.setDatetime(minute * MINUTE_MILLIS + hour * HOUR_MILLIS);
+        updatePlace(place, tag);
     }
 }

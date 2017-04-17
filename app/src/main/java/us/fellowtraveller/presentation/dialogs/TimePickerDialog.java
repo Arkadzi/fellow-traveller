@@ -19,20 +19,22 @@ import us.fellowtraveller.R;
 public class TimePickerDialog extends DialogFragment {
 
     public static final String TAG = "time_picker";
+    public static final String ARG_TAG = "tag";
     private NumberPicker hourPicker;
     private NumberPicker minutePicker;
 
-    public static TimePickerDialog newInstance() {
+    public static TimePickerDialog newInstance(int tag) {
 
         Bundle args = new Bundle();
+        args.putInt(ARG_TAG, tag);
         TimePickerDialog fragment = new TimePickerDialog();
         fragment.setArguments(args);
         return fragment;
     }
 
 
-    public static void show(FragmentManager fragmentManager) {
-        TimePickerDialog fragment = newInstance();
+    public static void show(FragmentManager fragmentManager, int tag) {
+        TimePickerDialog fragment = newInstance(tag);
         fragmentManager.beginTransaction()
                 .add(fragment, TAG)
                 .commitAllowingStateLoss();
@@ -63,15 +65,16 @@ public class TimePickerDialog extends DialogFragment {
     private void onNumberPicked() {
         int hour = hourPicker.getValue();
         int minute = 5 * minutePicker.getValue() + 5;
+        int tag = getArguments().getInt(ARG_TAG);
         Fragment parentFragment = getParentFragment();
         if (parentFragment != null && parentFragment instanceof TimePickerListener) {
-            ((TimePickerListener) parentFragment).onTimePicked(hour, minute);
+            ((TimePickerListener) parentFragment).onTimePicked(hour, minute, tag);
         } else if (getActivity() instanceof TimePickerListener) {
-            ((TimePickerListener) getActivity()).onTimePicked(hour, minute);
+            ((TimePickerListener) getActivity()).onTimePicked(hour, minute, tag);
         }
     }
 
     public interface TimePickerListener {
-        void onTimePicked(int hour, int minute);
+        void onTimePicked(int hour, int minute, int tag);
     }
 }
