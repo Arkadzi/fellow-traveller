@@ -4,11 +4,22 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -125,6 +136,29 @@ public class LocationUtils {
         }
 
         return path;
+    }
+
+    private static Bitmap convertViewToBitmap(View v) {
+        if (v.getMeasuredHeight() <= 0) {
+            int specWidth = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+            v.measure(specWidth, specWidth);
+            Bitmap b = Bitmap.createBitmap(v.getMeasuredWidth(), v.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(b);
+            v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+            v.draw(c);
+            return b;
+        }
+        return null;
+    }
+
+    public static Bitmap generateMarker(Context context, @DrawableRes int backgroundId, String text) {
+        ViewGroup marker = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.marker, null);
+        marker.setBackgroundResource(backgroundId);
+        ((TextView) marker.getChildAt(0)).setText(text);
+        Bitmap bitmap = convertViewToBitmap(marker);
+//        BitmapDrawable bmpDrawable = new BitmapDrawable(context.getResources(), bitmap);
+//        bmpDrawable.setBounds(0, 0, bmpDrawable.getIntrinsicWidth(), bmpDrawable.getIntrinsicHeight());
+        return bitmap;
     }
 }
 

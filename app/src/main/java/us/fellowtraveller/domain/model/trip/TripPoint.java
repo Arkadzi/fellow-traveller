@@ -4,11 +4,13 @@ import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
+
 /**
  * Created by arkadius on 4/16/17.
  */
 
-public class TripPoint {
+public class TripPoint implements Serializable {
     @Nullable
     private String address;
     @Nullable

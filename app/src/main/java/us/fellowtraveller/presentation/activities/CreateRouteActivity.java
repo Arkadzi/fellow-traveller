@@ -172,21 +172,29 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
                 latLngs.add(wayPoint.getLatLng());
             }
             getRouteUseCase.setCoords(from.getLatLng(), to.getLatLng(), latLngs);
-            getRouteUseCase.execute(new BaseProgressSubscriber<RouteResult>(routeListener) {
-                @Override
-                public void onNext(RouteResult response) {
-                    super.onNext(response);
-                    List<RouteEntity> routes = response.routes;
-                    if (!routes.isEmpty()) {
-                        RouteEntity routeEntity = routes.get(0);
-                        ArrayList<String> polylines = new ArrayList<>(routeEntity.getPolylines());
-                        MapDialog.show(getSupportFragmentManager(), CreateRouteActivity.this, polylines);
-                    } else {
-                        showMessage(getString(R.string.error_unable_to_build_route));
-                    }
-                }
-            });
+            getRouteUseCase.execute(getSubscriber());
         }
+    }
+
+    @NonNull
+    private BaseProgressSubscriber<RouteResult> getSubscriber() {
+        return new BaseProgressSubscriber<RouteResult>(routeListener) {
+            @Override
+            public void onNext(RouteResult response) {
+                super.onNext(response);
+                List<RouteEntity> routes = response.routes;
+                if (!routes.isEmpty()) {
+                    RouteEntity routeEntity = routes.get(0);
+                    ArrayList<String> polylines = new ArrayList<>(routeEntity.getPolylines());
+                    TripPoint from = adapter.getFrom();
+                    TripPoint to = adapter.getTo();
+                    ArrayList<TripPoint> tripPoints = new ArrayList<>(adapter.getWayPoints());
+                    MapDialog.show(getSupportFragmentManager(), CreateRouteActivity.this, polylines, tripPoints, from, to);
+                } else {
+                    showMessage(getString(R.string.error_unable_to_build_route));
+                }
+            }
+        };
     }
 
     @OnClick(R.id.btn_add_point)
