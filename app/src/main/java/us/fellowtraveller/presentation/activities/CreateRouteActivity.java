@@ -25,6 +25,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
+import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.RouteEntity;
 import us.fellowtraveller.domain.model.trip.RouteResult;
 import us.fellowtraveller.domain.model.trip.TripPoint;
@@ -39,6 +40,7 @@ import us.fellowtraveller.presentation.dialogs.MapDialog;
 import us.fellowtraveller.presentation.dialogs.TimePickerDialog;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 import us.fellowtraveller.presentation.utils.Messages;
+import us.fellowtraveller.presentation.utils.RouteUtils;
 
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.FROM;
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.TO;
@@ -111,7 +113,9 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         if (LocationUtils.onActivityResult(requestCode)) {
             Place place = LocationUtils.fetchPlace(this, resultCode, data);
             if (place != null) {
-                this.place = new TripPoint(place.getAddress().toString(), place.getName().toString(), place.getLatLng(), 0);
+                String address = place.getAddress() != null ? place.getAddress().toString() : "";
+                String name = place.getName() != null ? place.getName().toString() : "";
+                this.place = new TripPoint(address, name, place.getLatLng(), 0);
                 if (pointType == FROM) {
                     DatePickDialogFragment.showDateTime(getSupportFragmentManager());
                 } else {
@@ -167,32 +171,19 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         TripPoint to = adapter.getTo();
         if (from != null && to != null) {
             List<TripPoint> wayPoints = adapter.getWayPoints();
-            List<LatLng> latLngs = new ArrayList<>();
-            for (TripPoint wayPoint : wayPoints) {
-                latLngs.add(wayPoint.getLatLng());
-            }
-            getRouteUseCase.setCoords(from.getLatLng(), to.getLatLng(), latLngs);
+
+            getRouteUseCase.setCoords(from, to, wayPoints);
             getRouteUseCase.execute(getSubscriber());
         }
     }
 
     @NonNull
-    private BaseProgressSubscriber<RouteResult> getSubscriber() {
-        return new BaseProgressSubscriber<RouteResult>(routeListener) {
+    private BaseProgressSubscriber<List<Point>> getSubscriber() {
+        return new BaseProgressSubscriber<List<Point>>(routeListener) {
             @Override
-            public void onNext(RouteResult response) {
+            public void onNext(List<Point> response) {
                 super.onNext(response);
-                List<RouteEntity> routes = response.routes;
-                if (!routes.isEmpty()) {
-                    RouteEntity routeEntity = routes.get(0);
-                    ArrayList<String> polylines = new ArrayList<>(routeEntity.getPolylines());
-                    TripPoint from = adapter.getFrom();
-                    TripPoint to = adapter.getTo();
-                    ArrayList<TripPoint> tripPoints = new ArrayList<>(adapter.getWayPoints());
-                    MapDialog.show(getSupportFragmentManager(), CreateRouteActivity.this, polylines, tripPoints, from, to);
-                } else {
-                    showMessage(getString(R.string.error_unable_to_build_route));
-                }
+                MapDialog.show(getSupportFragmentManager(), CreateRouteActivity.this, response);
             }
         };
     }
@@ -239,7 +230,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     }
 
     @Override
-    public void onNext() {
+    public void onCreated() {
 
     }
 

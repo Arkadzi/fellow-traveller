@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import us.fellowtraveller.R;
+import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.TripPoint;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 
@@ -28,28 +29,22 @@ import us.fellowtraveller.presentation.utils.LocationUtils;
  */
 
 public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCallback {
-    public static final String ARG_POLYLINES = "polylines";
-    public static final String ARG_WAYPOINTS = "waypoints";
-    private static final String ARG_FROM = "from";
-    private static final String ARG_TO = "to";
+    public static final String ARG_POINTS = "points";
     @Nullable
     private GoogleMap googleMap;
 
 
-    public static RouteMapFragment newInstance(ArrayList<String> polylines, ArrayList<TripPoint> wayPoints, TripPoint from, TripPoint to) {
+    public static RouteMapFragment newInstance(ArrayList<Point> points) {
 
         Bundle args = new Bundle();
-
-        args.putStringArrayList(ARG_POLYLINES, polylines);
-        args.putSerializable(ARG_WAYPOINTS, wayPoints);
-        args.putSerializable(ARG_FROM, from);
-        args.putSerializable(ARG_TO, to);
+        args.putSerializable(ARG_POINTS, points);
 
         RouteMapFragment fragment = new RouteMapFragment();
 
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -68,34 +63,29 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
             googleMap.clear();
             LatLngBounds.Builder builder = LatLngBounds.builder();
             PolylineOptions polylineOptions = new PolylineOptions();
-            ArrayList<String> polylines = getArguments().getStringArrayList(ARG_POLYLINES);
-            for (String polyline : polylines) {
-                List<LatLng> iterable = LocationUtils.decodePolyline(polyline);
-                for (LatLng latLng : iterable) {
-                    builder.include(latLng);
+            ArrayList<Point> points = (ArrayList<Point>) getArguments().getSerializable(ARG_POINTS);
+            int index = 0;
+            for (int i = 0; i < points.size(); i++) {
+                Point point = points.get(i);
+                LatLng latLng = new LatLng(point.getLatitude(), point.getLongitude());
+                builder.include(latLng);
+                polylineOptions.add(latLng);
+                if (point.getCollection() != null) {
+                    googleMap.addMarker(getMarkerOption(point, ++index,
+                            (i > 0 && i < points.size() - 1)
+                                    ? R.drawable.point_marker_from
+                                    : R.drawable.point_marker_from1));
                 }
-                polylineOptions.addAll(iterable);
             }
             googleMap.addPolyline(polylineOptions);
-            TripPoint from = (TripPoint) getArguments().getSerializable(ARG_FROM);
-            TripPoint to = (TripPoint) getArguments().getSerializable(ARG_TO);
-            ArrayList<TripPoint> waypoints = (ArrayList<TripPoint>) getArguments().getSerializable(ARG_WAYPOINTS);
-            googleMap.addMarker(getMarkerOption(from, 1, R.drawable.point_marker_from1));
-            for (int i = 0; i < waypoints.size(); i++) {
-                googleMap.addMarker(getMarkerOption(waypoints.get(i), i + 2, R.drawable.point_marker_from));
-            }
-
-            googleMap.addMarker(getMarkerOption(to, waypoints.size() + 2, R.drawable.point_marker_from1));
-
-
             googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100));
         }
     }
 
     @NonNull
-    private MarkerOptions getMarkerOption(TripPoint point, int i, @DrawableRes int markerBackground) {
+    private MarkerOptions getMarkerOption(Point point, int i, @DrawableRes int markerBackground) {
         return new MarkerOptions()
-                .position(point.getLatLng())
+                .position(point.getPosition())
                 .icon(BitmapDescriptorFactory
                         .fromBitmap(LocationUtils
                                 .generateMarker(getActivity(), markerBackground, String.valueOf(i))));

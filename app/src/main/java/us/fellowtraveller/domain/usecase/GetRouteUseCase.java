@@ -10,7 +10,9 @@ import javax.inject.Inject;
 import rx.Observable;
 import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Car;
+import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.RouteResult;
+import us.fellowtraveller.domain.model.trip.TripPoint;
 import us.fellowtraveller.domain.schedulers.ObserveOn;
 import us.fellowtraveller.domain.schedulers.SubscribeOn;
 
@@ -18,12 +20,12 @@ import us.fellowtraveller.domain.schedulers.SubscribeOn;
  * Created by arkadius on 4/10/17.
  */
 
-public class GetRouteUseCase extends UseCase<RouteResult> {
+public class GetRouteUseCase extends UseCase<List<Point>> {
 
     private final Repository repository;
-    private LatLng origin;
-    private LatLng destination;
-    private List<LatLng> items;
+    private TripPoint origin;
+    private TripPoint destination;
+    private List<TripPoint> items;
 
     @Inject
     public GetRouteUseCase(SubscribeOn subscribeOn, ObserveOn observeOn, Repository repository) {
@@ -31,15 +33,15 @@ public class GetRouteUseCase extends UseCase<RouteResult> {
         this.repository = repository;
     }
 
-    public void setCoords(LatLng origin, LatLng destination, List<LatLng> items) {
-        this.items = items;
+    public void setCoords(TripPoint origin, TripPoint destination, List<TripPoint> items) {
         stopExecution();
+        this.items = items;
         this.origin = origin;
         this.destination = destination;
     }
 
     @Override
-    protected Observable<RouteResult> getUseCaseObservable() {
+    protected Observable<List<Point>> getUseCaseObservable() {
         return repository.getRoute(origin, destination, items);
     }
 

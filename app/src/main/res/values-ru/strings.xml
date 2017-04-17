@@ -57,4 +57,6 @@
     <string name="action_proceed_edit">Продолжить редактирование</string>
     <string name="hint_choose_time_to_get">Выберите время, за которое доберетесь</string>
     <string name="hint_reach_for">Доберусь за:</string>
+    <string name="hint_route_title">Имя маршрута</string>
+    <string name="hint_route_seats_count">Количество мест</string>
 </resources>

@@ -77,4 +77,8 @@ public class TripPoint implements Serializable {
             return String.format("(%s, %s)", latLng.latitude, latLng.longitude);
         }
     }
+
+    public TripPoint copy() {
+        return new TripPoint(address, name, latLng, datetime);
+    }
 }

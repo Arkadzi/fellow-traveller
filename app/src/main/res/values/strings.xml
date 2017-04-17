@@ -63,5 +63,7 @@
     <string name="action_proceed_edit">Proceed editing</string>
     <string name="hint_choose_time_to_get">Choose time to reach for</string>
     <string name="hint_reach_for">Reach for:</string>
+    <string name="hint_route_title">Route title</string>
+    <string name="hint_route_seats_count">Seats count</string>
 
 </resources>

@@ -1,19 +1,24 @@
 package us.fellowtraveller.data;
 
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
 import us.fellowtraveller.data.rest.RestApi;
+import us.fellowtraveller.domain.BuildRouteException;
 import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.RouteResult;
+import us.fellowtraveller.domain.model.trip.TripPoint;
+import us.fellowtraveller.presentation.utils.LocationUtils;
+import us.fellowtraveller.presentation.utils.RouteUtils;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -71,7 +76,21 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
-    public Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<LatLng> items) {
-        return restApi.getRoute(origin, destination, items);
+    public Observable<List<Point>> getRoute(TripPoint origin, TripPoint destination, List<TripPoint> wayPoints) {
+        List<LatLng> latLngs = new ArrayList<>();
+        for (TripPoint wayPoint : wayPoints) {
+            latLngs.add(wayPoint.getLatLng());
+        }
+        return restApi.getRoute(origin.getLatLng(), destination.getLatLng(), latLngs)
+                .map(routeResult -> {
+                    if (!routeResult.routes.isEmpty()) {
+                        List<LatLng> correctingPoints = LocationUtils.decodePolylines(
+                                routeResult.routes.get(0).getPolylines()
+                        );
+                        return RouteUtils.from(wayPoints, correctingPoints, origin, destination);
+                    } else {
+                        throw new BuildRouteException();
+                    }
+                });
     }
 }

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import us.fellowtraveller.R;
+import us.fellowtraveller.domain.model.trip.RouteResult;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.Activity.RESULT_OK;
@@ -159,6 +160,15 @@ public class LocationUtils {
 //        BitmapDrawable bmpDrawable = new BitmapDrawable(context.getResources(), bitmap);
 //        bmpDrawable.setBounds(0, 0, bmpDrawable.getIntrinsicWidth(), bmpDrawable.getIntrinsicHeight());
         return bitmap;
+    }
+
+    public static List<LatLng> decodePolylines(List<String> polylines) {
+        List<LatLng> result = new ArrayList<>();
+        for (String polyline : polylines) {
+            result.addAll(decodePolyline(polyline));
+        }
+        return result;
+
     }
 }
 

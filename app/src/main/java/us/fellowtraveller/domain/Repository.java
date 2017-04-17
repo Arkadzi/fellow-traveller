@@ -10,7 +10,9 @@ import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.RouteResult;
+import us.fellowtraveller.domain.model.trip.TripPoint;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -32,5 +34,5 @@ public interface Repository {
 
     Observable<Car> deleteCar(Car car);
 
-    Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<LatLng> items);
+    Observable<List<Point>> getRoute(TripPoint origin, TripPoint destination, List<TripPoint> items);
 }

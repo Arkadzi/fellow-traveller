@@ -11,6 +11,7 @@ import javax.inject.Singleton;
 
 import retrofit2.adapter.rxjava.HttpException;
 import us.fellowtraveller.R;
+import us.fellowtraveller.domain.BuildRouteException;
 
 
 /**
@@ -27,6 +28,9 @@ public class Messages {
     }
 
     public String getError(Throwable e) {
+        if (e instanceof BuildRouteException) {
+            return c.getString(R.string.error_unable_to_build_route);
+        }
         if (e instanceof SocketTimeoutException || e instanceof ConnectException) {
             return c.getString(R.string.error_check_network_connection);
         }
