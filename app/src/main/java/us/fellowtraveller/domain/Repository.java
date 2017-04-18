@@ -11,6 +11,7 @@ import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Point;
+import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.model.trip.RouteResult;
 import us.fellowtraveller.domain.model.trip.TripPoint;
 
@@ -35,4 +36,6 @@ public interface Repository {
     Observable<Car> deleteCar(Car car);
 
     Observable<List<Point>> getRoute(TripPoint origin, TripPoint destination, List<TripPoint> items);
+
+    Observable<Route> addRoute(Route route);
 }

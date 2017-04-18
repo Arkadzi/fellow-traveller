@@ -59,4 +59,5 @@
     <string name="hint_reach_for">Доберусь за:</string>
     <string name="hint_route_title">Имя маршрута</string>
     <string name="hint_route_seats_count">Количество мест</string>
+    <string name="message_route_built">Маршрут успешно создан</string>
 </resources>

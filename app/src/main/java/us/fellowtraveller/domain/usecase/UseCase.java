@@ -49,7 +49,7 @@ public abstract class UseCase<T> {
         }
     }
 
-    protected void stopExecution() {
+    public void stopExecution() {
         unsubscribe();
         observable = null;
     }

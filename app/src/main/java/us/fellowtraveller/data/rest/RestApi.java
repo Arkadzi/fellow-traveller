@@ -28,6 +28,7 @@ import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.model.trip.RouteResult;
 import us.fellowtraveller.presentation.utils.FilesUtils;
 
@@ -161,5 +162,13 @@ public class RestApi {
                 waypoints.isEmpty() ? null : TextUtils.join("|", waypoints),
                 context.getString(R.string.google_maps_key)
         );
+    }
+
+    public Observable<Route> addRoute(Route route) {
+        return api.addRoute(route).map(userResponse -> {
+            if (!userResponse.isSuccessful())
+                throw Exceptions.propagate(new HttpException(userResponse));
+            return route;
+        });
     }
 }

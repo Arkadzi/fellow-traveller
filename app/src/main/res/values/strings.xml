@@ -65,5 +65,6 @@
     <string name="hint_reach_for">Reach for:</string>
     <string name="hint_route_title">Route title</string>
     <string name="hint_route_seats_count">Seats count</string>
+    <string name="message_route_built">Route is build successfully</string>
 
 </resources>

@@ -23,25 +23,26 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
+import us.fellowtraveller.domain.model.Account;
+import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.trip.Point;
+import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.model.trip.TripPoint;
-import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
-import us.fellowtraveller.domain.subscribers.SimpleSubscriberListener;
-import us.fellowtraveller.domain.usecase.GetRouteUseCase;
 import us.fellowtraveller.presentation.adapters.ItemTouchAdapter;
 import us.fellowtraveller.presentation.adapters.TripPointAdapter;
 import us.fellowtraveller.presentation.adapters.view_handlers.SimpleItemTouchHelperCallback;
 import us.fellowtraveller.presentation.dialogs.CreateRouteDialog;
 import us.fellowtraveller.presentation.dialogs.DatePickDialogFragment;
 import us.fellowtraveller.presentation.dialogs.TimePickerDialog;
+import us.fellowtraveller.presentation.presenter.CreateRoutePresenter;
 import us.fellowtraveller.presentation.utils.LocationUtils;
-import us.fellowtraveller.presentation.utils.Messages;
+import us.fellowtraveller.presentation.view.CreateRouteView;
 
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.FROM;
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.TO;
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.WAY;
 
-public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener,
+public class CreateRouteActivity extends ProgressActivity implements CreateRouteView, ItemTouchAdapter.OnItemInteractListener,
         TripPointAdapter.OnPointClickListener, CreateRouteDialog.MapDialogListener,
         DatePickDialogFragment.DatePickerListener, TimePickerDialog.TimePickerListener {
     public static final int MINUTE_MILLIS = 1000 * 60;
@@ -50,35 +51,13 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     RecyclerView recyclerView;
     @Bind(R.id.btn_add_point)
     FloatingActionButton fabAddPoint;
+    private Snackbar snackbar;
+
     private TripPointAdapter adapter;
     private int pointType;
     private TripPoint place;
     @Inject
-    GetRouteUseCase getRouteUseCase;
-    @Inject
-    Messages messages;
-    private SimpleSubscriberListener routeListener = new SimpleSubscriberListener() {
-        @Override
-        public void onStartLoading() {
-            super.onStartLoading();
-            showProgress();
-        }
-
-        @Override
-        public void onCompleted() {
-            super.onCompleted();
-            hideProgress();
-        }
-
-        @Override
-        public void onError(Throwable t) {
-            super.onError(t);
-            hideProgress();
-            showMessage(messages.getError(t));
-            updateSnackbar();
-        }
-    };
-    private Snackbar snackbar;
+    CreateRoutePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,12 +75,33 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         snackbar = Snackbar.make(findViewById(R.id.coordinator_layout), R.string.question_build_route, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.action_build_route, v -> makeQuery());
+                .setAction(R.string.action_build_route, v -> onRouteBuildClick());
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
+
+    @Override
+    public void showProgress() {
+        CreateRouteDialog dialog = (CreateRouteDialog) getSupportFragmentManager().findFragmentByTag(CreateRouteDialog.TAG);
+        if (dialog == null) {
+            super.showProgress();
+        } else {
+            dialog.showProgress();
+        }
+    }
+
+    @Override
+    public void hideProgress() {
+        CreateRouteDialog dialog = (CreateRouteDialog) getSupportFragmentManager().findFragmentByTag(CreateRouteDialog.TAG);
+        if (dialog == null) {
+            super.hideProgress();
+        } else {
+            dialog.hideProgress();
+        }
+        updateSnackbar();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -129,7 +129,6 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
         LocationUtils.onPermissionRequested(this, requestCode);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
 
     private void updatePlace(TripPoint tripPoint, int tag) {
         switch (pointType) {
@@ -161,26 +160,13 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     }
 
 
-    private void makeQuery() {
+    private void onRouteBuildClick() {
         TripPoint from = adapter.getFrom();
         TripPoint to = adapter.getTo();
+        List<TripPoint> wayPoints = adapter.getWayPoints();
         if (from != null && to != null) {
-            List<TripPoint> wayPoints = adapter.getWayPoints();
-
-            getRouteUseCase.setCoords(from, to, wayPoints);
-            getRouteUseCase.execute(getSubscriber());
+            presenter.onRouteBuildClick(from, to, wayPoints);
         }
-    }
-
-    @NonNull
-    private BaseProgressSubscriber<List<Point>> getSubscriber() {
-        return new BaseProgressSubscriber<List<Point>>(routeListener) {
-            @Override
-            public void onNext(List<Point> response) {
-                super.onNext(response);
-                CreateRouteDialog.show(getSupportFragmentManager(), CreateRouteActivity.this, response);
-            }
-        };
     }
 
     @OnClick(R.id.btn_add_point)
@@ -191,9 +177,6 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
 
     @Override
     protected void onDestroy() {
-        if (getRouteUseCase.isWorking()) {
-            getRouteUseCase.unsubscribe();
-        }
         ButterKnife.unbind(this);
         super.onDestroy();
     }
@@ -225,11 +208,6 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     }
 
     @Override
-    public void onCreated() {
-
-    }
-
-    @Override
     public void onDismiss() {
         updateSnackbar();
     }
@@ -244,5 +222,20 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
     public void onTimePicked(int hour, int minute, int tag) {
         place.setDatetime(minute * MINUTE_MILLIS + hour * HOUR_MILLIS);
         updatePlace(place, tag);
+    }
+
+    @Override
+    public void onRouteBuilt(List<Point> response, List<Car> cars) {
+        CreateRouteDialog.show(
+                getSupportFragmentManager(),
+                CreateRouteActivity.this,
+                response, cars);
+
+    }
+
+    @Override
+    public void onRouteCreated(Route response) {
+        showMessage(getString(R.string.message_route_built));
+        finish();
     }
 }

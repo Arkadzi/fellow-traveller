@@ -11,12 +11,13 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.http.Streaming;
 import rx.Observable;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
+import us.fellowtraveller.domain.model.SimpleResponse;
 import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.model.trip.RouteResult;
 
 /**
@@ -55,4 +56,7 @@ public interface RetrofitApi {
             @Query("waypoints") String waypoints,
             @Query("key") String key
     );
+
+    @POST("map/routes")
+    Observable<Response<Void>> addRoute(@Body Route route);
 }

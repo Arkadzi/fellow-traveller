@@ -13,25 +13,32 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Response;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
+import us.fellowtraveller.data.di.UserComponent;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.Route;
+import us.fellowtraveller.domain.usecase.AddRouteUseCase;
 import us.fellowtraveller.presentation.adapters.viewholders.CarViewHolder;
 import us.fellowtraveller.presentation.adapters.viewholders.CarViewHolder2;
 import us.fellowtraveller.presentation.app.view.SimpleItemSelectedListener;
 import us.fellowtraveller.presentation.app.view.SimpleTextWatcher;
 import us.fellowtraveller.presentation.fragments.RouteMapFragment;
+import us.fellowtraveller.presentation.presenter.CreateRoutePresenter;
 import us.fellowtraveller.presentation.utils.FieldUtils;
 import us.fellowtraveller.presentation.utils.exceptions.BadFieldDataException;
 
@@ -51,7 +58,15 @@ public class CreateRouteDialog extends DialogFragment {
     EditText etSeatsCount;
     @Bind(R.id.car_spinner)
     Spinner spinner;
-    private Account account;
+    @Bind(R.id.progress_bar)
+    ProgressBar progressBar;
+    @Bind(R.id.content_view)
+    View contentView;
+
+    @Inject
+    CreateRoutePresenter presenter;
+
+    private List<Car> cars;
     private SimpleItemSelectedListener spinnerListener = new SimpleItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -88,7 +103,7 @@ public class CreateRouteDialog extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        account = Application.getApp(getActivity()).getUserComponent().account();
+        Application.getApp(getActivity()).getUserComponent().inject(this);
     }
 
     @Nullable
@@ -101,7 +116,7 @@ public class CreateRouteDialog extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        spinner.setAdapter(new CarArrayAdapter());
+        spinner.setAdapter(new CarArrayAdapter(cars));
         spinner.setOnItemSelectedListener(spinnerListener);
         etSeatsCount.addTextChangedListener(seatsTextChangeListener);
         if (getChildFragmentManager().findFragmentById(R.id.map_container) == null) {
@@ -121,8 +136,19 @@ public class CreateRouteDialog extends DialogFragment {
             route.setSeats(seats);
             route.setPoints(points);
             route.setCar(((Car) spinner.getSelectedItem()).getId());
+            presenter.onCreateRouteClick(route);
         } catch (BadFieldDataException e) {
         }
+    }
+
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+        contentView.setVisibility(View.GONE);
+    }
+
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+        contentView.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.btn_cancel)
@@ -140,16 +166,22 @@ public class CreateRouteDialog extends DialogFragment {
         }
     }
 
+    public void setCars(List<Car> cars) {
+        this.cars = cars;
+    }
+
     public void setPoints(List<Point> points) {
         this.points = new ArrayList<>(points);
     }
 
     public static void show(FragmentManager fragmentManager,
                             MapDialogListener listener,
-                            List<Point> points) {
+                            List<Point> points, List<Car> cars) {
         CreateRouteDialog createRouteDialog = new CreateRouteDialog();
 
+        createRouteDialog.setCancelable(false);
         createRouteDialog.setMapDialogListener(listener);
+        createRouteDialog.setCars(cars);
         createRouteDialog.setPoints(points);
         createRouteDialog.show(fragmentManager, TAG);
     }
@@ -159,14 +191,13 @@ public class CreateRouteDialog extends DialogFragment {
     }
 
     public interface MapDialogListener {
-        void onCreated();
-
         void onDismiss();
     }
 
     private class CarArrayAdapter extends ArrayAdapter<Car> {
-        public CarArrayAdapter() {
-            super(CreateRouteDialog.this.getActivity(), R.layout.item_car, CreateRouteDialog.this.account.user().getCars());
+
+        public CarArrayAdapter(List<Car> cars) {
+            super(CreateRouteDialog.this.getActivity(), R.layout.item_car, cars);
         }
 
         @NonNull

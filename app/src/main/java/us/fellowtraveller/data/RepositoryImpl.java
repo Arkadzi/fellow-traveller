@@ -15,6 +15,7 @@ import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Point;
+import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.model.trip.RouteResult;
 import us.fellowtraveller.domain.model.trip.TripPoint;
 import us.fellowtraveller.presentation.utils.LocationUtils;
@@ -92,5 +93,10 @@ public class RepositoryImpl implements Repository {
                         throw new BuildRouteException();
                     }
                 });
+    }
+
+    @Override
+    public Observable<Route> addRoute(Route route) {
+        return restApi.addRoute(route);
     }
 }

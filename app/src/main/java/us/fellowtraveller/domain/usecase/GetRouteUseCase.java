@@ -6,8 +6,10 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
+import us.fellowtraveller.data.di.scope.UserScope;
 import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.trip.Point;
@@ -20,6 +22,7 @@ import us.fellowtraveller.domain.schedulers.SubscribeOn;
  * Created by arkadius on 4/10/17.
  */
 
+@UserScope
 public class GetRouteUseCase extends UseCase<List<Point>> {
 
     private final Repository repository;
