@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="?attr/selectableItemBackground"
+    android:padding="@dimen/double_padding">
+
+    <TextView
+        android:id="@+id/tv_car_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:layout_alignTop="@id/iv_car_photo"
+        android:lines="1"
+        tools:text="Nissan Skyline"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_seats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_car_title"
+        android:lines="1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="14sp"
+        tools:text="@string/hint_capacity" />
+
+    <TextView
+        android:id="@+id/tv_state_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_seats"
+        android:textColor="?android:attr/textColorSecondary"
+        tools:text="@string/hint_condition"
+        android:textSize="14sp" />
+    <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/car_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:isIndicator="true"
+        android:stepSize="1"
+        style="@style/Base.Widget.AppCompat.RatingBar.Small"
+        android:layout_toRightOf="@id/tv_state_hint"
+        android:layout_below="@id/tv_seats" />
+
+
+</RelativeLayout>

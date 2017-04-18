@@ -13,9 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,8 +24,6 @@ import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.domain.model.trip.Point;
-import us.fellowtraveller.domain.model.trip.RouteEntity;
-import us.fellowtraveller.domain.model.trip.RouteResult;
 import us.fellowtraveller.domain.model.trip.TripPoint;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
 import us.fellowtraveller.domain.subscribers.SimpleSubscriberListener;
@@ -35,19 +31,18 @@ import us.fellowtraveller.domain.usecase.GetRouteUseCase;
 import us.fellowtraveller.presentation.adapters.ItemTouchAdapter;
 import us.fellowtraveller.presentation.adapters.TripPointAdapter;
 import us.fellowtraveller.presentation.adapters.view_handlers.SimpleItemTouchHelperCallback;
+import us.fellowtraveller.presentation.dialogs.CreateRouteDialog;
 import us.fellowtraveller.presentation.dialogs.DatePickDialogFragment;
-import us.fellowtraveller.presentation.dialogs.MapDialog;
 import us.fellowtraveller.presentation.dialogs.TimePickerDialog;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 import us.fellowtraveller.presentation.utils.Messages;
-import us.fellowtraveller.presentation.utils.RouteUtils;
 
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.FROM;
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.TO;
 import static us.fellowtraveller.presentation.adapters.viewholders.TripPointHolder.WAY;
 
 public class CreateRouteActivity extends ProgressActivity implements ItemTouchAdapter.OnItemInteractListener,
-        TripPointAdapter.OnPointClickListener, MapDialog.MapDialogListener,
+        TripPointAdapter.OnPointClickListener, CreateRouteDialog.MapDialogListener,
         DatePickDialogFragment.DatePickerListener, TimePickerDialog.TimePickerListener {
     public static final int MINUTE_MILLIS = 1000 * 60;
     public static final int HOUR_MILLIS = MINUTE_MILLIS * 60;
@@ -183,7 +178,7 @@ public class CreateRouteActivity extends ProgressActivity implements ItemTouchAd
             @Override
             public void onNext(List<Point> response) {
                 super.onNext(response);
-                MapDialog.show(getSupportFragmentManager(), CreateRouteActivity.this, response);
+                CreateRouteDialog.show(getSupportFragmentManager(), CreateRouteActivity.this, response);
             }
         };
     }

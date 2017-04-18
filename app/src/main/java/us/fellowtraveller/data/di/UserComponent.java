@@ -11,6 +11,7 @@ import us.fellowtraveller.presentation.activities.ProfileActivity;
 import us.fellowtraveller.presentation.activities.SignInActivity;
 import us.fellowtraveller.presentation.activities.SignUpActivity;
 import us.fellowtraveller.presentation.activities.SplashActivity;
+import us.fellowtraveller.presentation.dialogs.CreateRouteDialog;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -22,21 +23,23 @@ import us.fellowtraveller.presentation.activities.SplashActivity;
         }
 )
 public interface UserComponent {
-        void inject(MainActivity mainActivity);
+    void inject(MainActivity mainActivity);
 
-        void inject(SignInActivity signInActivity);
+    void inject(SignInActivity signInActivity);
 
-        void inject(SignUpActivity signUpActivity);
+    void inject(SignUpActivity signUpActivity);
 
-        void inject(SplashActivity splashActivity);
+    void inject(SplashActivity splashActivity);
 
-        void inject(ProfileActivity profileActivity);
+    void inject(ProfileActivity profileActivity);
 
-        void inject(EditProfileActivity editProfileActivity);
+    void inject(EditProfileActivity editProfileActivity);
 
-        void inject(AddCarActivity addCarActivity);
+    void inject(AddCarActivity addCarActivity);
 
-        void inject(CreateRouteActivity createRouteActivity);
+    void inject(CreateRouteActivity createRouteActivity);
 
-        Account account();
+    void inject(CreateRouteDialog createRouteDialog);
+
+    Account account();
 }

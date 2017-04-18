@@ -4,6 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by arkadii on 3/5/17.
  */
@@ -19,6 +25,7 @@ public class Account {
     public static final String PREF_EMAIL = "pref_email";
     public static final String PREF_TOKEN = "pref_token";
     public static final String PREF_URL = "pref_url";
+    public static final String PREF_CARS = "cars";
     Context context;
     private AccountUser user;
 
@@ -57,6 +64,7 @@ public class Account {
                 .putString(PREF_GENDER, user.getGender())
                 .putString(PREF_TOKEN, user.getToken())
                 .putString(PREF_URL, user.getImageUrl())
+                .putString(PREF_CARS, new Gson().toJson(user.getCars()))
                 .commit();
     }
 
@@ -73,8 +81,17 @@ public class Account {
             user.setPassword(prefs.getString(PREF_PASSWORD, null));
             user.setGender(prefs.getString(PREF_GENDER, null));
             user.setImageUrl(prefs.getString(PREF_URL, null));
+            user.setCars(new Gson().fromJson(prefs.getString(PREF_CARS, "[]"), new TypeToken<ArrayList<Car>>(){}.getType()));
         }
         return user;
+    }
+
+
+    public void saveCars(List<Car> cars) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                .putString(PREF_URL, new Gson().toJson(cars))
+                .commit();
+        user = null;
     }
 
     public void savePhoto(String url) {

@@ -59,10 +59,16 @@
                     <EditText
                         android:id="@+id/et_seats_count"
                         android:layout_width="match_parent"
+                        android:inputType="number"
                         android:layout_height="wrap_content"
                         android:hint="@string/hint_route_seats_count" />
                 </android.support.design.widget.TextInputLayout>
-
+                
+                <Spinner
+                    android:id="@+id/car_spinner"
+                    android:layout_below="@id/tl_seats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
                 <Button
                     android:id="@+id/btn_ok"
@@ -70,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_below="@id/tl_seats"
+                    android:layout_below="@id/car_spinner"
                     android:text="@string/action_ok" />
 
                 <Button
@@ -78,11 +84,10 @@
                     style="@style/Base.Widget.AppCompat.Button.ButtonBar.AlertDialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tl_seats"
+                    android:layout_alignTop="@id/btn_ok"
                     android:layout_toLeftOf="@id/btn_ok"
                     android:text="@string/action_cancel" />
             </RelativeLayout>
-
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

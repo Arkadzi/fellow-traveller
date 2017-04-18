@@ -16,34 +16,28 @@ import us.fellowtraveller.presentation.utils.CircleTransform;
 /**
  * Created by arkadii on 3/18/17.
  */
-public class CarViewHolder extends RecyclerView.ViewHolder {
+public class CarViewHolder2 extends RecyclerView.ViewHolder {
 
-    private final ImageView ivImageView;
     private final TextView tvCarTitle;
-    private final TextView tvYear;
+    private final TextView tvSeats;
     private final RatingBar carRating;
-    private final String yearManufactireHint;
+    private final String seatsHint;
 
-    public CarViewHolder(LayoutInflater layoutInflater, ViewGroup parent) {
-        super(layoutInflater.inflate(R.layout.item_car, parent, false));
-        ivImageView = (ImageView) itemView.findViewById(R.id.iv_car_photo);
-        tvYear = (TextView) itemView.findViewById(R.id.tv_year);
-        yearManufactireHint = tvYear.getContext().getString(R.string.hint_year_of_manufacture);
+    public CarViewHolder2(LayoutInflater layoutInflater, ViewGroup parent) {
+        super(layoutInflater.inflate(R.layout.item_car2, parent, false));
         tvCarTitle = (TextView) itemView.findViewById(R.id.tv_car_title);
         TextView tvStateHint = (TextView) itemView.findViewById(R.id.tv_state_hint);
+        tvSeats = (TextView) itemView.findViewById(R.id.tv_seats);
         carRating = (RatingBar) itemView.findViewById(R.id.car_rating);
         carRating.setMax(Car.MAX_RATING);
-        tvStateHint.setText(tvYear.getContext().getString(R.string.hint_condition) + ":");
+        tvStateHint.setText(tvSeats.getContext().getString(R.string.hint_condition) + ":");
+        seatsHint = tvSeats.getContext().getString(R.string.hint_capacity);
         carRating.setNumStars(Car.MAX_RATING);
     }
 
     public void bind(Car car) {
-        Picasso.with(ivImageView.getContext())
-                .load(car.getImageUrl())
-                .transform(new CircleTransform())
-                .into(ivImageView);
         tvCarTitle.setText(car.getTitle());
-        tvYear.setText(String.format("%s: %s",yearManufactireHint, car.getYear()));
         carRating.setRating(car.getCondition());
+        tvSeats.setText(String.format("%s: %s", seatsHint, car.getCapacity()));
     }
 }

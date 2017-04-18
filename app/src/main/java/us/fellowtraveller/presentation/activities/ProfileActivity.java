@@ -103,6 +103,7 @@ public class ProfileActivity extends ProgressActivity implements ProfileView, Me
         } else if (requestCode == REQUEST_CODE_ADD_CAR && resultCode == RESULT_OK) {
             Car car = ActivityUtils.restore(data.getExtras(), AddCarActivity.EXTRA_CAR);
             user.addCar(car);
+            account.saveCars(user.getCars());
             adapter.setUser(user);
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -155,6 +156,7 @@ public class ProfileActivity extends ProgressActivity implements ProfileView, Me
     @Override
     public void onCarDeleted(Car response) {
         user.getCars().remove(response);
+        account.saveCars(user.getCars());
         adapter.notifyDataSetChanged();
     }
 
