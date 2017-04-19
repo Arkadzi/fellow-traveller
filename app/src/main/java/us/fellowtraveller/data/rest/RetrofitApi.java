@@ -1,5 +1,7 @@
 package us.fellowtraveller.data.rest;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -59,4 +61,8 @@ public interface RetrofitApi {
 
     @POST("map/routes")
     Observable<Response<Void>> addRoute(@Body Route route);
+
+    @GET("map/routes")
+    Observable<List<Route>> getAllOwnerRoutes(@Query("owner") String ownerId);
+
 }

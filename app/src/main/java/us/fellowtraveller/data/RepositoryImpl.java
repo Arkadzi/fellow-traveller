@@ -99,4 +99,9 @@ public class RepositoryImpl implements Repository {
     public Observable<Route> addRoute(Route route) {
         return restApi.addRoute(route);
     }
+
+    @Override
+    public Observable<List<Route>> getAllOwnerRoutes(String ownerId) {
+        return restApi.getAllOwnerRoutes(ownerId);
+    }
 }

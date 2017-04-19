@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +13,22 @@ import java.util.List;
  * Created by arkadius on 4/17/17.
  */
 
-public class Route {
+public class Route implements Serializable {
     private String title;
     private int seats;
     private String car;
     private String owner;
     private List<Point> points;
 
+    public long getTime() {
+        if (points != null && !points.isEmpty()) {
+            Collection collectionData = points.get(0).getCollectionData();
+            if (collectionData != null) {
+                return collectionData.getDatetime();
+            }
+        }
+        return 0;
+    }
 
     public String getTitle() {
         return title;

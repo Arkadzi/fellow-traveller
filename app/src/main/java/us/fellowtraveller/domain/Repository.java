@@ -38,4 +38,6 @@ public interface Repository {
     Observable<List<Point>> getRoute(TripPoint origin, TripPoint destination, List<TripPoint> items);
 
     Observable<Route> addRoute(Route route);
+
+    Observable<List<Route>> getAllOwnerRoutes(String ownerId);
 }

@@ -171,4 +171,8 @@ public class RestApi {
             return route;
         });
     }
+
+    public Observable<List<Route>> getAllOwnerRoutes(String ownerId) {
+        return api.getAllOwnerRoutes(ownerId);
+    }
 }

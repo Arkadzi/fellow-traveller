@@ -23,6 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
+import us.fellowtraveller.data.Constants;
 import us.fellowtraveller.data.di.UserComponent;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
@@ -101,7 +102,7 @@ public class ProfileActivity extends ProgressActivity implements ProfileView, Me
         if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == RESULT_OK) {
             updateUser();
         } else if (requestCode == REQUEST_CODE_ADD_CAR && resultCode == RESULT_OK) {
-            Car car = ActivityUtils.restore(data.getExtras(), AddCarActivity.EXTRA_CAR);
+            Car car = ActivityUtils.restore(data.getExtras(), Constants.Intents.EXTRA_CAR);
             user.addCar(car);
             account.saveCars(user.getCars());
             adapter.setUser(user);

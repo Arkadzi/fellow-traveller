@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
+import us.fellowtraveller.data.Constants;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.trip.Point;
@@ -52,7 +53,6 @@ public class CreateRouteActivity extends ProgressActivity implements CreateRoute
     @Bind(R.id.btn_add_point)
     FloatingActionButton fabAddPoint;
     private Snackbar snackbar;
-
     private TripPointAdapter adapter;
     private int pointType;
     private TripPoint place;
@@ -238,6 +238,9 @@ public class CreateRouteActivity extends ProgressActivity implements CreateRoute
     @Override
     public void onRouteCreated(Route response) {
         showMessage(getString(R.string.message_route_built));
+        Intent data = new Intent();
+        data.putExtra(Constants.Intents.EXTRA_ROUTE, response);
+        setResult(RESULT_OK, data);
         finish();
     }
 }

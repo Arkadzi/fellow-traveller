@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
+import us.fellowtraveller.data.Constants;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.presentation.app.view.NumberTextView;
 import us.fellowtraveller.presentation.dialogs.ChooseImageDialogFragment;
@@ -35,7 +36,6 @@ import us.fellowtraveller.presentation.view.AddCarView;
 
 public class AddCarActivity extends ProgressActivity implements NumberPickerDialogFragment.NumberPickerListener, AddCarView {
     public static final String ARG_IMAGE_URL = "image_url";
-    public static final String EXTRA_CAR = "extra_car";
     @Bind(R.id.iv_car_photo)
     ImageView ivCarPhoto;
     @Bind(R.id.et_title)
@@ -155,7 +155,7 @@ public class AddCarActivity extends ProgressActivity implements NumberPickerDial
     public void onCarAdded(Car car) {
         Toast.makeText(this, R.string.toast_car_added, Toast.LENGTH_SHORT).show();
         Intent data = new Intent();
-        data.putExtra(EXTRA_CAR, car);
+        data.putExtra(Constants.Intents.EXTRA_CAR, car);
         setResult(RESULT_OK, data);
         finish();
     }

@@ -16,7 +16,8 @@ import us.fellowtraveller.domain.usecase.AddRouteUseCase;
 import us.fellowtraveller.domain.usecase.DeleteCarUseCase;
 import us.fellowtraveller.domain.usecase.EditPhotoUseCase;
 import us.fellowtraveller.domain.usecase.EditProfileUseCase;
-import us.fellowtraveller.domain.usecase.GetRouteUseCase;
+import us.fellowtraveller.domain.usecase.BuildRouteUseCase;
+import us.fellowtraveller.domain.usecase.GetAllRoutesUseCase;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
 import us.fellowtraveller.domain.usecase.SignUpUseCase;
 import us.fellowtraveller.domain.usecase.UserInfoUseCase;
@@ -24,6 +25,8 @@ import us.fellowtraveller.presentation.presenter.AddCarPresenter;
 import us.fellowtraveller.presentation.presenter.AddCarPresenterImpl;
 import us.fellowtraveller.presentation.presenter.CreateRoutePresenter;
 import us.fellowtraveller.presentation.presenter.CreateRoutePresenterImpl;
+import us.fellowtraveller.presentation.presenter.DriverPresenter;
+import us.fellowtraveller.presentation.presenter.DriverPresenterImpl;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenter;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenterImpl;
 import us.fellowtraveller.presentation.presenter.ProfilePresenter;
@@ -84,7 +87,13 @@ public class UserModule {
 
     @Provides
     @UserScope
-    CreateRoutePresenter provideCreateRoutePresenter(Messages messages, AddRouteUseCase addRouteUseCase, GetRouteUseCase getRouteUseCase, Account account) {
-        return new CreateRoutePresenterImpl(messages, addRouteUseCase, getRouteUseCase, account);
+    CreateRoutePresenter provideCreateRoutePresenter(Messages messages, AddRouteUseCase addRouteUseCase, BuildRouteUseCase buildRouteUseCase, Account account) {
+        return new CreateRoutePresenterImpl(messages, addRouteUseCase, buildRouteUseCase, account);
+    }
+
+    @Provides
+    @UserScope
+    DriverPresenter provideDriverPresenter(Messages messages, GetAllRoutesUseCase getAllRoutesUseCase, Account account) {
+        return new DriverPresenterImpl(messages, getAllRoutesUseCase, account);
     }
 }

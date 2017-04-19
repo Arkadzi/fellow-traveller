@@ -12,6 +12,7 @@ import us.fellowtraveller.presentation.activities.SignInActivity;
 import us.fellowtraveller.presentation.activities.SignUpActivity;
 import us.fellowtraveller.presentation.activities.SplashActivity;
 import us.fellowtraveller.presentation.dialogs.CreateRouteDialog;
+import us.fellowtraveller.presentation.fragments.DriverFragment;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -40,6 +41,8 @@ public interface UserComponent {
     void inject(CreateRouteActivity createRouteActivity);
 
     void inject(CreateRouteDialog createRouteDialog);
+
+    void inject(DriverFragment driverFragment);
 
     Account account();
 }

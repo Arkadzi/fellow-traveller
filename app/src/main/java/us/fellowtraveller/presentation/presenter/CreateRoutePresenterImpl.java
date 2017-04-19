@@ -12,9 +12,8 @@ import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.model.trip.TripPoint;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
-import us.fellowtraveller.domain.subscribers.SimpleSubscriberListener;
 import us.fellowtraveller.domain.usecase.AddRouteUseCase;
-import us.fellowtraveller.domain.usecase.GetRouteUseCase;
+import us.fellowtraveller.domain.usecase.BuildRouteUseCase;
 import us.fellowtraveller.presentation.utils.Messages;
 import us.fellowtraveller.presentation.view.CreateRouteView;
 
@@ -25,11 +24,11 @@ import us.fellowtraveller.presentation.view.CreateRouteView;
 public class CreateRoutePresenterImpl extends ProgressPresenter<CreateRouteView> implements CreateRoutePresenter {
 
     private final AddRouteUseCase addRouteUseCase;
-    private final GetRouteUseCase buildRouteUseCase;
+    private final BuildRouteUseCase buildRouteUseCase;
     private final Account account;
 
     @Inject
-    public CreateRoutePresenterImpl(Messages messages, AddRouteUseCase addRouteUseCase, GetRouteUseCase buildRouteUseCase, Account account) {
+    public CreateRoutePresenterImpl(Messages messages, AddRouteUseCase addRouteUseCase, BuildRouteUseCase buildRouteUseCase, Account account) {
         super(messages);
         this.addRouteUseCase = addRouteUseCase;
         this.buildRouteUseCase = buildRouteUseCase;

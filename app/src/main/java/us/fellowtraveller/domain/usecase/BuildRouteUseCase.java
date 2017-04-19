@@ -22,8 +22,7 @@ import us.fellowtraveller.domain.schedulers.SubscribeOn;
  * Created by arkadius on 4/10/17.
  */
 
-@UserScope
-public class GetRouteUseCase extends UseCase<List<Point>> {
+public class BuildRouteUseCase extends UseCase<List<Point>> {
 
     private final Repository repository;
     private TripPoint origin;
@@ -31,7 +30,7 @@ public class GetRouteUseCase extends UseCase<List<Point>> {
     private List<TripPoint> items;
 
     @Inject
-    public GetRouteUseCase(SubscribeOn subscribeOn, ObserveOn observeOn, Repository repository) {
+    public BuildRouteUseCase(SubscribeOn subscribeOn, ObserveOn observeOn, Repository repository) {
         super(subscribeOn, observeOn);
         this.repository = repository;
     }

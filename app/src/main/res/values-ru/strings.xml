@@ -61,4 +61,5 @@
     <string name="hint_route_seats_count">Количество мест</string>
     <string name="message_route_built">Маршрут успешно создан</string>
     <string name="warn_no_cars">У Вас нет ни одного автомобиля. Пожалуйста, добавьте его в профиле.</string>
+    <string name="message_no_data">Нет данных</string>
 </resources>
