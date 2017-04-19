@@ -66,5 +66,6 @@
     <string name="hint_route_title">Route title</string>
     <string name="hint_route_seats_count">Seats count</string>
     <string name="message_route_built">Route is build successfully</string>
+    <string name="warn_no_cars">You don\'t have any car. Please, add car in your profile</string>
 
 </resources>

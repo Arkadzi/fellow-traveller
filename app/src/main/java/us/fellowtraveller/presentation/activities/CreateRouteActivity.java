@@ -65,6 +65,7 @@ public class CreateRouteActivity extends ProgressActivity implements CreateRoute
         setContentView(R.layout.activity_create_route);
         initViews();
         Application.getApp(this).getUserComponent().inject(this);
+        presenter.onCreate(this);
     }
 
     private void initViews() {
@@ -177,6 +178,7 @@ public class CreateRouteActivity extends ProgressActivity implements CreateRoute
 
     @Override
     protected void onDestroy() {
+        presenter.onRelease();
         ButterKnife.unbind(this);
         super.onDestroy();
     }

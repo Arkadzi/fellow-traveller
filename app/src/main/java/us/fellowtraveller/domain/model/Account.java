@@ -89,7 +89,7 @@ public class Account {
 
     public void saveCars(List<Car> cars) {
         PreferenceManager.getDefaultSharedPreferences(context).edit()
-                .putString(PREF_URL, new Gson().toJson(cars))
+                .putString(PREF_CARS, new Gson().toJson(cars))
                 .commit();
         user = null;
     }

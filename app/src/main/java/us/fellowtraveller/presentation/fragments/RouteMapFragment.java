@@ -17,11 +17,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import us.fellowtraveller.R;
 import us.fellowtraveller.domain.model.trip.Point;
-import us.fellowtraveller.domain.model.trip.TripPoint;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 
 /**
@@ -70,7 +68,7 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
                 LatLng latLng = new LatLng(point.getLatitude(), point.getLongitude());
                 builder.include(latLng);
                 polylineOptions.add(latLng);
-                if (point.getCollection() != null) {
+                if (point.getCollectionData() != null) {
                     googleMap.addMarker(getMarkerOption(point, ++index,
                             (i > 0 && i < points.size() - 1)
                                     ? R.drawable.point_marker_from

@@ -40,6 +40,7 @@ public class CarViewHolder extends RecyclerView.ViewHolder {
     public void bind(Car car) {
         Picasso.with(ivImageView.getContext())
                 .load(car.getImageUrl())
+                .resizeDimen(R.dimen.car_image_size, R.dimen.car_image_size)
                 .transform(new CircleTransform())
                 .into(ivImageView);
         tvCarTitle.setText(car.getTitle());

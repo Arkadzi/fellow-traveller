@@ -43,6 +43,7 @@ public class Messages {
         if (httpException != null)
             switch (httpException.code()) {
                 case 401:
+                case 422:
                     return convertError(R.string.error_user_not_authorized);
                 case 409:
                     return convertError(R.string.error_such_user_exists);

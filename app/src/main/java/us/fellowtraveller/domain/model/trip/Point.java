@@ -11,12 +11,12 @@ import java.io.Serializable;
 public class Point implements Serializable {
     private double latitude;
     private double longitude;
-    private Collection collection;
+    private Collection collectionData;
 
     public Point(double latitude, double longitude, Collection collection) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.collection = collection;
+        this.collectionData = collection;
     }
 
     public LatLng getPosition(){
@@ -28,7 +28,7 @@ public class Point implements Serializable {
         return "Point{" +
                 "latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", collection=" + collection +
+                ", collection=" + collectionData +
                 '}';
     }
 
@@ -48,11 +48,11 @@ public class Point implements Serializable {
         this.longitude = longitude;
     }
 
-    public Collection getCollection() {
-        return collection;
+    public Collection getCollectionData() {
+        return collectionData;
     }
 
-    public void setCollection(Collection collection) {
-        this.collection = collection;
+    public void setCollectionData(Collection collection) {
+        this.collectionData = collection;
     }
 }
