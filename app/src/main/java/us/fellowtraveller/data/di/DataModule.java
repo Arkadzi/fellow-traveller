@@ -39,7 +39,7 @@ public class DataModule {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         return new OkHttpClient.Builder()
-                .readTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(chain -> {
                     Request.Builder builder = chain.request().newBuilder();
                     String token = account.user().getToken();
