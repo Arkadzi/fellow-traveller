@@ -31,10 +31,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingBottom="8dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp">
+                android:paddingTop="16dp">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/tl_title"
@@ -59,16 +59,30 @@
                     <EditText
                         android:id="@+id/et_seats_count"
                         android:layout_width="match_parent"
-                        android:inputType="number"
                         android:layout_height="wrap_content"
-                        android:hint="@string/hint_route_seats_count" />
+                        android:hint="@string/hint_route_seats_count"
+                        android:inputType="number" />
                 </android.support.design.widget.TextInputLayout>
-                
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tl_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tl_seats">
+
+                    <EditText
+                        android:id="@+id/et_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_price_per_km"
+                        android:inputType="numberDecimal" />
+                </android.support.design.widget.TextInputLayout>
+
                 <Spinner
                     android:id="@+id/car_spinner"
-                    android:layout_below="@id/tl_seats"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tl_price" />
 
                 <Button
                     android:id="@+id/btn_ok"

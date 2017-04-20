@@ -56,6 +56,8 @@ public class CreateRouteDialog extends DialogFragment {
     EditText etTitle;
     @Bind(R.id.et_seats_count)
     EditText etSeatsCount;
+    @Bind(R.id.et_price)
+    EditText etPrice;
     @Bind(R.id.car_spinner)
     Spinner spinner;
     @Bind(R.id.progress_bar)
@@ -132,9 +134,11 @@ public class CreateRouteDialog extends DialogFragment {
             Route route = new Route();
             String title = FieldUtils.getNonEmptyText(etTitle);
             int seats = FieldUtils.getInt(etSeatsCount);
+            float price = FieldUtils.getFloat(etPrice);
             route.setTitle(title);
             route.setSeats(seats);
             route.setPoints(points);
+            route.setPrice(price);
             route.setCar(((Car) spinner.getSelectedItem()).getId());
             presenter.onCreateRouteClick(route);
         } catch (BadFieldDataException e) {

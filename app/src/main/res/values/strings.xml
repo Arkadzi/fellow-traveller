@@ -68,5 +68,6 @@
     <string name="message_route_built">Route is build successfully</string>
     <string name="warn_no_cars">You don\'t have any car. Please, add car in your profile</string>
     <string name="message_no_data">No data</string>
+    <string name="hint_price_per_km">Price/km</string>
 
 </resources>

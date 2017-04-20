@@ -16,6 +16,7 @@ import java.util.List;
 public class Route implements Serializable {
     private String title;
     private int seats;
+    private float price;
     private String car;
     private String owner;
     private List<Point> points;
@@ -28,6 +29,14 @@ public class Route implements Serializable {
             }
         }
         return 0;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     public String getTitle() {
