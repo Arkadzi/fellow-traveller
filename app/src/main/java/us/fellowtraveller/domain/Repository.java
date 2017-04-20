@@ -40,4 +40,6 @@ public interface Repository {
     Observable<Route> addRoute(Route route);
 
     Observable<List<Route>> getAllOwnerRoutes(String ownerId);
+
+    Observable<List<Route>> getAllSubscriberRoutes(String ownerId);
 }

@@ -13,6 +13,7 @@ import us.fellowtraveller.presentation.activities.SignUpActivity;
 import us.fellowtraveller.presentation.activities.SplashActivity;
 import us.fellowtraveller.presentation.dialogs.CreateRouteDialog;
 import us.fellowtraveller.presentation.fragments.DriverFragment;
+import us.fellowtraveller.presentation.fragments.TravellerFragment;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -43,6 +44,8 @@ public interface UserComponent {
     void inject(CreateRouteDialog createRouteDialog);
 
     void inject(DriverFragment driverFragment);
+
+    void inject(TravellerFragment travellerFragment);
 
     Account account();
 }

@@ -17,7 +17,8 @@ import us.fellowtraveller.domain.usecase.DeleteCarUseCase;
 import us.fellowtraveller.domain.usecase.EditPhotoUseCase;
 import us.fellowtraveller.domain.usecase.EditProfileUseCase;
 import us.fellowtraveller.domain.usecase.BuildRouteUseCase;
-import us.fellowtraveller.domain.usecase.GetAllRoutesUseCase;
+import us.fellowtraveller.domain.usecase.GetAllOwnerRoutesUseCase;
+import us.fellowtraveller.domain.usecase.GetAllSubscriberRoutesUseCase;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
 import us.fellowtraveller.domain.usecase.SignUpUseCase;
 import us.fellowtraveller.domain.usecase.UserInfoUseCase;
@@ -35,6 +36,8 @@ import us.fellowtraveller.presentation.presenter.SignInPresenter;
 import us.fellowtraveller.presentation.presenter.SignInPresenterImpl;
 import us.fellowtraveller.presentation.presenter.SignUpPresenter;
 import us.fellowtraveller.presentation.presenter.SignUpPresenterImpl;
+import us.fellowtraveller.presentation.presenter.TravellerPresenter;
+import us.fellowtraveller.presentation.presenter.TravellerPresenterImpl;
 import us.fellowtraveller.presentation.utils.Messages;
 
 /**
@@ -93,7 +96,13 @@ public class UserModule {
 
     @Provides
     @UserScope
-    DriverPresenter provideDriverPresenter(Messages messages, GetAllRoutesUseCase getAllRoutesUseCase, Account account) {
+    DriverPresenter provideDriverPresenter(Messages messages, GetAllOwnerRoutesUseCase getAllRoutesUseCase, Account account) {
         return new DriverPresenterImpl(messages, getAllRoutesUseCase, account);
+    }
+
+    @Provides
+    @UserScope
+    TravellerPresenter provideTravellerPresenter(Messages messages, GetAllSubscriberRoutesUseCase getAllRoutesUseCase, Account account) {
+        return new TravellerPresenterImpl(messages, getAllRoutesUseCase, account);
     }
 }

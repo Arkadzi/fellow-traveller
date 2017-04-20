@@ -65,4 +65,6 @@ public interface RetrofitApi {
     @GET("map/routes")
     Observable<List<Route>> getAllOwnerRoutes(@Query("owner") String ownerId);
 
+    @GET("map/routes")
+    Observable<List<Route>> getAllSubscriberRoutes(@Query("owner") String ownerId);
 }

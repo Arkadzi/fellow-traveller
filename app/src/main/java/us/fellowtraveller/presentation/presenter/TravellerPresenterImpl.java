@@ -8,19 +8,20 @@ import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
 import us.fellowtraveller.domain.usecase.GetAllOwnerRoutesUseCase;
+import us.fellowtraveller.domain.usecase.GetAllSubscriberRoutesUseCase;
 import us.fellowtraveller.presentation.utils.Messages;
-import us.fellowtraveller.presentation.view.DriverRouteView;
+import us.fellowtraveller.presentation.view.TravellerRouteView;
 
 /**
  * Created by arkadius on 4/19/17.
  */
 
-public class DriverPresenterImpl extends ProgressPresenter<DriverRouteView> implements DriverPresenter {
+public class TravellerPresenterImpl extends ProgressPresenter<TravellerRouteView> implements TravellerPresenter {
 
-    private final GetAllOwnerRoutesUseCase getAllRoutesUseCase;
+    private final GetAllSubscriberRoutesUseCase getAllRoutesUseCase;
     private final Account account;
 
-    public DriverPresenterImpl(Messages messages, GetAllOwnerRoutesUseCase getAllRoutesUseCase, Account account) {
+    public TravellerPresenterImpl(Messages messages, GetAllSubscriberRoutesUseCase getAllRoutesUseCase, Account account) {
         super(messages);
         this.getAllRoutesUseCase = getAllRoutesUseCase;
         this.account = account;
@@ -29,7 +30,7 @@ public class DriverPresenterImpl extends ProgressPresenter<DriverRouteView> impl
     @Override
     public void onStart() {
         if (!getAllRoutesUseCase.isWorking()) {
-            getAllRoutesUseCase.setOwnerId(account.user().getId());
+            getAllRoutesUseCase.setSubscriberId(account.user().getId());
             getAllRoutesUseCase.execute(getSubscriber());
         }
     }
@@ -46,7 +47,7 @@ public class DriverPresenterImpl extends ProgressPresenter<DriverRouteView> impl
             @Override
             public void onNext(List<Route> response) {
                 super.onNext(response);
-                DriverRouteView view = getView();
+                TravellerRouteView view = getView();
                 if (view != null) {
                     view.renderRoutes(response);
                 }
@@ -56,21 +57,9 @@ public class DriverPresenterImpl extends ProgressPresenter<DriverRouteView> impl
 
     @Override
     public void onAddRouteButtonClick() {
-        DriverRouteView view = getView();
+        TravellerRouteView view = getView();
         if (view != null) {
-            if (!account.user().getCars().isEmpty()) {
-                view.navigateToCreateRouteScreen();
-            } else {
-                view.showNoCarsButton();
-            }
-        }
-    }
-
-    @Override
-    public void onShowProfileButtonClick() {
-        DriverRouteView view = getView();
-        if (view != null) {
-            view.showProfile(account.user());
+            view.navigateToSearchRouteScreen();
         }
     }
 

@@ -14,12 +14,12 @@ import us.fellowtraveller.domain.schedulers.SubscribeOn;
  * Created by arkadius on 4/10/17.
  */
 
-public class GetAllRoutesUseCase extends UseCase<List<Route>> {
+public class GetAllOwnerRoutesUseCase extends UseCase<List<Route>> {
     private String ownerId;
     private final Repository repository;
 
     @Inject
-    public GetAllRoutesUseCase(SubscribeOn subscribeOn, ObserveOn observeOn, Repository repository) {
+    public GetAllOwnerRoutesUseCase(SubscribeOn subscribeOn, ObserveOn observeOn, Repository repository) {
         super(subscribeOn, observeOn);
         this.repository = repository;
     }

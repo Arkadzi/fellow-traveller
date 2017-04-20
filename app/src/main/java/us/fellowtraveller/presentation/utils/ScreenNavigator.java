@@ -14,6 +14,7 @@ import us.fellowtraveller.presentation.activities.MainActivity;
 import us.fellowtraveller.presentation.activities.ProfileActivity;
 import us.fellowtraveller.presentation.activities.SignInActivity;
 import us.fellowtraveller.presentation.activities.SignUpActivity;
+import us.fellowtraveller.presentation.fragments.TravellerFragment;
 
 /**
  * Created by arkadii on 3/18/17.
@@ -53,5 +54,9 @@ public class ScreenNavigator {
 
     public static void startCreateRouteScreen(Fragment fragment, Activity activity, int requestCode) {
         fragment.startActivityForResult(new Intent(activity, CreateRouteActivity.class), requestCode);
+    }
+
+    public static void startSearchRouteScreen(Fragment fragment, Activity activity, int requestCode) {
+
     }
 }
