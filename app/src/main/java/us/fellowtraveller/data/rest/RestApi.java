@@ -165,18 +165,18 @@ public class RestApi {
     }
 
     public Observable<Route> addRoute(Route route) {
-        return api.addRoute(route).map(userResponse -> {
+        return api.addRoute(route)/*.map(userResponse -> {
             if (!userResponse.isSuccessful())
                 throw Exceptions.propagate(new HttpException(userResponse));
             return route;
-        });
+        })*/;
     }
 
     public Observable<List<Route>> getAllOwnerRoutes(String ownerId) {
         return api.getAllOwnerRoutes(ownerId);
     }
 
-    public Observable<List<Route>> getAllSubscriberRoutes(String ownerId) {
-        return api.getAllSubscriberRoutes(ownerId);
+    public Observable<List<Route>> getAllSubscriberRoutes() {
+        return api.getAllSubscriberRoutes();
     }
 }

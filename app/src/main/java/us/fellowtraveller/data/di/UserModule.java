@@ -30,6 +30,8 @@ import us.fellowtraveller.presentation.presenter.DriverPresenter;
 import us.fellowtraveller.presentation.presenter.DriverPresenterImpl;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenter;
 import us.fellowtraveller.presentation.presenter.EditProfilePresenterImpl;
+import us.fellowtraveller.presentation.presenter.FindRoutePresenter;
+import us.fellowtraveller.presentation.presenter.FindRoutePresenterImpl;
 import us.fellowtraveller.presentation.presenter.ProfilePresenter;
 import us.fellowtraveller.presentation.presenter.ProfilePresenterImpl;
 import us.fellowtraveller.presentation.presenter.SignInPresenter;
@@ -104,5 +106,11 @@ public class UserModule {
     @UserScope
     TravellerPresenter provideTravellerPresenter(Messages messages, GetAllSubscriberRoutesUseCase getAllRoutesUseCase, Account account) {
         return new TravellerPresenterImpl(messages, getAllRoutesUseCase, account);
+    }
+
+    @Provides
+    @UserScope
+    FindRoutePresenter provideFindRoutePresenter(Messages messages) {
+        return new FindRoutePresenterImpl(messages);
     }
 }

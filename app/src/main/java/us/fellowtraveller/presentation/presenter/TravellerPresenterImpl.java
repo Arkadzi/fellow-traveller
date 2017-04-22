@@ -30,7 +30,6 @@ public class TravellerPresenterImpl extends ProgressPresenter<TravellerRouteView
     @Override
     public void onStart() {
         if (!getAllRoutesUseCase.isWorking()) {
-            getAllRoutesUseCase.setSubscriberId(account.user().getId());
             getAllRoutesUseCase.execute(getSubscriber());
         }
     }

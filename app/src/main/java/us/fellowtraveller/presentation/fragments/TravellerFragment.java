@@ -129,15 +129,12 @@ public class TravellerFragment extends Fragment implements TravellerRouteView {
     public void hideProgress() {
         refreshLayout.setRefreshing(false);
         refreshLayout.setVisibility(View.VISIBLE);
-        tvEmpty.setVisibility(View.GONE);
+        tvEmpty.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void renderRoutes(List<Route> routes) {
-        if (routes.isEmpty()) {
-            tvEmpty.setVisibility(View.VISIBLE);
-        }
         adapter.setData(routes);
     }
 

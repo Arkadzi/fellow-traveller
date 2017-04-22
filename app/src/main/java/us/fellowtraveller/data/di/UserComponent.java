@@ -6,6 +6,7 @@ import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.presentation.activities.AddCarActivity;
 import us.fellowtraveller.presentation.activities.CreateRouteActivity;
 import us.fellowtraveller.presentation.activities.EditProfileActivity;
+import us.fellowtraveller.presentation.activities.FindRouteActivity;
 import us.fellowtraveller.presentation.activities.MainActivity;
 import us.fellowtraveller.presentation.activities.ProfileActivity;
 import us.fellowtraveller.presentation.activities.SignInActivity;
@@ -13,6 +14,7 @@ import us.fellowtraveller.presentation.activities.SignUpActivity;
 import us.fellowtraveller.presentation.activities.SplashActivity;
 import us.fellowtraveller.presentation.dialogs.CreateRouteDialog;
 import us.fellowtraveller.presentation.fragments.DriverFragment;
+import us.fellowtraveller.presentation.fragments.FindRouteFragment;
 import us.fellowtraveller.presentation.fragments.TravellerFragment;
 
 /**
@@ -46,6 +48,10 @@ public interface UserComponent {
     void inject(DriverFragment driverFragment);
 
     void inject(TravellerFragment travellerFragment);
+
+    void inject(FindRouteActivity findRouteActivity);
+
+    void inject(FindRouteFragment findRouteFragment);
 
     Account account();
 }

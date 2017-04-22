@@ -60,11 +60,11 @@ public interface RetrofitApi {
     );
 
     @POST("map/routes")
-    Observable<Response<Void>> addRoute(@Body Route route);
+    Observable<Route/*Response<Void>*/> addRoute(@Body Route route);
 
     @GET("map/routes")
     Observable<List<Route>> getAllOwnerRoutes(@Query("owner") String ownerId);
 
-    @GET("map/routes")
-    Observable<List<Route>> getAllSubscriberRoutes(@Query("owner") String ownerId);
+    @GET("map/subscribes")
+    Observable<List<Route>> getAllSubscriberRoutes();
 }

@@ -41,5 +41,5 @@ public interface Repository {
 
     Observable<List<Route>> getAllOwnerRoutes(String ownerId);
 
-    Observable<List<Route>> getAllSubscriberRoutes(String ownerId);
+    Observable<List<Route>> getAllSubscriberRoutes();
 }

@@ -15,7 +15,6 @@ import us.fellowtraveller.domain.schedulers.SubscribeOn;
  */
 
 public class GetAllSubscriberRoutesUseCase extends UseCase<List<Route>> {
-    private String subscriberId;
     private final Repository repository;
 
     @Inject
@@ -24,13 +23,10 @@ public class GetAllSubscriberRoutesUseCase extends UseCase<List<Route>> {
         this.repository = repository;
     }
 
-    public void setSubscriberId(String subscriberId) {
-        this.subscriberId = subscriberId;
-    }
 
     @Override
     protected Observable<List<Route>> getUseCaseObservable() {
-        return repository.getAllSubscriberRoutes(subscriberId);
+        return repository.getAllSubscriberRoutes();
     }
 
 }

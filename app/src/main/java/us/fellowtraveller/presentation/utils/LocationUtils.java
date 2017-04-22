@@ -59,12 +59,32 @@ public class LocationUtils {
         }
     }
 
+    public static void requestLocation(Fragment fragment) {
+        if (hasLocationPermissions(fragment.getActivity())) {
+            startIntent(fragment);
+        } else {
+            fragment.requestPermissions(new String[]{ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSIONS);
+        }
+    }
+
     public static boolean onPermissionRequested(Activity activity, int requestCode) {
         if (requestCode == REQUEST_CODE_LOCATION_PERMISSIONS) {
             if (hasLocationPermissions(activity)) {
                 startIntent(activity);
             } else {
                 Toast.makeText(activity, R.string.warn_user_denied_location_permission, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean onPermissionRequested(Fragment fragment, int requestCode) {
+        if (requestCode == REQUEST_CODE_LOCATION_PERMISSIONS) {
+            if (hasLocationPermissions(fragment.getActivity())) {
+                startIntent(fragment);
+            } else {
+                Toast.makeText(fragment.getActivity(), R.string.warn_user_denied_location_permission, Toast.LENGTH_SHORT).show();
             }
             return true;
         }
@@ -80,14 +100,23 @@ public class LocationUtils {
         }
     }
 
+    private static void startIntent(Fragment fragment) {
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            fragment.startActivityForResult(builder.build(fragment.getActivity()), REQUEST_CODE_LOCATION);
+        } catch (GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
+            Toast.makeText(fragment.getActivity(), R.string.error_play_services, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public static boolean onActivityResult(int requestCode) {
         return requestCode == REQUEST_CODE_LOCATION;
     }
 
     @Nullable
-    public static Place fetchPlace(Activity activity, int resultCode, Intent data) {
+    public static Place fetchPlace(Context context, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            return PlacePicker.getPlace(activity, data);
+            return PlacePicker.getPlace(context, data);
         }
         return null;
     }

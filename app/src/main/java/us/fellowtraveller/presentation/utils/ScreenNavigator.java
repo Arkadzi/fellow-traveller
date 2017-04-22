@@ -10,6 +10,7 @@ import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.activities.AddCarActivity;
 import us.fellowtraveller.presentation.activities.CreateRouteActivity;
 import us.fellowtraveller.presentation.activities.EditProfileActivity;
+import us.fellowtraveller.presentation.activities.FindRouteActivity;
 import us.fellowtraveller.presentation.activities.MainActivity;
 import us.fellowtraveller.presentation.activities.ProfileActivity;
 import us.fellowtraveller.presentation.activities.SignInActivity;
@@ -57,6 +58,6 @@ public class ScreenNavigator {
     }
 
     public static void startSearchRouteScreen(Fragment fragment, Activity activity, int requestCode) {
-
+        fragment.startActivityForResult(new Intent(activity, FindRouteActivity.class), requestCode);
     }
 }
