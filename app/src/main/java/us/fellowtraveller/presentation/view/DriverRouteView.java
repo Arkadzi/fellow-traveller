@@ -17,4 +17,6 @@ public interface DriverRouteView extends ProgressView {
     void showNoCarsButton();
 
     void showProfile(User user);
+
+    void onRouteDeleted(Route response);
 }

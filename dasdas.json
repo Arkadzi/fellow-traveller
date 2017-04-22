@@ -1,0 +1,26 @@
+[
+  {
+    "id": 310,
+    "owner": 2,
+    "title": "Буча",
+    "price": 0.08563996,
+    "car": 11,
+    "seats": 3,
+    "points": [
+      {
+        "latitude": 50.4501,
+        "longitude": 30.5234,
+        "collectionData": {
+          "id": 1221,
+          "subscribers": [],
+          "datetime": 1492981800318
+        }
+      },
+      {
+        "latitude": 50.449850000000005,
+        "longitude": 30.523860000000003,
+        "collectionData": null
+      }
+    ]
+  }
+]

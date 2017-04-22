@@ -23,6 +23,8 @@ import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import us.fellowtraveller.R;
+import us.fellowtraveller.domain.DeleteCarException;
+import us.fellowtraveller.domain.DeleteRouteException;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
@@ -78,26 +80,7 @@ public class RestApi {
     }
 
     public Observable<User> getUserInfo(String userId) {
-
-//        User user = new User();
-//        user.setLastName("Statham");
-//        user.setEmail("jason.statham@gmail.com");
-//        user.setFirstName("Jason");
-//        user.setSsoId("228");
-//        user.setId(userId);
-//        user.setRating(4.5f);
-//        user.setCommentsCount(250);
-//        user.setTripCount(111);
-//        Calendar instance = Calendar.getInstance();
-//        instance.set(1967, 6, 26, 0, 0, 0);
-//        user.setBirthday(instance.getTime().getTime());
-//        user.setImageUrl("http://i.telegraph.co.uk/multimedia/archive/01691/jason-statham-460_1691091a.jpg");
-//        ArrayList<Car> cars = new ArrayList<>();
-//        cars.add(new Car("1", "Nissan Skyline", 3, 2000, 4, "https://s-media-cache-ak0.pinimg.com/originals/a5/40/c3/a540c37dab57c8a77b2caaf323493684.jpg"));
-//        cars.add(new Car("2", "Четкая жига", 3, 1976, 2, "http://censoru.net/uploads/posts/2015-03/1426786529_000_14.jpg"));
-//        user.setCars(cars);
-//        return Observable.just(user)/*.delay(2, TimeUnit.SECONDS)*/;
-        return api.signIn(account.user()).map(Response::body);
+        return api.getUserInfo(userId);
     }
 
     public Observable<Photo> editPhoto(String filePath) {
@@ -148,7 +131,12 @@ public class RestApi {
     }
 
     public Observable<Car> deleteCar(Car car) {
-        return api.deleteCar(car.getId()).map(response -> car);
+        return api.deleteCar(car.getId()).map(response -> {
+            if (response.isSuccessful()) {
+                return car;
+            }
+            throw new DeleteCarException();
+        });
     }
 
     public Observable<RouteResult> getRoute(LatLng origin, LatLng destination, List<LatLng> items) {
@@ -178,5 +166,18 @@ public class RestApi {
 
     public Observable<List<Route>> getAllSubscriberRoutes() {
         return api.getAllSubscriberRoutes();
+    }
+
+    public Observable<List<Route>> findRoutes(LatLng origin, LatLng destination, double radiusOrigin, double radiusDestination, long when) {
+        return api.findRoutes(origin.latitude, origin.longitude, destination.latitude, destination.longitude, radiusOrigin, radiusDestination, when);
+    }
+
+    public Observable<Route> deleteRoute(Route route) {
+        return api.deleteRoute(route.getId()).map(response -> {
+            if (response.isSuccessful()) {
+                return route;
+            }
+            throw new DeleteRouteException();
+        });
     }
 }

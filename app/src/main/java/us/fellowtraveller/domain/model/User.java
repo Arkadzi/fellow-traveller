@@ -177,4 +177,13 @@ public class User implements Serializable {
         }
         cars.add(car);
     }
+
+    @Nullable
+    public Car getCar(String carId) {
+        List<Car> cars = getCars();
+        for (Car car : cars) {
+            if (car.getId().equals(carId)) return car;
+        }
+        return null;
+    }
 }

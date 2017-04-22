@@ -7,6 +7,7 @@ import java.util.List;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
+import us.fellowtraveller.domain.usecase.DeleteRouteUseCase;
 import us.fellowtraveller.domain.usecase.GetAllOwnerRoutesUseCase;
 import us.fellowtraveller.presentation.utils.Messages;
 import us.fellowtraveller.presentation.view.DriverRouteView;
@@ -18,11 +19,13 @@ import us.fellowtraveller.presentation.view.DriverRouteView;
 public class DriverPresenterImpl extends ProgressPresenter<DriverRouteView> implements DriverPresenter {
 
     private final GetAllOwnerRoutesUseCase getAllRoutesUseCase;
+    private final DeleteRouteUseCase deleteRouteUseCase;
     private final Account account;
 
-    public DriverPresenterImpl(Messages messages, GetAllOwnerRoutesUseCase getAllRoutesUseCase, Account account) {
+    public DriverPresenterImpl(Messages messages, GetAllOwnerRoutesUseCase getAllRoutesUseCase, DeleteRouteUseCase deleteRouteUseCase, Account account) {
         super(messages);
         this.getAllRoutesUseCase = getAllRoutesUseCase;
+        this.deleteRouteUseCase = deleteRouteUseCase;
         this.account = account;
     }
 
@@ -78,5 +81,20 @@ public class DriverPresenterImpl extends ProgressPresenter<DriverRouteView> impl
     public void onRefresh() {
         getAllRoutesUseCase.stopExecution();
         getAllRoutesUseCase.execute(getSubscriber());
+    }
+
+    @Override
+    public void onDelete(Route data) {
+        deleteRouteUseCase.setRoute(data);
+        deleteRouteUseCase.execute(new BaseProgressSubscriber<Route>(this) {
+            @Override
+            public void onNext(Route response) {
+                super.onNext(response);
+                DriverRouteView view = getView();
+                if (view != null) {
+                    view.onRouteDeleted(response);
+                }
+            }
+        });
     }
 }

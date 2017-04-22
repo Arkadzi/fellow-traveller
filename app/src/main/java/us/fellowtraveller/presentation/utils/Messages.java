@@ -12,6 +12,8 @@ import javax.inject.Singleton;
 import retrofit2.adapter.rxjava.HttpException;
 import us.fellowtraveller.R;
 import us.fellowtraveller.domain.BuildRouteException;
+import us.fellowtraveller.domain.DeleteCarException;
+import us.fellowtraveller.domain.DeleteRouteException;
 
 
 /**
@@ -39,6 +41,10 @@ public class Messages {
             httpException = (HttpException) e;
         } else if (e.getCause() != null && e.getCause() instanceof HttpException) {
             httpException = (HttpException) e.getCause();
+        } else if (e instanceof DeleteRouteException) {
+            return convertError(R.string.error_delete_route);
+        } else if (e instanceof DeleteCarException) {
+            return convertError(R.string.error_delete_car);
         }
         if (httpException != null)
             switch (httpException.code()) {

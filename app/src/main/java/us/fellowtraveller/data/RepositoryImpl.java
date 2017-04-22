@@ -109,4 +109,14 @@ public class RepositoryImpl implements Repository {
     public Observable<List<Route>> getAllSubscriberRoutes() {
         return restApi.getAllSubscriberRoutes();
     }
+
+    @Override
+    public Observable<List<Route>> findRoutes(LatLng origin, LatLng destination, double radiusOrigin, double radiusDestination, long when) {
+        return restApi.findRoutes(origin, destination, radiusOrigin, radiusDestination, when);
+    }
+
+    @Override
+    public Observable<Route> deleteRoute(Route route) {
+        return restApi.deleteRoute(route);
+    }
 }

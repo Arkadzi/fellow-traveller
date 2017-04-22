@@ -14,6 +14,7 @@ import java.util.List;
  */
 
 public class Route implements Serializable {
+    private String id;
     private String title;
     private int seats;
     private float price;
@@ -29,6 +30,14 @@ public class Route implements Serializable {
             }
         }
         return 0;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public float getPrice() {

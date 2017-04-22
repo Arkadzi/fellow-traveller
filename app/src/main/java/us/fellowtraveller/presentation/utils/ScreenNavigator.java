@@ -4,18 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 
+import us.fellowtraveller.data.Constants;
 import us.fellowtraveller.domain.model.User;
+import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.presentation.activities.AddCarActivity;
 import us.fellowtraveller.presentation.activities.CreateRouteActivity;
 import us.fellowtraveller.presentation.activities.EditProfileActivity;
 import us.fellowtraveller.presentation.activities.FindRouteActivity;
 import us.fellowtraveller.presentation.activities.MainActivity;
 import us.fellowtraveller.presentation.activities.ProfileActivity;
+import us.fellowtraveller.presentation.activities.RouteActivity;
 import us.fellowtraveller.presentation.activities.SignInActivity;
 import us.fellowtraveller.presentation.activities.SignUpActivity;
-import us.fellowtraveller.presentation.fragments.TravellerFragment;
 
 /**
  * Created by arkadii on 3/18/17.
@@ -59,5 +60,11 @@ public class ScreenNavigator {
 
     public static void startSearchRouteScreen(Fragment fragment, Activity activity, int requestCode) {
         fragment.startActivityForResult(new Intent(activity, FindRouteActivity.class), requestCode);
+    }
+
+    public static void startRouteScreen(Activity activity, Route route) {
+        Intent intent = new Intent(activity, RouteActivity.class);
+        intent.putExtra(Constants.Intents.EXTRA_ROUTE, route);
+        activity.startActivity(intent);
     }
 }

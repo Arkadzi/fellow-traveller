@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,16 +21,10 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
-import us.fellowtraveller.data.Constants;
-import us.fellowtraveller.domain.model.Car;
-import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.domain.model.trip.TripPoint;
-import us.fellowtraveller.presentation.activities.CreateRouteActivity;
-import us.fellowtraveller.presentation.dialogs.CreateRouteDialog;
 import us.fellowtraveller.presentation.dialogs.DatePickDialogFragment;
 import us.fellowtraveller.presentation.presenter.FindRoutePresenter;
 import us.fellowtraveller.presentation.utils.FieldUtils;
@@ -56,9 +48,14 @@ public class FindRouteFragment extends ProgressFragment implements FindRouteView
     EditText etFrom;
     @Bind(R.id.et_to)
     EditText etTo;
-    private int pointType;
+    @Bind(R.id.et_from_radius)
+    EditText etFromRadius;
+    @Bind(R.id.et_to_radius)
+    EditText etToRadius;
     @Bind(R.id.btn_find)
     Button btnFind;
+
+    private int pointType;
     @Inject
     FindRoutePresenter presenter;
     private final SimpleDateFormat formatFirst = new SimpleDateFormat("d MMM yyyy, H:mm");
@@ -140,18 +137,24 @@ public class FindRouteFragment extends ProgressFragment implements FindRouteView
         if (view == etFrom) {
             pointType = FROM;
             LocationUtils.requestLocation(this);
+            etFrom.setError(null);
         } else if (view == etTo) {
             pointType = TO;
             LocationUtils.requestLocation(this);
+            etTo.setError(null);
         } else if (view == etWhen) {
             DatePickDialogFragment.showDateTime(getChildFragmentManager());
+            etWhen.setError(null);
         } else if (view == btnFind) {
             try {
-                FieldUtils.getNonEmptyText(etWhen);
-                FieldUtils.getNonEmptyText(etTo);
                 FieldUtils.getNonEmptyText(etFrom);
-                presenter.onRouteBuildClick(from, to, when);
-            } catch (BadFieldDataException e) {}
+                FieldUtils.getNonEmptyText(etTo);
+                FieldUtils.getNonEmptyText(etWhen);
+                float fromRadius = FieldUtils.getFloat(etFromRadius);
+                float toRadius = FieldUtils.getFloat(etToRadius);
+                presenter.onRouteBuildClick(from, to, fromRadius, toRadius, when);
+            } catch (BadFieldDataException e) {
+            }
         }
     }
 
@@ -162,10 +165,16 @@ public class FindRouteFragment extends ProgressFragment implements FindRouteView
     }
 
     @Override
-    public void onRouteCreated(Route response) {
-        showMessage(getString(R.string.message_route_built));
-        Intent data = new Intent();
-//        Scree
+    public void onRoutesFound(List<Route> routes) {
+        if (routes.isEmpty()) {
+            showMessage(getString(R.string.error_nothing_found));
+        } else {
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, RouteListFragment.newInstance(routes))
+                    .addToBackStack(null)
+                    .commit();
+        }
+
     }
 }
 

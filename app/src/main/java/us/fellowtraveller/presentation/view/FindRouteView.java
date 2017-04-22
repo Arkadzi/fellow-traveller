@@ -11,5 +11,5 @@ import us.fellowtraveller.domain.model.trip.Route;
  */
 
 public interface FindRouteView extends ProgressView {
-    void onRouteCreated(Route response);
+    void onRoutesFound(List<Route> routes);
 }

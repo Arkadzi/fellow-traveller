@@ -67,4 +67,19 @@ public interface RetrofitApi {
 
     @GET("map/subscribes")
     Observable<List<Route>> getAllSubscriberRoutes();
+
+    @GET("map/routes/search")
+    Observable<List<Route>> findRoutes(
+            @Query("latitude1") double latitude1, @Query("longitude1") double longitude1,
+            @Query("latitude2") double latitude2, @Query("longitude2") double longitude2,
+            @Query("radius1") double radiusOrigin, @Query("radius2") double radiusDestination,
+            @Query("time") long when
+    );
+
+    @DELETE("map/routes/{id}")
+    Observable<Response<Void>> deleteRoute(@Path("id") String id);
+
+
+    @GET("users")
+    Observable<User> getUserInfo(@Query("id") String userId);
 }

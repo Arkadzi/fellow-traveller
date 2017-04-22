@@ -32,12 +32,13 @@ import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.presentation.adapters.RouteAdapter;
+import us.fellowtraveller.presentation.dialogs.MenuDialogFragment;
 import us.fellowtraveller.presentation.presenter.DriverPresenter;
 import us.fellowtraveller.presentation.utils.ActivityUtils;
 import us.fellowtraveller.presentation.utils.ScreenNavigator;
 import us.fellowtraveller.presentation.view.DriverRouteView;
 
-public class DriverFragment extends Fragment implements DriverRouteView {
+public class DriverFragment extends Fragment implements DriverRouteView, MenuDialogFragment.OnMenuClickListener<Route> {
     public static final String TAG = "driver_fragment";
     public static final int ADD_ROUTE_REQUEST_CODE = 101;
     @Bind(R.id.coordinator_layout)
@@ -78,6 +79,11 @@ public class DriverFragment extends Fragment implements DriverRouteView {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RouteAdapter(getActivity());
         recyclerView.setAdapter(adapter);
+        adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(getActivity(), route));
+        adapter.setRouteLongClickListener((position, route) -> {
+            MenuDialogFragment.newInstance(new String[]{getString(R.string.action_delete)}, route)
+                    .show(getChildFragmentManager(), MenuDialogFragment.TAG);
+        });
         refreshLayout.setOnRefreshListener(() -> presenter.onRefresh());
         snackbar = Snackbar.make(coordinatorLayout, R.string.warn_no_cars, Snackbar.LENGTH_LONG)
                 .setAction(R.string.profile, v -> presenter.onShowProfileButtonClick());
@@ -98,6 +104,7 @@ public class DriverFragment extends Fragment implements DriverRouteView {
         if (requestCode == ADD_ROUTE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Route route = ActivityUtils.restore(data.getExtras(), Constants.Intents.EXTRA_ROUTE);
             adapter.addRoute(route);
+            tvEmpty.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -156,5 +163,17 @@ public class DriverFragment extends Fragment implements DriverRouteView {
     @Override
     public void showProfile(User user) {
         ScreenNavigator.startProfileScreen(getActivity(), user);
+    }
+
+    @Override
+    public void onRouteDeleted(Route response) {
+        adapter.remove(response);
+    }
+
+    @Override
+    public void onMenuClick(int position, Route data) {
+        if (position == 0) {
+            presenter.onDelete(data);
+        }
     }
 }

@@ -42,4 +42,8 @@ public interface Repository {
     Observable<List<Route>> getAllOwnerRoutes(String ownerId);
 
     Observable<List<Route>> getAllSubscriberRoutes();
+
+    Observable<List<Route>> findRoutes(LatLng origin, LatLng destination, double radiusOrigin, double radiusDestination, long when);
+
+    Observable<Route> deleteRoute(Route route);
 }

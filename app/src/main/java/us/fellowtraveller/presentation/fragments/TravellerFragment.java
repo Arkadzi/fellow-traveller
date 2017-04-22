@@ -76,6 +76,7 @@ public class TravellerFragment extends Fragment implements TravellerRouteView {
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RouteAdapter(getActivity());
+        adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(getActivity(), route));
         recyclerView.setAdapter(adapter);
         refreshLayout.setOnRefreshListener(() -> presenter.onRefresh());
         return view;
@@ -95,6 +96,7 @@ public class TravellerFragment extends Fragment implements TravellerRouteView {
         if (requestCode == ADD_ROUTE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Route route = ActivityUtils.restore(data.getExtras(), Constants.Intents.EXTRA_ROUTE);
             adapter.addRoute(route);
+            tvEmpty.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

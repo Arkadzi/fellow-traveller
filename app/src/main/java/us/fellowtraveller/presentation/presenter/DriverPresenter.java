@@ -1,5 +1,6 @@
 package us.fellowtraveller.presentation.presenter;
 
+import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.presentation.view.DriverRouteView;
 
 /**
@@ -8,9 +9,12 @@ import us.fellowtraveller.presentation.view.DriverRouteView;
 
 public interface DriverPresenter extends Presenter<DriverRouteView> {
     void onStart();
+
     void onAddRouteButtonClick();
 
     void onShowProfileButtonClick();
 
     void onRefresh();
+
+    void onDelete(Route data);
 }

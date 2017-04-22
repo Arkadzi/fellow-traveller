@@ -14,9 +14,11 @@ import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.usecase.AddCarUseCase;
 import us.fellowtraveller.domain.usecase.AddRouteUseCase;
 import us.fellowtraveller.domain.usecase.DeleteCarUseCase;
+import us.fellowtraveller.domain.usecase.DeleteRouteUseCase;
 import us.fellowtraveller.domain.usecase.EditPhotoUseCase;
 import us.fellowtraveller.domain.usecase.EditProfileUseCase;
 import us.fellowtraveller.domain.usecase.BuildRouteUseCase;
+import us.fellowtraveller.domain.usecase.FindRoutesUseCase;
 import us.fellowtraveller.domain.usecase.GetAllOwnerRoutesUseCase;
 import us.fellowtraveller.domain.usecase.GetAllSubscriberRoutesUseCase;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
@@ -40,6 +42,8 @@ import us.fellowtraveller.presentation.presenter.SignUpPresenter;
 import us.fellowtraveller.presentation.presenter.SignUpPresenterImpl;
 import us.fellowtraveller.presentation.presenter.TravellerPresenter;
 import us.fellowtraveller.presentation.presenter.TravellerPresenterImpl;
+import us.fellowtraveller.presentation.presenter.ViewRoutePresenter;
+import us.fellowtraveller.presentation.presenter.ViewRoutePresenterImpl;
 import us.fellowtraveller.presentation.utils.Messages;
 
 /**
@@ -98,8 +102,8 @@ public class UserModule {
 
     @Provides
     @UserScope
-    DriverPresenter provideDriverPresenter(Messages messages, GetAllOwnerRoutesUseCase getAllRoutesUseCase, Account account) {
-        return new DriverPresenterImpl(messages, getAllRoutesUseCase, account);
+    DriverPresenter provideDriverPresenter(Messages messages, GetAllOwnerRoutesUseCase getAllRoutesUseCase, DeleteRouteUseCase deleteRouteUseCase, Account account) {
+        return new DriverPresenterImpl(messages, getAllRoutesUseCase, deleteRouteUseCase, account);
     }
 
     @Provides
@@ -110,7 +114,13 @@ public class UserModule {
 
     @Provides
     @UserScope
-    FindRoutePresenter provideFindRoutePresenter(Messages messages) {
-        return new FindRoutePresenterImpl(messages);
+    FindRoutePresenter provideFindRoutePresenter(Messages messages, FindRoutesUseCase findRoutesUseCase) {
+        return new FindRoutePresenterImpl(messages, findRoutesUseCase);
+    }
+
+    @Provides
+    @UserScope
+    ViewRoutePresenter provideViewRoutePresenter(Messages messages, UserInfoUseCase userInfoUseCase) {
+        return new ViewRoutePresenterImpl(messages, userInfoUseCase);
     }
 }

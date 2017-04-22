@@ -71,5 +71,12 @@
     <string name="hint_price_per_km">Price/km</string>
     <string name="hint_when">When</string>
     <string name="action_search">Search</string>
+    <string name="hint_from_radius">Place of departure</string>
+    <string name="hint_to_radius">Place of arrival</string>
+    <string name="radius_of_search">Radius of search, km</string>
+    <string name="error_nothing_found">Nothing found</string>
+    <string name="hint_price">Price</string>
+    <string name="error_delete_route">Unable to delete route</string>
+    <string name="error_delete_car">Unable to delete car</string>
 
 </resources>

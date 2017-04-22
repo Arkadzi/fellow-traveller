@@ -47,8 +47,8 @@
     <string name="hint_camera">Камера</string>
     <string name="title_driver">Водитель</string>
     <string name="title_traveller">Попутчик</string>
-    <string name="hint_from">From</string>
-    <string name="hint_to">To</string>
+    <string name="hint_from">Отправление</string>
+    <string name="hint_to">Прибытие</string>
     <string name="action_add_point">Добавить промежуточную точку</string>
     <string name="warn_user_denied_location_permission" >Вы не предоставили доступ к Вашему местонахождению</string>
     <string name="question_build_route">Вы хотите построить маршрут?</string>
@@ -65,4 +65,11 @@
     <string name="hint_price_per_km">Цена/км</string>
     <string name="hint_when">Когда</string>
     <string name="action_search">Поиск</string>
+    <string name="hint_from_radius">Место посадки</string>
+    <string name="hint_to_radius">Место прибытия</string>
+    <string name="radius_of_search">Радиус поиска, км</string>
+    <string name="error_nothing_found">Ничего не найдено</string>
+    <string name="hint_price">Цена</string>
+    <string name="error_delete_route">Невозможно удалить маршрут</string>
+    <string name="error_delete_car">Невозможно удалить авто</string>
 </resources>

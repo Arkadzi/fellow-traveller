@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import us.fellowtraveller.R;
 import us.fellowtraveller.domain.model.trip.Point;
@@ -32,10 +33,10 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
     private GoogleMap googleMap;
 
 
-    public static RouteMapFragment newInstance(ArrayList<Point> points) {
+    public static RouteMapFragment newInstance(List<Point> points) {
 
         Bundle args = new Bundle();
-        args.putSerializable(ARG_POINTS, points);
+        args.putSerializable(ARG_POINTS, new ArrayList<>(points));
 
         RouteMapFragment fragment = new RouteMapFragment();
 

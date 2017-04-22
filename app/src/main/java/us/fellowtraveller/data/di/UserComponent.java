@@ -9,6 +9,7 @@ import us.fellowtraveller.presentation.activities.EditProfileActivity;
 import us.fellowtraveller.presentation.activities.FindRouteActivity;
 import us.fellowtraveller.presentation.activities.MainActivity;
 import us.fellowtraveller.presentation.activities.ProfileActivity;
+import us.fellowtraveller.presentation.activities.RouteActivity;
 import us.fellowtraveller.presentation.activities.SignInActivity;
 import us.fellowtraveller.presentation.activities.SignUpActivity;
 import us.fellowtraveller.presentation.activities.SplashActivity;
@@ -52,6 +53,8 @@ public interface UserComponent {
     void inject(FindRouteActivity findRouteActivity);
 
     void inject(FindRouteFragment findRouteFragment);
+
+    void inject(RouteActivity routeActivity);
 
     Account account();
 }

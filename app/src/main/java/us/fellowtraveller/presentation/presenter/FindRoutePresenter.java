@@ -12,5 +12,5 @@ import us.fellowtraveller.presentation.view.FindRouteView;
  */
 
 public interface FindRoutePresenter extends Presenter<FindRouteView> {
-    void onRouteBuildClick(TripPoint origin, TripPoint destination, long when);
+    void onRouteBuildClick(TripPoint origin, TripPoint destination, double originRadius, double destinationRadius, long when);
 }

@@ -1,8 +1,10 @@
 package us.fellowtraveller.presentation.adapters;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -25,6 +27,10 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
         if (o2.getTime() - o1.getTime() > 0) return 1;
         return -1;
     };
+    @Nullable
+    private OnRouteClickListener routeClickListener;
+    @Nullable
+    private OnRouteLongClickListener routeLongClickListener;
 
     public RouteAdapter(Context context) {
         this.context = context;
@@ -33,12 +39,26 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
 
     @Override
     public RouteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new RouteViewHolder(layoutInflater, parent);
+        RouteViewHolder routeViewHolder = new RouteViewHolder(layoutInflater, parent);
+        routeViewHolder.itemView.setOnClickListener(v -> {
+            if (routeClickListener != null) {
+                routeClickListener.onRouteClick(data.get(routeViewHolder.getAdapterPosition()));
+            }
+        });
+        routeViewHolder.itemView.setOnLongClickListener(v -> {
+            if (routeLongClickListener != null) {
+                int adapterPosition = routeViewHolder.getAdapterPosition();
+                routeLongClickListener.onRouteClick(adapterPosition, data.get(adapterPosition));
+            }
+            return false;
+        });
+        return routeViewHolder;
     }
 
     @Override
     public void onBindViewHolder(RouteViewHolder holder, int position) {
         holder.bind(data.get(position));
+
     }
 
     public void setData(List<Route> data) {
@@ -57,5 +77,31 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void setRouteClickListener(@Nullable OnRouteClickListener routeClickListener) {
+        this.routeClickListener = routeClickListener;
+    }
+
+    public void setRouteLongClickListener(@Nullable OnRouteLongClickListener routeLongClickListener) {
+        this.routeLongClickListener = routeLongClickListener;
+    }
+
+    public void remove(Route response) {
+        for (int i = 0; i < data.size(); i++) {
+            if (response.getId().equals(data.get(i).getId())) {
+                data.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
+    }
+
+    public interface OnRouteClickListener {
+        void onRouteClick(Route route);
+    }
+
+    public interface OnRouteLongClickListener {
+        void onRouteClick(int position, Route route);
     }
 }
