@@ -124,7 +124,7 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView {
             carRating.setNumStars(Car.MAX_RATING);
             carRating.setRating(car.getCondition());
             Picasso.with(this)
-                    .load(imageUrl)
+                    .load(car.getImageUrl())
                     .resizeDimen(R.dimen.car_image_size, R.dimen.car_image_size)
                     .transform(new CircleTransform())
                     .into(ivCarPhoto);

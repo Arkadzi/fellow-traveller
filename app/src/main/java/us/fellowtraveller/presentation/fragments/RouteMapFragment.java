@@ -69,7 +69,7 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
                 LatLng latLng = new LatLng(point.getLatitude(), point.getLongitude());
                 builder.include(latLng);
                 polylineOptions.add(latLng);
-                if (point.getCollectionData() != null) {
+                if (point.getCollectionData() != null || i == points.size() - 1) {
                     googleMap.addMarker(getMarkerOption(point, ++index,
                             (i > 0 && i < points.size() - 1)
                                     ? R.drawable.point_marker_from

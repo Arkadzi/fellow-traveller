@@ -169,7 +169,7 @@ public class RestApi {
     }
 
     public Observable<List<Route>> findRoutes(LatLng origin, LatLng destination, double radiusOrigin, double radiusDestination, long when) {
-        return api.findRoutes(origin.latitude, origin.longitude, destination.latitude, destination.longitude, radiusOrigin, radiusDestination, when);
+        return api.findRoutes(origin.latitude, origin.longitude, destination.latitude, destination.longitude, radiusOrigin / 111, radiusDestination / 111, when);
     }
 
     public Observable<Route> deleteRoute(Route route) {
