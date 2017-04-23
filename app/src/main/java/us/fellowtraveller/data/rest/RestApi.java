@@ -180,4 +180,18 @@ public class RestApi {
             throw new DeleteRouteException();
         });
     }
+
+    public Observable<String> subscribe(String pointId) {
+        return api.subscribe(pointId).map(voidResponse ->  {
+//            if (voidResponse.isSuccessful()) {
+                return pointId;
+//            }
+//            throw new SubscribeException();
+        });
+    }
+
+
+    public Observable<String> unsubscribe(String pointId) {
+        return api.subscribe(pointId).map(voidResponse -> pointId);
+    }
 }

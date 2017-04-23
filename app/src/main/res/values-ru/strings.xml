@@ -72,4 +72,6 @@
     <string name="hint_price">Цена</string>
     <string name="error_delete_route">Невозможно удалить маршрут</string>
     <string name="error_delete_car">Невозможно удалить авто</string>
+    <string name="subscribe">Подписаться</string>
+    <string name="unsubscribe">Отписаться</string>
 </resources>

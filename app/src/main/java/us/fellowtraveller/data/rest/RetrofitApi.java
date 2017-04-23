@@ -10,6 +10,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -67,6 +68,13 @@ public interface RetrofitApi {
 
     @GET("map/subscribes")
     Observable<List<Route>> getAllSubscriberRoutes();
+
+    @PUT("map/subscribes/{collectionDataId}")
+    Observable<Response<Void>> subscribe(@Path("collectionDataId") String id);
+
+
+    @DELETE("map/subscribes/{collectionDataId}")
+    Observable<Response<Void>> unsubscribe(@Path("collectionDataId") String id);
 
     @GET("map/routes/search")
     Observable<List<Route>> findRoutes(

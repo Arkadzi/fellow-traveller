@@ -23,6 +23,8 @@ import us.fellowtraveller.domain.usecase.GetAllOwnerRoutesUseCase;
 import us.fellowtraveller.domain.usecase.GetAllSubscriberRoutesUseCase;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
 import us.fellowtraveller.domain.usecase.SignUpUseCase;
+import us.fellowtraveller.domain.usecase.SubscribeUseCase;
+import us.fellowtraveller.domain.usecase.UnsubscribeUseCase;
 import us.fellowtraveller.domain.usecase.UserInfoUseCase;
 import us.fellowtraveller.presentation.presenter.AddCarPresenter;
 import us.fellowtraveller.presentation.presenter.AddCarPresenterImpl;
@@ -120,7 +122,10 @@ public class UserModule {
 
     @Provides
     @UserScope
-    ViewRoutePresenter provideViewRoutePresenter(Messages messages, UserInfoUseCase userInfoUseCase) {
-        return new ViewRoutePresenterImpl(messages, userInfoUseCase);
+    ViewRoutePresenter provideViewRoutePresenter(Messages messages,
+                                                 UserInfoUseCase userInfoUseCase,
+                                                 SubscribeUseCase subscribeUseCase,
+                                                 UnsubscribeUseCase unsubscribeUseCase) {
+        return new ViewRoutePresenterImpl(messages, userInfoUseCase, subscribeUseCase, unsubscribeUseCase);
     }
 }

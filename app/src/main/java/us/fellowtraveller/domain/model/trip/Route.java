@@ -87,4 +87,36 @@ public class Route implements Serializable {
     public void setPoints(List<Point> points) {
         this.points = points;
     }
+
+    public String getStartPointId() {
+        try {
+            return points.get(0).getCollectionData().getId();
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
+    public void subscribe(String subscriptionPointId, String userId) {
+        if (points != null) {
+            for (Point point : points) {
+                Collection collectionData = point.getCollectionData();
+                if (collectionData != null && subscriptionPointId.equals(collectionData.getId())) {
+                    collectionData.addSubscriber(userId);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void unsubscribe(String subscriptionPointId, String userId) {
+        if (points != null) {
+            for (Point point : points) {
+                Collection collectionData = point.getCollectionData();
+                if (collectionData != null && subscriptionPointId.equals(collectionData.getId())) {
+                    collectionData.removeSubscriber(userId);
+                    break;
+                }
+            }
+        }
+    }
 }

@@ -78,5 +78,7 @@
     <string name="hint_price">Price</string>
     <string name="error_delete_route">Unable to delete route</string>
     <string name="error_delete_car">Unable to delete car</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
 
 </resources>

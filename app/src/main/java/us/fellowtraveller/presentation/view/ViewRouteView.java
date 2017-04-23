@@ -8,4 +8,7 @@ import us.fellowtraveller.domain.model.User;
 
 public interface ViewRouteView extends ProgressView {
     void renderUser(User response);
+
+    void onSubscribed();
+    void onUnsubscribed();
 }

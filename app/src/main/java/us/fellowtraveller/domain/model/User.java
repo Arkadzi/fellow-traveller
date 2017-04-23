@@ -6,6 +6,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import us.fellowtraveller.domain.model.trip.Collection;
+import us.fellowtraveller.domain.model.trip.Point;
+import us.fellowtraveller.domain.model.trip.Route;
+
 /**
  * Created by arkadii on 3/6/17.
  */
@@ -183,6 +187,26 @@ public class User implements Serializable {
         List<Car> cars = getCars();
         for (Car car : cars) {
             if (car.getId().equals(carId)) return car;
+        }
+        return null;
+    }
+
+    @Nullable
+    public String getSubscriptionPointId(Route route) {
+        String id = getId();
+        if (id != null) {
+            List<Point> points = route.getPoints();
+            for (Point point : points) {
+                Collection collectionData = point.getCollectionData();
+                if (collectionData != null) {
+                    List<String> subscribers = collectionData.getSubscribers();
+                    for (String subscriber : subscribers) {
+                        if (id.equals(subscriber)) {
+                            return collectionData.getId();
+                        }
+                    }
+                }
+            }
         }
         return null;
     }

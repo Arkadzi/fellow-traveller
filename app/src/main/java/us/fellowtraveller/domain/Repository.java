@@ -46,4 +46,8 @@ public interface Repository {
     Observable<List<Route>> findRoutes(LatLng origin, LatLng destination, double radiusOrigin, double radiusDestination, long when);
 
     Observable<Route> deleteRoute(Route route);
+
+    Observable<String> subscribe(String pointId);
+
+    Observable<String> unsubscribe(String pointId);
 }

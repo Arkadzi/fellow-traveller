@@ -119,4 +119,15 @@ public class RepositoryImpl implements Repository {
     public Observable<Route> deleteRoute(Route route) {
         return restApi.deleteRoute(route);
     }
+
+    @Override
+    public Observable<String> subscribe(String pointId) {
+        return restApi.subscribe(pointId);
+
+    }
+
+    @Override
+    public Observable<String> unsubscribe(String pointId) {
+        return restApi.unsubscribe(pointId);
+    }
 }
