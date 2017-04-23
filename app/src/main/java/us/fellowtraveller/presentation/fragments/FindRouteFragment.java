@@ -171,6 +171,7 @@ public class FindRouteFragment extends ProgressFragment implements FindRouteView
         } else {
             getFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, RouteListFragment.newInstance(routes))
+                    .hide(this)
                     .addToBackStack(null)
                     .commit();
         }

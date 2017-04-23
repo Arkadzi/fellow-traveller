@@ -64,14 +64,17 @@
 
         <activity
             android:name=".presentation.activities.MapsActivity"
-            android:label="@string/title_activity_maps">
-        </activity>
-        <activity android:name=".presentation.activities.FindRouteActivity" />
-        <activity android:name=".presentation.activities.RouteActivity">
+            android:label="@string/title_activity_maps"></activity>
+        <activity
+            android:name=".presentation.activities.FindRouteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.activities.RouteActivity"
+            android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
     </application>
