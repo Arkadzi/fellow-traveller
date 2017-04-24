@@ -192,6 +192,6 @@ public class RestApi {
 
 
     public Observable<String> unsubscribe(String pointId) {
-        return api.subscribe(pointId).map(voidResponse -> pointId);
+        return api.unsubscribe(pointId).map(voidResponse -> pointId);
     }
 }

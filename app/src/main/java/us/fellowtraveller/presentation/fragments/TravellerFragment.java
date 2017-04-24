@@ -42,6 +42,7 @@ import us.fellowtraveller.presentation.view.TravellerRouteView;
 public class TravellerFragment extends Fragment implements TravellerRouteView {
     public static final String TAG = "traveller_fragment";
     public static final int ADD_ROUTE_REQUEST_CODE = 101;
+    public static final int VIEW_ROUTE_REQUEST_CODE = 102;
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
     @Bind(R.id.progress_bar)
@@ -76,7 +77,7 @@ public class TravellerFragment extends Fragment implements TravellerRouteView {
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RouteAdapter(getActivity());
-        adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(getActivity(), route));
+        adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(this, getActivity(), route, VIEW_ROUTE_REQUEST_CODE));
         recyclerView.setAdapter(adapter);
         refreshLayout.setOnRefreshListener(() -> presenter.onRefresh());
         return view;
@@ -96,6 +97,9 @@ public class TravellerFragment extends Fragment implements TravellerRouteView {
         if (requestCode == ADD_ROUTE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             Route route = ActivityUtils.restore(data.getExtras(), Constants.Intents.EXTRA_ROUTE);
             adapter.addRoute(route);
+            tvEmpty.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        } else if (requestCode == VIEW_ROUTE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            adapter.remove(ActivityUtils.restore(data.getExtras(), Constants.Intents.EXTRA_ROUTE));
             tvEmpty.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
         }
         super.onActivityResult(requestCode, resultCode, data);

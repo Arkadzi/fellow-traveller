@@ -58,7 +58,6 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
     @Override
     public void onBindViewHolder(RouteViewHolder holder, int position) {
         holder.bind(data.get(position));
-
     }
 
     public void setData(List<Route> data) {
@@ -92,6 +91,16 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
             if (response.getId().equals(data.get(i).getId())) {
                 data.remove(i);
                 notifyItemRemoved(i);
+                break;
+            }
+        }
+    }
+
+    public void updateRoute(Route route) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getId().equals(route.getId())) {
+                data.set(i, route);
+                notifyItemChanged(i);
                 break;
             }
         }

@@ -60,7 +60,7 @@ public class ViewRoutePresenterImpl extends ProgressPresenter<ViewRouteView> imp
     @Override
     public void onUnsubscribe(String pointId) {
         unsubscribeUseCase.setPointId(pointId);
-        subscribeUseCase.execute(new BaseProgressSubscriber<String>(this) {
+        unsubscribeUseCase.execute(new BaseProgressSubscriber<String>(this) {
             @Override
             public void onNext(String response) {
                 super.onNext(response);

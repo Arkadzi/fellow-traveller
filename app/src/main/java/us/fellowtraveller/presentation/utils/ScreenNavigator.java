@@ -62,9 +62,9 @@ public class ScreenNavigator {
         fragment.startActivityForResult(new Intent(activity, FindRouteActivity.class), requestCode);
     }
 
-    public static void startRouteScreen(Activity activity, Route route) {
+    public static void startRouteScreen(Fragment fragment, Activity activity, Route route, int requestCode) {
         Intent intent = new Intent(activity, RouteActivity.class);
         intent.putExtra(Constants.Intents.EXTRA_ROUTE, route);
-        activity.startActivity(intent);
+        fragment.startActivityForResult(intent, requestCode);
     }
 }

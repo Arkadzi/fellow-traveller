@@ -1,5 +1,6 @@
 package us.fellowtraveller.presentation.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -132,7 +133,7 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView {
                 .resize(dimension, 0)
                 .transform(new CircleTransform())
                 .into(ivDriverPhoto);
-        if (!account.user().getId().equals(user.getId())) {
+//        if (!account.user().getId().equals(user.getId())) {
             subscriptionPointId = user.getSubscriptionPointId(route);
             boolean subscribed = subscriptionPointId != null;
             if(!subscribed) {
@@ -140,7 +141,7 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView {
             }
             btnSubscribe.setVisibility(subscribed ? View.GONE : View.VISIBLE);
             btnUnsubscribe.setVisibility(subscribed ? View.VISIBLE : View.GONE);
-        }
+//        }
 
         Car car = user.getCar(route.getCar());
         if (car != null) {
@@ -164,6 +165,10 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView {
         route.subscribe(subscriptionPointId, user.getId());
         btnSubscribe.setVisibility(View.GONE);
         btnUnsubscribe.setVisibility(View.VISIBLE);
+        Intent data = new Intent();
+        data.putExtra(Constants.Intents.EXTRA_ROUTE, route);
+        setResult(RESULT_OK, data);
+        finish();
     }
 
     @Override
@@ -171,5 +176,9 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView {
         route.unsubscribe(subscriptionPointId, user.getId());
         btnSubscribe.setVisibility(View.VISIBLE);
         btnUnsubscribe.setVisibility(View.GONE);
+        Intent data = new Intent();
+        data.putExtra(Constants.Intents.EXTRA_ROUTE, route);
+        setResult(RESULT_OK, data);
+        finish();
     }
 }

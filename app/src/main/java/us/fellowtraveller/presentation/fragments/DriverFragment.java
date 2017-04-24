@@ -41,6 +41,7 @@ import us.fellowtraveller.presentation.view.DriverRouteView;
 public class DriverFragment extends Fragment implements DriverRouteView, MenuDialogFragment.OnMenuClickListener<Route> {
     public static final String TAG = "driver_fragment";
     public static final int ADD_ROUTE_REQUEST_CODE = 101;
+    public static final int VIEW_ROUTE_REQUEST_CODE = 102;
     @Bind(R.id.coordinator_layout)
     CoordinatorLayout coordinatorLayout;
     @Bind(R.id.recycler_view)
@@ -79,7 +80,7 @@ public class DriverFragment extends Fragment implements DriverRouteView, MenuDia
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new RouteAdapter(getActivity());
         recyclerView.setAdapter(adapter);
-        adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(getActivity(), route));
+        adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(this, getActivity(), route, VIEW_ROUTE_REQUEST_CODE));
         adapter.setRouteLongClickListener((position, route) -> {
             MenuDialogFragment.newInstance(new String[]{getString(R.string.action_delete)}, route)
                     .show(getChildFragmentManager(), MenuDialogFragment.TAG);
