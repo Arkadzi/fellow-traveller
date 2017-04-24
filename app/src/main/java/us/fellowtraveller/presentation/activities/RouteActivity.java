@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -27,6 +28,7 @@ import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Route;
+import us.fellowtraveller.presentation.dialogs.UserListDialogFragment;
 import us.fellowtraveller.presentation.fragments.RouteMapFragment;
 import us.fellowtraveller.presentation.presenter.ViewRoutePresenter;
 import us.fellowtraveller.presentation.utils.CircleTransform;
@@ -34,7 +36,7 @@ import us.fellowtraveller.presentation.utils.ResourceUtils;
 import us.fellowtraveller.presentation.utils.ScreenNavigator;
 import us.fellowtraveller.presentation.view.ViewRouteView;
 
-public class RouteActivity extends ProgressActivity implements ViewRouteView {
+public class RouteActivity extends ProgressActivity implements ViewRouteView, RouteMapFragment.InfoWindowClickListener {
     @Bind(R.id.route_title)
     TextView tvRouteTitle;
     @Bind(R.id.route_date)
@@ -133,15 +135,15 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView {
                 .resize(dimension, 0)
                 .transform(new CircleTransform())
                 .into(ivDriverPhoto);
-//        if (!account.user().getId().equals(user.getId())) {
-            subscriptionPointId = user.getSubscriptionPointId(route);
+        if (!account.user().getId().equals(user.getId())) {
+            subscriptionPointId = account.user().getSubscriptionPointId(route);
             boolean subscribed = subscriptionPointId != null;
             if(!subscribed) {
                 subscriptionPointId = route.getStartPointId();
             }
             btnSubscribe.setVisibility(subscribed ? View.GONE : View.VISIBLE);
             btnUnsubscribe.setVisibility(subscribed ? View.VISIBLE : View.GONE);
-//        }
+        }
 
         Car car = user.getCar(route.getCar());
         if (car != null) {
@@ -180,5 +182,16 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView {
         data.putExtra(Constants.Intents.EXTRA_ROUTE, route);
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    @Override
+    public void showSubscribers(List<User> response) {
+        UserListDialogFragment.newInstance(response)
+                .show(getSupportFragmentManager(), UserListDialogFragment.TAG);
+    }
+
+    @Override
+    public void onClick(List<String> subscribers) {
+        presenter.onMarkerClick(subscribers);
     }
 }

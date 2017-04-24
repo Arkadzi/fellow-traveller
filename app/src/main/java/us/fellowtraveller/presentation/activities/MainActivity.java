@@ -83,6 +83,9 @@ public class MainActivity extends BaseActivity {
                 Account account = Application.getApp(this).getUserComponent().account();
                 ScreenNavigator.startProfileScreen(this, account.user());
                 break;
+            case R.id.action_logout:
+                Application.getApp(this).logout();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

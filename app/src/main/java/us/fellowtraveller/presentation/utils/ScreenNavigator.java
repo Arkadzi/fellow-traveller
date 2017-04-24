@@ -31,6 +31,12 @@ public class ScreenNavigator {
         context.startActivity(new Intent(context, SignInActivity.class));
     }
 
+    public static void startFirstScreen(Context context) {
+        Intent intent = new Intent(context, SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
     public static void startMainScreen(Context context, boolean newTask) {
         Intent intent = new Intent(context, MainActivity.class);
         if (newTask) {

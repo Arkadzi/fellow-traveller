@@ -6,4 +6,9 @@
         android:title="@string/profile"
         android:icon="@drawable/ic_account_circle_white_24dp"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/action_log_out"
+        app:showAsAction="never"/>
 </menu>

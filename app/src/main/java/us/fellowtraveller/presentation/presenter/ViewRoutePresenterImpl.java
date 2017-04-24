@@ -1,7 +1,10 @@
 package us.fellowtraveller.presentation.presenter;
 
+import java.util.List;
+
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.subscribers.BaseProgressSubscriber;
+import us.fellowtraveller.domain.usecase.GetPointSubscribersUseCase;
 import us.fellowtraveller.domain.usecase.SubscribeUseCase;
 import us.fellowtraveller.domain.usecase.UnsubscribeUseCase;
 import us.fellowtraveller.domain.usecase.UserInfoUseCase;
@@ -16,15 +19,18 @@ public class ViewRoutePresenterImpl extends ProgressPresenter<ViewRouteView> imp
     private final UserInfoUseCase userInfoUseCase;
     private final SubscribeUseCase subscribeUseCase;
     private final UnsubscribeUseCase unsubscribeUseCase;
+    private GetPointSubscribersUseCase getPointSubscribersUseCase;
 
     public ViewRoutePresenterImpl(Messages messages,
                                   UserInfoUseCase userInfoUseCase,
                                   SubscribeUseCase subscribeUseCase,
-                                  UnsubscribeUseCase unsubscribeUseCase) {
+                                  UnsubscribeUseCase unsubscribeUseCase,
+                                  GetPointSubscribersUseCase getPointSubscribersUseCase) {
         super(messages);
         this.userInfoUseCase = userInfoUseCase;
         this.subscribeUseCase = subscribeUseCase;
         this.unsubscribeUseCase = unsubscribeUseCase;
+        this.getPointSubscribersUseCase = getPointSubscribersUseCase;
     }
 
     @Override
@@ -70,5 +76,21 @@ public class ViewRoutePresenterImpl extends ProgressPresenter<ViewRouteView> imp
                 }
             }
         });
+    }
+
+    @Override
+    public void onMarkerClick(List<String> subscribers) {
+        getPointSubscribersUseCase.setSubscribers(subscribers);
+        getPointSubscribersUseCase.execute(new BaseProgressSubscriber<List<User>>(this) {
+            @Override
+            public void onNext(List<User> response) {
+                super.onNext(response);
+                ViewRouteView view = getView();
+                if (view != null) {
+                    view.showSubscribers(response);
+                }
+            }
+        });
+
     }
 }

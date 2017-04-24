@@ -1,5 +1,7 @@
 package us.fellowtraveller.presentation.view;
 
+import java.util.List;
+
 import us.fellowtraveller.domain.model.User;
 
 /**
@@ -10,5 +12,8 @@ public interface ViewRouteView extends ProgressView {
     void renderUser(User response);
 
     void onSubscribed();
+
     void onUnsubscribed();
+
+    void showSubscribers(List<User> response);
 }

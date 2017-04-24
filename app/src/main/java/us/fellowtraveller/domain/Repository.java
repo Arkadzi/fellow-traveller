@@ -50,4 +50,6 @@ public interface Repository {
     Observable<String> subscribe(String pointId);
 
     Observable<String> unsubscribe(String pointId);
+
+    Observable<List<User>> getSubscribers(List<String> subscribers);
 }

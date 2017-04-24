@@ -21,6 +21,7 @@ import us.fellowtraveller.domain.usecase.BuildRouteUseCase;
 import us.fellowtraveller.domain.usecase.FindRoutesUseCase;
 import us.fellowtraveller.domain.usecase.GetAllOwnerRoutesUseCase;
 import us.fellowtraveller.domain.usecase.GetAllSubscriberRoutesUseCase;
+import us.fellowtraveller.domain.usecase.GetPointSubscribersUseCase;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
 import us.fellowtraveller.domain.usecase.SignUpUseCase;
 import us.fellowtraveller.domain.usecase.SubscribeUseCase;
@@ -125,7 +126,7 @@ public class UserModule {
     ViewRoutePresenter provideViewRoutePresenter(Messages messages,
                                                  UserInfoUseCase userInfoUseCase,
                                                  SubscribeUseCase subscribeUseCase,
-                                                 UnsubscribeUseCase unsubscribeUseCase) {
-        return new ViewRoutePresenterImpl(messages, userInfoUseCase, subscribeUseCase, unsubscribeUseCase);
+                                                 UnsubscribeUseCase unsubscribeUseCase, GetPointSubscribersUseCase getPointSubscribersUseCase) {
+        return new ViewRoutePresenterImpl(messages, userInfoUseCase, subscribeUseCase, unsubscribeUseCase, getPointSubscribersUseCase);
     }
 }

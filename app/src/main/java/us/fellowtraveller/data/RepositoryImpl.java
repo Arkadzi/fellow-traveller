@@ -130,4 +130,9 @@ public class RepositoryImpl implements Repository {
     public Observable<String> unsubscribe(String pointId) {
         return restApi.unsubscribe(pointId);
     }
+
+    @Override
+    public Observable<List<User>> getSubscribers(List<String> subscribers) {
+        return Observable.from(subscribers).flatMap(this::getUserInfo).toList();
+    }
 }

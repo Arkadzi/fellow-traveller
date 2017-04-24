@@ -4,6 +4,7 @@ import android.content.Context;
 
 import us.fellowtraveller.data.di.UserComponent;
 import us.fellowtraveller.data.di.UserModule;
+import us.fellowtraveller.presentation.utils.ScreenNavigator;
 
 /**
  * Created by arkadii on 3/5/17.
@@ -23,6 +24,13 @@ public class Application extends android.app.Application {
         super.onCreate();
         buildAppComponent();
         buildUserComponent();
+    }
+
+
+    public void logout() {
+        userComponent.account().logout();
+        buildUserComponent();
+        ScreenNavigator.startFirstScreen(this);
     }
 
     private void buildAppComponent() {

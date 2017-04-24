@@ -13,6 +13,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import us.fellowtraveller.R;
+import us.fellowtraveller.domain.model.trip.Collection;
 import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.presentation.utils.LocationUtils;
 
@@ -60,6 +62,14 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
     public void drawPolylines() {
         if (googleMap != null) {
             googleMap.clear();
+            googleMap.setOnInfoWindowClickListener(marker -> {
+                if (marker.getTag() != null) {
+                    if (getActivity() instanceof InfoWindowClickListener) {
+                        ((InfoWindowClickListener) getActivity()).onClick((List<String>) marker.getTag());
+                    }
+                }
+
+            });
             LatLngBounds.Builder builder = LatLngBounds.builder();
             PolylineOptions polylineOptions = new PolylineOptions();
             ArrayList<Point> points = (ArrayList<Point>) getArguments().getSerializable(ARG_POINTS);
@@ -70,10 +80,22 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
                 builder.include(latLng);
                 polylineOptions.add(latLng);
                 if (point.getCollectionData() != null || i == points.size() - 1) {
-                    googleMap.addMarker(getMarkerOption(point, ++index,
+                    MarkerOptions markerOption = getMarkerOption(point, ++index,
                             (i > 0 && i < points.size() - 1)
                                     ? R.drawable.point_marker_from
-                                    : R.drawable.point_marker_from1));
+                                    : R.drawable.point_marker_from1);
+                    Collection collectionData = point.getCollectionData();
+                    int subscribersCount = 0;
+                    List<String> subscribers = null;
+                    if (collectionData != null) {
+                        subscribers = collectionData.getSubscribers();
+                        subscribersCount = subscribers.size();
+                    }
+                    markerOption.title(getString(R.string.subscribers_count) + ": " + subscribersCount);
+                    Marker marker = googleMap.addMarker(markerOption);
+                    if (subscribersCount > 0) {
+                        marker.setTag(subscribers);
+                    }
                 }
             }
             googleMap.addPolyline(polylineOptions);
@@ -88,5 +110,9 @@ public class RouteMapFragment extends SupportMapFragment implements OnMapReadyCa
                 .icon(BitmapDescriptorFactory
                         .fromBitmap(LocationUtils
                                 .generateMarker(getActivity(), markerBackground, String.valueOf(i))));
+    }
+
+    public interface InfoWindowClickListener {
+        void onClick(List<String> subscribers);
     }
 }

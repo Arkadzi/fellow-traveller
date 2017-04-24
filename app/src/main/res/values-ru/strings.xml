@@ -74,4 +74,8 @@
     <string name="error_delete_car">Невозможно удалить авто</string>
     <string name="subscribe">Подписаться</string>
     <string name="unsubscribe">Отписаться</string>
+    <string name="subscribers_count">Количество подписчиков</string>
+    <string name="title_subscribers">Подписчики</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_log_out">Выйти</string>
 </resources>

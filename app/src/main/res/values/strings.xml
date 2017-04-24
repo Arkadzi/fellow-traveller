@@ -80,5 +80,9 @@
     <string name="error_delete_car">Unable to delete car</string>
     <string name="subscribe">Subscribe</string>
     <string name="unsubscribe">Unsubscribe</string>
+    <string name="subscribers_count">Subscribers count</string>
+    <string name="title_subscribers">Subscribers</string>
+    <string name="action_close">Close</string>
+    <string name="action_log_out">Log out</string>
 
 </resources>

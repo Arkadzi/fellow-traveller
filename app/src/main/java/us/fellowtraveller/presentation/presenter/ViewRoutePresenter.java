@@ -1,5 +1,7 @@
 package us.fellowtraveller.presentation.presenter;
 
+import java.util.List;
+
 import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.presentation.view.ViewRouteView;
 
@@ -12,4 +14,6 @@ public interface ViewRoutePresenter extends Presenter<ViewRouteView> {
 
     void onSubscribe(String pointId);
     void onUnsubscribe(String pointId);
+
+    void onMarkerClick(List<String> subscribers);
 }
