@@ -164,7 +164,7 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView, Ro
 
     @Override
     public void onSubscribed() {
-        route.subscribe(subscriptionPointId, user.getId());
+        route.subscribe(subscriptionPointId, account.user().getId());
         btnSubscribe.setVisibility(View.GONE);
         btnUnsubscribe.setVisibility(View.VISIBLE);
         Intent data = new Intent();
@@ -175,7 +175,7 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView, Ro
 
     @Override
     public void onUnsubscribed() {
-        route.unsubscribe(subscriptionPointId, user.getId());
+        route.unsubscribe(subscriptionPointId, account.user().getId());
         btnSubscribe.setVisibility(View.VISIBLE);
         btnUnsubscribe.setVisibility(View.GONE);
         Intent data = new Intent();
