@@ -109,7 +109,7 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView, Ro
         btnSubscribe.setOnClickListener(v -> presenter.onSubscribe(subscriptionPointId));
         btnUnsubscribe.setOnClickListener(v -> presenter.onUnsubscribe(subscriptionPointId));
         tvPrice.setText(price == (int) price ? String.valueOf((int) price) : String.format(Locale.ENGLISH, "%.2f", price));
-        tvSeats.setText(String.valueOf(route.getSeats()));
+        tvSeats.setText(String.valueOf(route.getSeatsAvailable()));
         tvState.setText(getString(R.string.hint_condition) + ":");
         tvRouteTitle.setText(route.getTitle());
         tvRouteDate.setText(formatFirst.format(new Date(route.getTime())));

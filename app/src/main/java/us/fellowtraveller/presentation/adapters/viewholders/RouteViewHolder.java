@@ -40,7 +40,7 @@ public class RouteViewHolder extends RecyclerView.ViewHolder {
         tvDate.setText(formatFirst.format(new Date(route.getTime())));
         float price = route.getPrice();
         tvPrice.setText(price == (int) price ? String.valueOf((int) price) : String.format(Locale.ENGLISH, "%.2f", price));
-        tvSeats.setText(String.valueOf(route.getSeats()));
+        tvSeats.setText(String.valueOf(route.getSeatsAvailable()));
 
     }
 }

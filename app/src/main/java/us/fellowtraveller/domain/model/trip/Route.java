@@ -60,6 +60,16 @@ public class Route implements Serializable {
         return seats;
     }
 
+    public int getSeatsAvailable() {
+        int seats = this.seats;
+        for (Point point : points) {
+            if (point.getCollectionData() != null) {
+                seats -= point.getCollectionData().getSubscribers().size();
+            }
+        }
+        return seats;
+    }
+
     public void setSeats(int seats) {
         this.seats = seats;
     }
