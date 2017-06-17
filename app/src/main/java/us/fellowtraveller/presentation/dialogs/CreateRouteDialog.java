@@ -5,13 +5,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -24,16 +23,11 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Response;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
-import us.fellowtraveller.data.di.UserComponent;
-import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.trip.Point;
 import us.fellowtraveller.domain.model.trip.Route;
-import us.fellowtraveller.domain.usecase.AddRouteUseCase;
-import us.fellowtraveller.presentation.adapters.viewholders.CarViewHolder;
 import us.fellowtraveller.presentation.adapters.viewholders.CarViewHolder2;
 import us.fellowtraveller.presentation.app.view.SimpleItemSelectedListener;
 import us.fellowtraveller.presentation.app.view.SimpleTextWatcher;
@@ -64,6 +58,8 @@ public class CreateRouteDialog extends DialogFragment {
     ProgressBar progressBar;
     @Bind(R.id.content_view)
     View contentView;
+    @Bind(R.id.cb_per_km)
+    CheckBox cbPerKm;
 
     @Inject
     CreateRoutePresenter presenter;
@@ -138,7 +134,7 @@ public class CreateRouteDialog extends DialogFragment {
             route.setTitle(title);
             route.setSeats(seats);
             route.setPoints(points);
-            route.setPrice(price);
+            route.setPrice(price, !cbPerKm.isChecked());
             route.setCar(((Car) spinner.getSelectedItem()).getId());
             presenter.onCreateRouteClick(route);
         } catch (BadFieldDataException e) {

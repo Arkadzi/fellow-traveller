@@ -14,9 +14,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import us.fellowtraveller.R;
+import us.fellowtraveller.app.Application;
 import us.fellowtraveller.data.Constants;
+import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.presentation.adapters.RouteAdapter;
 import us.fellowtraveller.presentation.utils.ActivityUtils;
@@ -48,7 +49,8 @@ public class RouteListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new RouteAdapter(getActivity());
+        Account account = Application.getApp(getActivity()).getUserComponent().account();
+        adapter = new RouteAdapter(getActivity(), account.user().getId());
         recyclerView.setAdapter(adapter);
         adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(this, getActivity(), route, VIEW_ROUTE_REQUEST_CODE));
         adapter.setData(((ArrayList<Route>) getArguments().getSerializable(ARG_ROUTES)));

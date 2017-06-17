@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.data.Constants;
+import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Route;
@@ -56,6 +57,8 @@ public class DriverFragment extends Fragment implements DriverRouteView, MenuDia
     private RouteAdapter adapter;
     @Inject
     DriverPresenter presenter;
+    @Inject
+    Account account;
 
     public static DriverFragment newInstance() {
 
@@ -78,7 +81,7 @@ public class DriverFragment extends Fragment implements DriverRouteView, MenuDia
         View view = inflater.inflate(R.layout.fragment_driver, container, false);
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new RouteAdapter(getActivity());
+        adapter = new RouteAdapter(getActivity(), account.user().getId());
         recyclerView.setAdapter(adapter);
         adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(this, getActivity(), route, VIEW_ROUTE_REQUEST_CODE));
         adapter.setRouteLongClickListener((position, route) -> {

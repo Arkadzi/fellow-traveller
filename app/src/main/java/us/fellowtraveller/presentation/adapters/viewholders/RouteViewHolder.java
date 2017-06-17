@@ -29,9 +29,13 @@ public class RouteViewHolder extends RecyclerView.ViewHolder {
     TextView tvPrice;
     @Bind(R.id.tv_seats)
     TextView tvSeats;
+    @Bind(R.id.tv_price_hint)
+    TextView tvPriceHint;
+    private String userId;
 
-    public RouteViewHolder(LayoutInflater inflater, ViewGroup viewGroup) {
+    public RouteViewHolder(LayoutInflater inflater, ViewGroup viewGroup, String userId) {
         super(inflater.inflate(R.layout.item_route, viewGroup, false));
+        this.userId = userId;
         ButterKnife.bind(this, itemView);
     }
 
@@ -41,6 +45,7 @@ public class RouteViewHolder extends RecyclerView.ViewHolder {
         float price = route.getPrice();
         tvPrice.setText(price == (int) price ? String.valueOf((int) price) : String.format(Locale.ENGLISH, "%.2f", price));
         tvSeats.setText(String.valueOf(route.getSeatsAvailable()));
+        tvPriceHint.setText(route.getOwner().equals(userId) && !route.isMarshrutka() ? R.string.hint_price_per_km : R.string.hint_price);
 
     }
 }

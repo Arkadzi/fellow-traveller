@@ -83,10 +83,10 @@
                 tools:text="10" />
 
             <TextView
+                android:id="@+id/tv_price_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@string/hint_price"
                 android:textAllCaps="true"
                 android:textSize="12sp" />
         </LinearLayout>

@@ -28,6 +28,7 @@ import butterknife.OnClick;
 import us.fellowtraveller.R;
 import us.fellowtraveller.app.Application;
 import us.fellowtraveller.data.Constants;
+import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.Car;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Route;
@@ -54,6 +55,8 @@ public class TravellerFragment extends Fragment implements TravellerRouteView {
     private RouteAdapter adapter;
     @Inject
     TravellerPresenter presenter;
+    @Inject
+    Account account;
 
     public static TravellerFragment newInstance() {
 
@@ -76,7 +79,7 @@ public class TravellerFragment extends Fragment implements TravellerRouteView {
         View view = inflater.inflate(R.layout.fragment_traveller, container, false);
         ButterKnife.bind(this, view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new RouteAdapter(getActivity());
+        adapter = new RouteAdapter(getActivity(), account.user().getId());
         adapter.setRouteClickListener(route -> ScreenNavigator.startRouteScreen(this, getActivity(), route, VIEW_ROUTE_REQUEST_CODE));
         recyclerView.setAdapter(adapter);
         refreshLayout.setOnRefreshListener(() -> presenter.onRefresh());

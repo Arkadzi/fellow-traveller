@@ -61,6 +61,8 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView, Ro
     TextView tvCarTitle;
     @Bind(R.id.tv_state_hint)
     TextView tvState;
+    @Bind(R.id.tv_price_hint)
+    TextView tvPriceHint;
     @Bind(R.id.car_rating)
     RatingBar carRating;
     @Bind(R.id.btn_subscribe)
@@ -108,7 +110,9 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView, Ro
         float price = route.getPrice();
         btnSubscribe.setOnClickListener(v -> presenter.onSubscribe(subscriptionPointId));
         btnUnsubscribe.setOnClickListener(v -> presenter.onUnsubscribe(subscriptionPointId));
-        tvPrice.setText(price == (int) price ? String.valueOf((int) price) : String.format(Locale.ENGLISH, "%.2f", price));
+        String priceValue = price == (int) price ? String.valueOf((int) price) : String.format(Locale.ENGLISH, "%.2f", price);
+        tvPriceHint.setText(route.getOwner().equals(account.user().getId()) && !route.isMarshrutka() ? R.string.hint_price_per_km : R.string.hint_price);
+        tvPrice.setText(priceValue);
         tvSeats.setText(String.valueOf(route.getSeatsAvailable()));
         tvState.setText(getString(R.string.hint_condition) + ":");
         tvRouteTitle.setText(route.getTitle());
@@ -138,7 +142,7 @@ public class RouteActivity extends ProgressActivity implements ViewRouteView, Ro
         if (!account.user().getId().equals(user.getId())) {
             subscriptionPointId = account.user().getSubscriptionPointId(route);
             boolean subscribed = subscriptionPointId != null;
-            if(!subscribed) {
+            if (!subscribed) {
                 subscriptionPointId = route.getStartPointId();
             }
             btnSubscribe.setVisibility(subscribed ? View.GONE : View.VISIBLE);

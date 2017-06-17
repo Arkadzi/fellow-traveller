@@ -1,12 +1,6 @@
 package us.fellowtraveller.domain.model.trip;
 
-import android.location.Location;
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.maps.model.LatLng;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +11,8 @@ public class Route implements Serializable {
     private String id;
     private String title;
     private int seats;
-    private float price;
+    private Float price;
+    private Float priceForRoute;
     private String car;
     private String owner;
     private List<Point> points;
@@ -40,12 +35,20 @@ public class Route implements Serializable {
         this.id = id;
     }
 
-    public float getPrice() {
-        return price;
+    public boolean isMarshrutka() {
+        return priceForRoute != null;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public float getPrice() {
+        return isMarshrutka() ? priceForRoute : price;
+    }
+
+    public void setPrice(float price, boolean isMarshrutka) {
+        if (isMarshrutka) {
+            this.priceForRoute = price;
+        } else {
+            this.price = price;
+        }
     }
 
     public String getTitle() {

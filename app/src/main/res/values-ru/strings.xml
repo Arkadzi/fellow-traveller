@@ -78,4 +78,5 @@
     <string name="title_subscribers">Подписчики</string>
     <string name="action_close">Закрыть</string>
     <string name="action_log_out">Выйти</string>
+    <string name="hint_per_1_km">За 1 км</string>
 </resources>

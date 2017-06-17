@@ -22,6 +22,7 @@ import us.fellowtraveller.presentation.adapters.viewholders.RouteViewHolder;
 public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
     private final Context context;
     private final LayoutInflater layoutInflater;
+    private String userId;
     private final List<Route> data = new ArrayList<>();
     private Comparator<Route> routeComparator = (o1, o2) -> {
         if (o2.getTime() - o1.getTime() > 0) return 1;
@@ -32,14 +33,15 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteViewHolder> {
     @Nullable
     private OnRouteLongClickListener routeLongClickListener;
 
-    public RouteAdapter(Context context) {
+    public RouteAdapter(Context context, String userId) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
+        this.userId = userId;
     }
 
     @Override
     public RouteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RouteViewHolder routeViewHolder = new RouteViewHolder(layoutInflater, parent);
+        RouteViewHolder routeViewHolder = new RouteViewHolder(layoutInflater, parent, userId);
         routeViewHolder.itemView.setOnClickListener(v -> {
             if (routeClickListener != null) {
                 routeClickListener.onRouteClick(data.get(routeViewHolder.getAdapterPosition()));
