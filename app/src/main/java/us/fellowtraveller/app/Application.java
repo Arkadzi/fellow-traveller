@@ -29,6 +29,7 @@ public class Application extends android.app.Application {
 
     public void logout() {
         userComponent.account().logout();
+        buildAppComponent();
         buildUserComponent();
         ScreenNavigator.startFirstScreen(this);
     }

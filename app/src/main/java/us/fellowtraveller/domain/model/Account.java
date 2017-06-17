@@ -38,7 +38,19 @@ public class Account {
     }
 
     public void logout() {
-
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                .clear().commit();
+//                .remove(PREF_ID)
+//                .remove(PREF_SSOID)
+//                .remove(PREF_PASSWORD)
+//                .remove(PREF_FIRST_NAME)
+//                .remove(PREF_LAST_NAME)
+//                .remove(PREF_GENDER)
+//                .remove(PREF_EMAIL)
+//                .remove(PREF_TOKEN)
+//                .remove(PREF_URL)
+//                .remove(PREF_CARS)
+//                .commit();
     }
 
     public void editProfile(AccountUser user) {
