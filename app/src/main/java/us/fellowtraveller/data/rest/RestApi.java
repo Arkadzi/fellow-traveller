@@ -2,6 +2,7 @@ package us.fellowtraveller.data.rest;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.google.android.gms.location.places.Place;
@@ -28,6 +29,7 @@ import us.fellowtraveller.domain.DeleteRouteException;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
+import us.fellowtraveller.domain.model.Comment;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Route;
@@ -185,9 +187,9 @@ public class RestApi {
     }
 
     public Observable<String> subscribe(String pointId) {
-        return api.subscribe(pointId).map(voidResponse ->  {
+        return api.subscribe(pointId).map(voidResponse -> {
 //            if (voidResponse.isSuccessful()) {
-                return pointId;
+            return pointId;
 //            }
 //            throw new SubscribeException();
         });
@@ -196,5 +198,19 @@ public class RestApi {
 
     public Observable<String> unsubscribe(String pointId) {
         return api.unsubscribe(pointId).map(voidResponse -> pointId);
+    }
+
+    public Observable<List<Comment>> getComments(String recipient) {
+            return api.getComments(recipient, true)
+                    .concatWith(api.getComments(recipient, false))
+                    .flatMapIterable(l -> l)
+                    .toSortedList((comment, comment2) -> {
+                        long difference = comment2.getDatetime() - comment.getDatetime();
+                        return difference > 0 ? 1 : difference < 0 ? -1 : 0;
+                    });
+    }
+
+    public Observable<Comment> postComment(Comment comment) {
+        return api.postComment(comment);
     }
 }

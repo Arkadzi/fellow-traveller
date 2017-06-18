@@ -9,6 +9,7 @@ import us.fellowtraveller.data.Constants;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Route;
 import us.fellowtraveller.presentation.activities.AddCarActivity;
+import us.fellowtraveller.presentation.activities.CommentsActivity;
 import us.fellowtraveller.presentation.activities.CreateRouteActivity;
 import us.fellowtraveller.presentation.activities.EditProfileActivity;
 import us.fellowtraveller.presentation.activities.FindRouteActivity;
@@ -72,5 +73,11 @@ public class ScreenNavigator {
         Intent intent = new Intent(activity, RouteActivity.class);
         intent.putExtra(Constants.Intents.EXTRA_ROUTE, route);
         fragment.startActivityForResult(intent, requestCode);
+    }
+
+    public static void startCommentsScreen(Activity activity, User user) {
+        Intent intent = new Intent(activity, CommentsActivity.class);
+        intent.putExtra(Constants.Intents.EXTRA_USER, user);
+        activity.startActivity(intent);
     }
 }

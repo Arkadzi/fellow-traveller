@@ -85,5 +85,7 @@
     <string name="action_close">Close</string>
     <string name="action_log_out">Log out</string>
     <string name="hint_per_1_km">Per 1 km</string>
+    <string name="hint_comment">Comment</string>
+    <string name="action_send">Send</string>
 
 </resources>

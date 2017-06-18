@@ -1,5 +1,7 @@
 package us.fellowtraveller.data;
 
+import android.support.annotation.Nullable;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import us.fellowtraveller.domain.Repository;
 import us.fellowtraveller.domain.model.Account;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
+import us.fellowtraveller.domain.model.Comment;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Point;
@@ -134,5 +137,15 @@ public class RepositoryImpl implements Repository {
     @Override
     public Observable<List<User>> getSubscribers(List<String> subscribers) {
         return Observable.from(subscribers).flatMap(this::getUserInfo).toList();
+    }
+
+    @Override
+    public Observable<List<Comment>> getComments(String recipient) {
+        return restApi.getComments(recipient);
+    }
+
+    @Override
+    public Observable<Comment> postComment(Comment comment) {
+        return restApi.postComment(comment);
     }
 }

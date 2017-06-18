@@ -1,5 +1,6 @@
 package us.fellowtraveller.presentation.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.presentation.adapters.viewholders.AddCarHolder;
 import us.fellowtraveller.presentation.adapters.viewholders.CarViewHolder;
 import us.fellowtraveller.presentation.adapters.viewholders.UserProfileViewHolder;
+import us.fellowtraveller.presentation.utils.ScreenNavigator;
 
 /**
  * Created by arkadii on 3/18/17.
@@ -22,6 +24,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static final int USER_CAR = 2;
     private static final int ADD_CAR = 3;
     private final LayoutInflater layoutInflater;
+    private Activity activity;
     private final boolean canModifyCars;
     private final View.OnClickListener addCarButtonClickListener;
     @Nullable
@@ -29,8 +32,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Nullable
     private User user;
 
-    public ProfileAdapter(Context context, boolean canModifyCars, View.OnClickListener addCarButtonClickListener) {
-        layoutInflater = LayoutInflater.from(context);
+    public ProfileAdapter(Activity activity, boolean canModifyCars, View.OnClickListener addCarButtonClickListener) {
+        layoutInflater = activity.getLayoutInflater();
+        this.activity = activity;
         this.canModifyCars = canModifyCars;
         this.addCarButtonClickListener = addCarButtonClickListener;
     }
@@ -61,7 +65,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
                 return carViewHolder;
             case USER_PROFILE:
-                return new UserProfileViewHolder(layoutInflater, parent);
+                UserProfileViewHolder viewHolder = new UserProfileViewHolder(layoutInflater, parent);
+                return viewHolder;
             case ADD_CAR:
                 return new AddCarHolder(layoutInflater, parent);
         }
@@ -75,7 +80,9 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof UserProfileViewHolder) {
-            ((UserProfileViewHolder) holder).bind(user);
+            UserProfileViewHolder viewHolder = (UserProfileViewHolder) holder;
+            viewHolder.bind(user);
+            viewHolder.feedbackView.setOnClickListener(v -> ScreenNavigator.startCommentsScreen(activity, user));
         } else if (holder instanceof CarViewHolder) {
             if (user != null) {
                 ((CarViewHolder) holder).bind(user.getCars().get(position - 1));
@@ -90,6 +97,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onViewRecycled(RecyclerView.ViewHolder holder) {
         if (holder instanceof AddCarHolder) {
             ((AddCarHolder) holder).unbind();
+        } else if (holder instanceof UserProfileViewHolder) {
+            ((UserProfileViewHolder) holder).feedbackView.setOnClickListener(null);
         }
         super.onViewRecycled(holder);
     }

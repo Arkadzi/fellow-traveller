@@ -21,7 +21,9 @@ import us.fellowtraveller.domain.usecase.BuildRouteUseCase;
 import us.fellowtraveller.domain.usecase.FindRoutesUseCase;
 import us.fellowtraveller.domain.usecase.GetAllOwnerRoutesUseCase;
 import us.fellowtraveller.domain.usecase.GetAllSubscriberRoutesUseCase;
+import us.fellowtraveller.domain.usecase.GetCommentsUseCase;
 import us.fellowtraveller.domain.usecase.GetPointSubscribersUseCase;
+import us.fellowtraveller.domain.usecase.PostCommentUseCase;
 import us.fellowtraveller.domain.usecase.SignInUseCase;
 import us.fellowtraveller.domain.usecase.SignUpUseCase;
 import us.fellowtraveller.domain.usecase.SubscribeUseCase;
@@ -29,6 +31,8 @@ import us.fellowtraveller.domain.usecase.UnsubscribeUseCase;
 import us.fellowtraveller.domain.usecase.UserInfoUseCase;
 import us.fellowtraveller.presentation.presenter.AddCarPresenter;
 import us.fellowtraveller.presentation.presenter.AddCarPresenterImpl;
+import us.fellowtraveller.presentation.presenter.CommentsPresenter;
+import us.fellowtraveller.presentation.presenter.CommentsPresenterImpl;
 import us.fellowtraveller.presentation.presenter.CreateRoutePresenter;
 import us.fellowtraveller.presentation.presenter.CreateRoutePresenterImpl;
 import us.fellowtraveller.presentation.presenter.DriverPresenter;
@@ -128,5 +132,13 @@ public class UserModule {
                                                  SubscribeUseCase subscribeUseCase,
                                                  UnsubscribeUseCase unsubscribeUseCase, GetPointSubscribersUseCase getPointSubscribersUseCase) {
         return new ViewRoutePresenterImpl(messages, userInfoUseCase, subscribeUseCase, unsubscribeUseCase, getPointSubscribersUseCase);
+    }
+
+    @Provides
+    @UserScope
+    CommentsPresenter provideCommentsPresenter(Messages messages,
+                                               PostCommentUseCase postCommentUseCase,
+                                               GetCommentsUseCase getCommentsUseCase) {
+        return new CommentsPresenterImpl(messages, getCommentsUseCase, postCommentUseCase);
     }
 }

@@ -11,4 +11,5 @@
     <dimen name="trip_point_item_height">64dp</dimen>
     <dimen name="item_height">72dp</dimen>
     <dimen name="car_image_size">56dp</dimen>
+    <dimen name="user_image_size">32dp</dimen>
 </resources>

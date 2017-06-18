@@ -25,6 +25,9 @@
             android:name=".presentation.activities.SignInActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".presentation.activities.CommentsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".presentation.activities.SignUpActivity"
             android:screenOrientation="portrait" />
         <activity

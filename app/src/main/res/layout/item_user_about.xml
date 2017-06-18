@@ -106,93 +106,111 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="#c6c6c6"/>
+        android:layout_marginTop="16dp"
+        android:background="#c6c6c6" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/ll_feedback"
+        android:background="?selectableItemBackground"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_feedback_white_36dp"
+            android:tint="#616161" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:layout_marginLeft="8dp"
+            android:text="@string/hint_feedback"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <TextView
-                android:id="@+id/tv_rating_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="20sp"
-                tools:text="10" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/hint_rating"
-                android:textAllCaps="true"
-                android:textSize="12sp" />
-        </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:orientation="vertical">-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+        <!--<TextView-->
+        <!--android:id="@+id/tv_rating_count"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="?android:attr/textColorPrimary"-->
+        <!--android:textSize="20sp"-->
+        <!--tools:text="10" />-->
 
-            <TextView
-                android:id="@+id/tv_trip_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="20sp"
-                tools:text="20" />
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="4dp"-->
+        <!--android:text="@string/hint_rating"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="12sp" />-->
+        <!--</LinearLayout>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/hint_feedback"
-                android:textAllCaps="true"
-                android:textSize="12sp" />
-        </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:orientation="vertical">-->
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+        <!--<TextView-->
+        <!--android:id="@+id/tv_trip_count"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="?android:attr/textColorPrimary"-->
+        <!--android:textSize="20sp"-->
+        <!--tools:text="20" />-->
 
-            <TextView
-                android:id="@+id/tv_comment_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="20sp"
-                tools:text="30" />
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="4dp"-->
+        <!--android:text="@string/hint_feedback"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="12sp" />-->
+        <!--</LinearLayout>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/hint_trips"
-                android:textAllCaps="true"
-                android:textSize="12sp" />
-        </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_comment_count"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="?android:attr/textColorPrimary"-->
+        <!--android:textSize="20sp"-->
+        <!--tools:text="30" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="4dp"-->
+        <!--android:text="@string/hint_trips"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textSize="12sp" />-->
+        <!--</LinearLayout>-->
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:background="#c6c6c6"/>
+        android:layout_marginTop="16dp"
+        android:background="#c6c6c6" />
 
     <TextView
         android:layout_width="wrap_content"

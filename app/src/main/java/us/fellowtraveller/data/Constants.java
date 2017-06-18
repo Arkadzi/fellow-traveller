@@ -11,6 +11,7 @@ public interface Constants {
     interface Intents {
         String EXTRA_CAR = "extra_car";
         String EXTRA_ROUTE = "extra_route";
+        String EXTRA_USER = "extra_user";
     }
 
 }

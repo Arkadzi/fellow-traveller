@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
+
+    <ImageView
+        android:id="@+id/c_author_photo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginRight="16dp" />
+
+
+    <android.support.v7.widget.AppCompatRatingBar
+        android:id="@+id/rb_rating_value"
+        style="@style/Base.Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="8dp"
+        android:isIndicator="true"
+        android:stepSize="1"
+        android:tint="#757575" />
+
+    <RelativeLayout
+        android:id="@+id/rl_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/rb_rating_value"
+        android:layout_toRightOf="@id/c_author_photo"
+        android:gravity="left">
+
+        <TextView
+            android:id="@+id/c_author_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/c_date"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="#9e9e9e"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@id/c_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="16dp"
+            android:lines="1"
+            android:textColor="#9e9e9e"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/rl_author"
+        android:layout_below="@id/rl_author"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="14sp" />
+
+
+</RelativeLayout>

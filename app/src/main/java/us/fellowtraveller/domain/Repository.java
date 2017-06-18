@@ -8,6 +8,7 @@ import java.util.List;
 import rx.Observable;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
+import us.fellowtraveller.domain.model.Comment;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.User;
 import us.fellowtraveller.domain.model.trip.Point;
@@ -52,4 +53,8 @@ public interface Repository {
     Observable<String> unsubscribe(String pointId);
 
     Observable<List<User>> getSubscribers(List<String> subscribers);
+
+    Observable<List<Comment>> getComments(String recipient);
+
+    Observable<Comment> postComment(Comment comment);
 }

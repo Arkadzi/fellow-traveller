@@ -79,4 +79,6 @@
     <string name="action_close">Закрыть</string>
     <string name="action_log_out">Выйти</string>
     <string name="hint_per_1_km">За 1 км</string>
+    <string name="hint_comment">Комментарий</string>
+    <string name="action_send">Отправить</string>
 </resources>

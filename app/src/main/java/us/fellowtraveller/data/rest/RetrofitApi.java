@@ -17,6 +17,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import us.fellowtraveller.domain.model.AccountUser;
 import us.fellowtraveller.domain.model.Car;
+import us.fellowtraveller.domain.model.Comment;
 import us.fellowtraveller.domain.model.Photo;
 import us.fellowtraveller.domain.model.SimpleResponse;
 import us.fellowtraveller.domain.model.User;
@@ -90,4 +91,14 @@ public interface RetrofitApi {
 
     @GET("users")
     Observable<User> getUserInfo(@Query("id") String userId);
+
+    @GET("reviews")
+    Observable<List<Comment>> getComments(
+            @Query("recipient") String recipient,
+            @Query("forDriver") Boolean forDriver
+    );
+
+    @POST("reviews")
+    Observable<Comment> postComment(@Body Comment comment);
+
 }

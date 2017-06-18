@@ -7,7 +7,7 @@ import android.widget.EditText;
  */
 
 public class BadFieldDataException extends RuntimeException {
-    EditText editText;
+    public EditText editText;
 
     public BadFieldDataException(EditText editText) {
         this.editText = editText;
